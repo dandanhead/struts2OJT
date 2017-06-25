@@ -2,6 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -12,7 +13,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="../login/doLogout.jsp"></jsp:include> <!--로그아웃체크  -->
 <jsp:include page="../layout/header.jsp"/> <!--header  -->
 <form id="frm">
 <input type="hidden" value="${wsearch}" id="whatSearch" name="wsearch">
@@ -112,14 +112,14 @@
 			</tbody>
 		</table>
  		<jsp:include page="../paging/paging.jsp" flush="false">
-			<jsp:param value="${pageNumber }" name="pageNumber"/>
+			<jsp:param value="${mvo.pageNumber }" name="pageNumber"/>
 			<jsp:param value="${pageCountPerScreen }" name="pageCountPerScreen"/>
-			<jsp:param value="${recordCountPerPage }" name="recordCountPerPage"/>
+			<jsp:param value="${mvo.recordCountPerPage }" name="recordCountPerPage"/>
 			<jsp:param value="${totalRecordCount }" name="totalRecordCount"/>
 		</jsp:include>
 	</div>
-	<input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty pageNumber)?0:pageNumber }"/>
-	<input type="hidden" name="recordCountPerPage" id="_recordCountPerPage"	value="${(empty recordCountPerPage)?0:recordCountPerPage }"/>
+	<input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty mvo.pageNumber)?0: mvo.pageNumber }"/>
+	<input type="hidden" name="recordCountPerPage" id="_recordCountPerPage"	value="${(empty mvo.recordCountPerPage)?0: mvo.recordCountPerPage }"/>
 
 <div id="selectDetail" class="layer">
 	<table style="width: 100%;">
@@ -130,7 +130,7 @@
 			<col width="auto;">
 		</colgroup>
 		<tr>
-			<td>
+		<%-- 	<td>
 				<select class="form-control" name="s_category" id="category">
 					<option value="im_name" <c:if test="${s_category eq 'im_name'}">selected</c:if>>Name</option>
 					<option value="im_phone" <c:if test="${s_category eq 'im_phone'}">selected</c:if>>Phone</option>
@@ -142,7 +142,7 @@
 			</td>
 			<td>
 				<a class="btn btn-default" id="btnSearch">Search</a>
-			</td>
+			</td> --%>
 			<td style="float: right;">
 				<a class="btn btn-default" href="#none" id="addWorker" >add workers</a>
 				
@@ -196,7 +196,7 @@
 	});
 	$("#addWorker").click(function() {
 		
-		location.href="addworker.do";
+		location.href="addworker";
 	});
 </script>
 </html>

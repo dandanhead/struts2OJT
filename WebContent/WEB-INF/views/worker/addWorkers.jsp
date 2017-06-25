@@ -1,8 +1,8 @@
-<%@page import="kr.co.ican.vo.ExperienceVO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -23,103 +23,87 @@
 		</div>
 		<hr> <!-- 공통 css -->
 	</div>
-<form id="frm" method="post">
+<s:form id="frm" method="post" action="addworkerAf" namespace="/worker">
 	<div class="layer" style="margin-left: 30%;">
 		<div class="addform" style="float: left;">
 		<h2><b>Information</b></h2>
 		<h5><strong style="color: red;">* 항목은 필수 입력 입니다.</strong></h5>
 			<div>
 				<label>* PW</label>
-				<input type="password" class="form-control" style="width: 40%;" name="im_pw" id="chkpw">
+				<br>
+				<input type="password" class="form-control" style="width: 40%;" name="mvo.im_pw" id="chkpw" value="${mvo.im_pw}">
+				<b style="color: red;"><s:fielderror fieldName="chkpw"/></b>
 			</div>
 			<br>
 			<div>
 				<label>* PW(Confirm)</label>
-				<input type="password" class="form-control" style="width: 40%;" id="confirmpw">
+				<input type="password" class="form-control" style="width: 40%;" id="confirmpw" name="confirmPw" value="${confirmPw}">
+				<b style="color: red;"><s:fielderror fieldName="chkpwconfirm"/></b>
 			</div>
 			<br>
 			<div>
 				<label>* Name</label>
-				<input type="text" class="form-control" style="width: 40%;" name="im_name" id="chkname">
+				<input type="text" class="form-control" style="width: 40%;" name="mvo.im_name" id="chkname" value="${mvo.im_name}">
+				<b style="color: red;"><s:fielderror fieldName="chkname"/></b>
 			</div>
 			<br>
 			<div>
 				<label>* Social Num</label>
 				<div class="row">
 				  <div class="col-xs-3">
-				    <input type="text" class="form-control" placeholder="앞 자리" id="snumF">
+				    <input type="text" class="form-control" placeholder="앞 자리" name="snumF" value="${snumF}" maxlength="6">
 				  </div>
 				  <div class="col-xs-3">
-				    <input type="password" class="form-control" placeholder="뒷 자리" id="snumE">
+				    <input type="password" class="form-control" placeholder="뒷 자리" name="snumE" value="${snumE}" maxlength="7">
 				  </div>
-				  <input type="hidden" value="" name="im_scnum" id="chkscnum">
 				</div>
+				<b style="color: red;"><s:fielderror fieldName="chkscnum"/></b>
 			</div>
 			<br>
 			<div>
 				<label>* Phone</label>
 				<div class="row">
 				  <div class="col-xs-2">
-				    <input type="text" class="form-control" placeholder="010" id="sphone" style="width: 80%">
+				    <input type="text" class="form-control" placeholder="010" name="sphone" style="width: 80%" value="${sphone}" maxlength="3">
 				  </div>
 				  <div class="col-xs-2">
-				    <input type="text" class="form-control" id="mphone" style="width: 80%">
+				    <input type="text" class="form-control" name="mphone" style="width: 80%" value="${mphone}" maxlength="4">
 				  </div>
 				  <div class="col-xs-2">
-				    <input type="text" class="form-control" id="ephone" style="width: 80%">
+				    <input type="text" class="form-control" name="ephone" style="width: 80%" value="${ephone}" maxlength="4">
 				  </div>
-				  <input type="hidden" value="" name="im_phone" id="chkphone">
 				</div>
+				<b style="color: red;"><s:fielderror fieldName="chkphone"/></b>
 			</div>
 			<br>
 			<div>
 				<label>* E-mail</label>
-				<input type="email" class="form-control" name="im_email" id="chkemail" style="width: 50%">
+				<input type="email" class="form-control" name="mvo.im_email" id="chkemail" style="width: 50%" value="${mvo.im_email}">
+				 <b style="color: red;"><s:fielderror fieldName="chkemail"/></b>
 			</div>
 			<br>
 			<div>
 				<label>* Address</label>
 				<br>
-				<input type="text" id="postcode" style="width: 30%" placeholder="우편번호" name="im_postcode" readonly="readonly">
+				<input type="text" id="postcode" style="width: 30%" placeholder="우편번호" name="mvo.im_postcode" readonly="readonly" value="${ mvo.im_postcode}">
 				<a href="#none" class="btn btn-default" style="width: 20%" id="findaddr">우편번호찾기</a>
 				<br>
-				<input type="text"  class="form-control" id="tempaddress" style="width: 50%" placeholder="도로명 또는 지번 주소" readonly="readonly" name="im_address">
-				<input type="text"  class="form-control" id="detailaddress" style="width: 50%" placeholder="상세 주소" name="im_detailaddr">
+				<input type="text"  class="form-control" id="tempaddress" style="width: 50%" placeholder="도로명 또는 지번 주소" readonly="readonly" name="mvo.im_address" value="${mvo.im_address}">
+				<input type="text"  class="form-control" id="detailaddress" style="width: 50%" placeholder="상세 주소" name="mvo.im_detailaddr" value="${mvo.im_detailaddr}">
 			</div>
+			<b style="color: red;"><s:fielderror fieldName="chkaddress"/></b>
 			<br>
 			<div class="chkbox">
 				<label>* Language and Skill</label>
 				<div style="color: red;">사용가능 언어 및 환경은 영어로만 입력 하실 수 있으며 comma(,) 로 구분합니다.</div>
 				<br>
-				<input type="text" name="im_skill" class="form-control" style="width: 50%; text-transform: uppercase; ime-mode: disabled;" id="skillinput" >
-			</div>
-			<br>
-			<div class="licensechkbox">
-				<label>License</label>
-				<a class="btn btn-default" style="width: 30%; float: right;" id="addLicense">Add License</a>
-				<div>
-					<table class="table table-striped" id="ltb">
-						<colgroup>
-							<col width="30%">
-							<col width="30%">
-							<col width="30%">
-							<col width="10%">
-						</colgroup>
-						<tr>
-							<th>자격증 명</th>
-							<th>취득일</th>
-							<th colspan="2">발급기관</th>
-						</tr>
-					</table>
-				<input type="hidden" value="" name="explist" id="getexp">
-				</div>
-				<br>
-				
+				<input type="text" name="mvo.im_skill" class="form-control" style="width: 50%; text-transform: uppercase; ime-mode: disabled;" id="skillinput"  value="${mvo.im_skill}">
+				<b style="color: red;"><s:fielderror fieldName="chkskill"/></b>
 			</div>
 			<br>
 			<div id="selectDep">
 				<label>* Department</label>
-				<select class="form-control" style="width: 30%;" name="im_dname">
+				<select class="form-control" style="width: 30%;" name="mvo.im_dname">
 					<option value="대표이사">대표이사</option>
 					<option value="전무이사">전무이사</option>
 					<option value="상무이사">상무이사</option>
@@ -129,29 +113,48 @@
 					<option value="FreeLancer">FreeLancer</option>
 					<option value="관리부">관리부</option>
 				</select>
-				<label id="conamelabel">※타업체 인력인 경우 소속 회사를 입력해야 합니다.</label>
-				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname">
+				<label id="conamelabel" hidden="true">※타업체 인력인 경우 소속 회사를 입력해야 합니다.</label>
+				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname" hidden="true">
+				 <b style="color: red;"><s:fielderror fieldName="chkTaCoName"/></b>
 			</div>
 			<br>
 			<div>
 				<label>* Authority</label>
-				<select class="form-control" style="width: 30%;" name="im_auth">
+				<select class="form-control" style="width: 30%;" name="mvo.im_auth">
 						<option selected="selected" value="0">Developer</option>
 						<option value="1">Manager</option>
 				</select>
 			</div>
 			<br>
 			<hr>
+			<h2><b>License</b></h2>
+			<a class="btn btn-default" style="width: 20%; float: right; margin-right: 17%;" id="addLicense">Add License</a>
+			<b style="color: red;"><s:fielderror fieldName="chklicense"/></b>
+			<table class="table table-striped" id="ltb" style="width: 40%; margin: auto;">
+				<colgroup>
+					<col width="30%">
+					<col width="30%">
+					<col width="30%">
+					<col width="10%">
+				</colgroup>
+				<tr>
+					<th>자격증 명</th>
+					<th>취득일</th>
+					<th colspan="2">발급기관</th>
+				</tr>
+			</table>
+			<hr>
+			<div style="width: 40%; margin: auto;'" >
 			<h2><b>Experience</b></h2>
-			<a class="btn btn-default" style="width: 30%; float: right;" id="addCareers">Add Careers</a>
-			<div>
-				<table class="table table-striped" id="ctb">
+			<a class="btn btn-default" style="width: 24%; float: right;" id="addCareers">Add Careers</a>
+			<b style="color: red;"><s:fielderror fieldName="chkcareer"/></b>
+			<table class="table table-striped" id="ctb">
 					<colgroup>
-						<col width="13%">
-						<col width="13%">
-						<col width="20%">
-						<col width="20%">
-						<col width="24%">
+						<col width="18%">
+						<col width="18%">
+						<col width="18%">
+						<col width="18%">
+						<col width="18%">
 						<col width="10%">
 					</colgroup>
 					<tr>
@@ -160,16 +163,21 @@
 						<th>직위</th>
 						<th colspan="2">역할</th>
 					</tr>
-				</table>
-				<input type="hidden" value="" name="explist" id="getexp">
+			</table>
 			</div>
-			<div >
-				<a class="btn btn-default" href="#none" style="width: 40%;" id="addbtn">Submit</a>
+			<br>
+			<hr>
+			<div style="width: 40%; margin: auto;">
+				<button type="submit" class="btn btn-default" style="width: 40%;">Submit</button>
 				<a class="btn btn-default" href="goWorker.do" style="width: 40%;" id="chkchk">Return</a>
 			</div>
 		</div>
 	</div>
-</form>
+	<!--hidden values  -->
+	<input type="hidden" name="chkTa" id="cntChkTa">
+	<input type="hidden" name="chkLicense" id="licenseCount">
+	<input type="hidden" name="chkCareer" id="careerCount">
+</s:form>
 </body>
 <script>
 //주소 API
@@ -222,5 +230,5 @@ $("#skillinput").keyup(function() {
 });
 
 </script>
-<script type="text/javascript" src="js/addworkerjQuery.js?version=201706201133"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/addworkerjQuery.js?version=20412331233123133"></script>
 </html>

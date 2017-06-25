@@ -1,0 +1,21 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+ "http://struts.apache.org/dtds/struts-2.3.dtd">
+ <struts>
+ 	<!-- worker  -->
+ 	<package name="worker" namespace="/worker" extends="struts-default">
+ 		<!-- goWorker List  -->
+ 		<action name="goWorker" class="kr.co.ican.action.worker.GoworkerAction">
+ 			<result name="success">/WEB-INF/views/worker/workerManage.jsp</result>
+ 		</action>
+ 		<action name="addworker">
+ 			<result>/WEB-INF/views/worker/addWorkers.jsp</result>
+ 		</action>
+ 		<action name="addworkerAf" class="kr.co.ican.action.worker.AddWorkerAction" method="validation">
+ 			<result name="success" type="chain">goWorker</result>
+ 			<result name="fail">/WEB-INF/views/worker/addWorkers.jsp</result>
+ 			<result name="dberr">/WEB-INF/views/worker/addWorkersFail.jsp</result>
+ 		</action>
+ 	</package>
+ </struts>

@@ -1,5 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,27 +20,28 @@ div.form-group{
 </head>
 <body>
 <br><br><br><br><br><br><br>
-<div style="width: 720px; height: 480px; background-image: url('img/icanback.png'); margin: auto;">
+<div style="width: 720px; height: 480px; background-image: url('${pageContext.request.contextPath }/img/icanback.png'); margin: auto;">
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<form class="form-horizontal" style="margin-left: 200px;" id="loginFrm" method="post">
+<s:form class="form-horizontal" style="margin-left: 200px;" id="loginFrm" method="post" action="loginAf">
   <div class="form-group">
     <label for="inputid" class="col-sm-2 control-label" style="color: white;">ID</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputid" placeholder="input your ID" name="im_idx">
+      <input type="text" class="form-control" id="inputid" placeholder="input your ID" name="mvo.im_idx">
     </div>
   </div>
   <div class="form-group">
     <label for="inputpw" class="col-sm-2 control-label" style="color: white;">PW</label>
     <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputpw" placeholder="input your Password" name="im_pw">
+      <input type="password" class="form-control" id="inputpw" placeholder="input your Password" name="mvo.im_pw">
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button class="btn btn-default" style="width: 100%;" id="btnLogin">Login</button>
+      <button class="btn btn-default" style="width: 100%;" id="btnLogin" type="submit">Login</button>
+      <a></a>
     </div>
   </div>
-</form>
+</s:form>
 </div>
 <hr width="40%">
 <div style="text-align: center;">
@@ -54,16 +59,16 @@ div.form-group{
 </div>
 </body>
 <script type="text/javascript">
+
 	$("#findID").click(function() {
-		var url = "goFindID.do";  
+		var url = "findId";  
       	window.open(url, "_blank", "width = 480, height = 320, left = 200, top = 100, status = no, scrollbars = yes");
 	});
+	
 	$("#findPW").click(function() {
-		var url = "goFindPW.do";  
+		var url = "findPw";  
       	window.open(url, "_blank", "width = 480, height = 320, left = 200, top = 100, status = no, scrollbars = yes");
 	});
-	$("#btnLogin").click(function() {
-		$("#loginFrm").attr({"target" : "_self" , "action" : "login.do"}).submit();
-	});
+	
 </script>
 </html>

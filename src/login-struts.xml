@@ -1,0 +1,44 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+ "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+
+<struts>
+   <!--login -->
+   <package name="login" extends="struts-default" namespace="/login">
+		<!-- start -->
+		<action name="start" class="kr.co.ican.action.login.LoginMultiAction" method="start">
+			<result>/WEB-INF/views/login/login.jsp</result>
+		</action>
+		<!--로그인  -->
+		<action name="loginAf" class="kr.co.ican.action.login.LoginMultiAction" method="loginAf">
+			<result name="success">/WEB-INF/views/main/main.jsp</result>
+			<result name="fail">/WEB-INF/views/login/loginFailed.jsp</result>
+		</action>
+		<!--로그아웃  -->
+		<action name="logout" class="kr.co.ican.action.login.LoginMultiAction" method="logout">
+			<result name="success">/WEB-INF/views/login/doLogout.jsp</result>
+		</action>
+		<!--아이디 찾기(사번 찾기)  -->
+		<action name="findId">
+			<result>/WEB-INF/views/login/findID.jsp</result>
+		</action>
+		<action name="getFindId" class="kr.co.ican.action.login.FindIdAction">
+			<result name="success">/WEB-INF/views/login/getResultID.jsp</result>
+			<result name="fail">/WEB-INF/views/login/findID.jsp</result>
+		</action>
+		<!--패스워드 찾기(패스워드 찾기)  -->
+		<action name="findPw">
+			<result>/WEB-INF/views/login/findPW.jsp</result>
+		</action>
+		<action name="getFindPw" class="kr.co.ican.action.login.FindPwAction">
+			<result name="success">/WEB-INF/views/login/getResultPW.jsp</result>
+			<result name="fail">/WEB-INF/views/login/findPW.jsp</result>
+		</action>
+		<!-- main -->
+		<action name="goMain">
+			<result>/WEB-INF/views/main/main.jsp</result>
+		</action>
+	</package>
+</struts>

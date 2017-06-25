@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -19,17 +19,9 @@ div.layer{
 </style>
 </head>
 <body>
-<c:if test="${empty result}">
 	<script type="text/javascript">
-		alert("입력하신 정보가 잘못되었습니다. 다시 정확하게 입력해 주세요.");
-		location.href = "goFindPW.do";
+		alert("찾으시는 비밀번호는 '"+ ${mvo.im_pw} +" 입니다.");
+		history.back();
 	</script>
-</c:if>
-<c:if test="${not empty result }">
-		<br><br><br><br>
-		<div class="layer">
-			찾으시는 PW 는  <input type="text" class="form-control" width="10%" value="${result.im_pw }" readonly="readonly"> 입니다.
-		</div>
-</c:if>
 </body>
 </html>

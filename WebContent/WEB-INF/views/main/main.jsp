@@ -13,7 +13,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="../login/doLogout.jsp"></jsp:include> <!--로그아웃체크  -->
 <jsp:include page="../layout/header.jsp"/> <!--header  -->
 <jsp:useBean id="tips" class="kr.co.ican.help.Helps"/> <!--helps  -->
 <hr>
@@ -30,7 +29,7 @@
 				<label>이름</label> <input type="text" class="form-control" value="${login.im_name }" readonly="readonly">
 			</div>
 			<div class="form-group">
-				<label>입사일</label> <input type="text" class="form-control" value="${tips.yymmdd(exp.ime_regi_date)}" readonly="readonly">
+				<label>입사일</label> <input type="text" class="form-control" value="${tips.yymmdd(evo.ime_regi_date)}" readonly="readonly">
 			</div>
 			<div class="form-group">
 				<label>연락처</label> <input type="tel" class="form-control" value="${login.im_phone}" readonly="readonly">
@@ -141,28 +140,28 @@
 		</colgroup>
 			<tr>
 				<td>1</td>
-				<td><a>amore Project</a>&nbsp;<img alt="no img" src="img/icon_new.gif"></td>
+				<td><a>amore Project</a>&nbsp;<img alt="no img" src="${pageContext.request.contextPath }/img/icon_new.gif"></td>
 				<td>negotiating</td>
 				<td>2017.05.12</td>
 			</tr>
 			
 			<tr>
 				<td>2</td>
-				<td><a>amre Project2</a>&nbsp;<img alt="no img" src="img/icon_new.gif"></td>
+				<td><a>amre Project2</a>&nbsp;<img alt="no img" src="${pageContext.request.contextPath }/img/icon_new.gif"></td>
 				<td>in progress</td>
 				<td>2017.05.12</td>
 			</tr>
 			
 			<tr>
 				<td>3</td>
-				<td><a>WongJin Project</a>&nbsp;<img alt="no img" src="img/icon_new.gif"></td>
+				<td><a>WongJin Project</a>&nbsp;<img alt="no img" src="${pageContext.request.contextPath }/img/icon_new.gif"></td>
 				<td>in progress</td>
 				<td>2017.05.12</td>
 			</tr>
 			
 			<tr>
 				<td>4</td>
-				<td><a>SalesForce Project</a>&nbsp;<img alt="no img" src="img/icon_new.gif"></td>
+				<td><a>SalesForce Project</a>&nbsp;<img alt="no img" src="${pageContext.request.contextPath }/img/icon_new.gif"></td>
 				<td>in progress</td>
 				<td>2017.05.12</td>
 			</tr>
@@ -181,7 +180,7 @@
 <script type="text/javascript">
 	$("#logout").click(function() {
 			if(confirm("로그 아웃 하시겠습니까?")){
-				location.href="logout.do";
+				location.href="logout.action";
 			}
 	});
 </script>

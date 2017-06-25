@@ -1,4 +1,3 @@
-var chkTa = false; //타업체선택 유무
 var liccnt = 0; //자격증 row count
 var cnt = 0; //경력 row 카운트
 // logout 
@@ -11,15 +10,15 @@ $("#logout").click(function() { //로그아웃 클릭
 $("#conamelabel").hide();
 $("input[name='outsideperson']").hide();
 
-$("select[name='im_dname']").change(function () {
+$("select[name='mvo.im_dname']").change(function () {
 	if("타업체인력" == $(this).val()){
 		$("#conamelabel").show();
 		$("input[name='outsideperson']").show();
-		chkTa = true;
+		$("#cntChkTa").val(1);
 	}else{
 		$("#conamelabel").hide();
 		$("input[name='outsideperson']").hide();
-		chkTa = false;
+		$("#cntChkTa").val(0);
 	}
 });
 // 자격증 추가
@@ -27,16 +26,16 @@ $("#addLicense").click(function () {
 	
 	var appendhtml = '<tr>';
 	    appendhtml +=    '<td><input class="form-control" type="text" style="width: 100%;" name="iml_lname"></td>';
-	    appendhtml +=    '<td><input class="form-control" type="text" style="width: 100%;" name="iml_acudate" readonly="readonly"></td>';
+	    appendhtml +=    '<td><input class="form-control" type="text" style="width: 100%;" name="iml_acqdate" readonly="readonly"></td>';
 	    appendhtml +=    '<td><input class="form-control" type="text" style="width: 100%;" name="iml_organization"></td>';
 	    appendhtml +=    '<td><a class="btn btn-default">cancle</a></td>';
 	    appendhtml +='</tr>';
-	    
 	    liccnt++;
+	    $("#licenseCount").val(liccnt);
 	$("#ltb").append(appendhtml);
 	
 	//datepicker 설정
-    $( "input[name='iml_acudate']" ).datepicker({
+    $( "input[name='iml_acqdate']" ).datepicker({
     	dateFormat:'yy-mm-dd',
         changeMonth: true, 
         changeYear: true,
@@ -63,6 +62,7 @@ $("#addCareers").click(function(){ //경력 row 추가 버튼
     	html +=    '<td><a class="btn btn-default">cancle</a></td>';
     	html +='</tr>';
 	cnt++; //row count
+	$("#careerCount").val(cnt);
     $("#ctb").append(html); 
     
 	//datepicker 설정
@@ -86,15 +86,17 @@ $("#addCareers").click(function(){ //경력 row 추가 버튼
 // 경력 삭제
 $("#ctb").on("click", ".btn-default", function() { //경력 row 삭제 버튼
 	cnt--;
+	$("#careerCount").val(cnt);
 	$(this).parent().parent().remove();
 });
 // 자격증 삭제
 $("#ltb").on("click", ".btn-default", function() { //자격증 row 삭제 버튼
 	liccnt--;
+	$("#licenseCount").val(liccnt);
 	$(this).parent().parent().remove();
 });
 // 사원 추가
-$("#addbtn").click(function() {
+/*$("#addbtn").click(function() {
 	
 	var chknum = 0;	// 체크박스 체크 갯수
 	var isS = false; // 중복체크(주민등록번호, 이메일, 핸드폰번호 ajax 를 이용한 중복체크)
@@ -348,4 +350,4 @@ $("#addbtn").click(function() {
 	}else{
 		alert("Page Err, 관리자에게 문의하세요.");
 	}
-});
+});*/

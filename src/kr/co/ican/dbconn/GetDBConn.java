@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+// get DB Connection
 public class GetDBConn {
 	
 
@@ -34,6 +35,7 @@ public class GetDBConn {
 		return conn;
 	}
 
+	// DB Close
 	public static void close(Connection conn, Statement psmt, ResultSet rs) {
 		if (rs != null) {
 			try {

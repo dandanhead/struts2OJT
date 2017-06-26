@@ -17,6 +17,6 @@
 		<s:a namespace="/move" action="goProject" class="btn btn-primary">프로젝트 관리</s:a>
 	</div>
 	<div class = "topmenu"id="mypage" style="float: left; width: 17%; width: 25%;">
-		<a type="button" class="btn btn-warning" id="logout">로그아웃</a>
+		<a href="#none"  class="btn btn-primary" id="logout">로그아웃</a> 
 	</div>
 </div>

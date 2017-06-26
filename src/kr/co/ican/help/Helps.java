@@ -1,6 +1,6 @@
 package kr.co.ican.help;
 
-
+// method Utility
 public class Helps {
 
 	public static final String NS = "/WEB-INF/views/";

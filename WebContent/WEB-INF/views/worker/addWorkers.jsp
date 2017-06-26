@@ -174,9 +174,9 @@
 		</div>
 	</div>
 	<!--hidden values  -->
-	<input type="hidden" name="chkTa" id="cntChkTa">
-	<input type="hidden" name="chkLicense" id="licenseCount">
-	<input type="hidden" name="chkCareer" id="careerCount">
+	<input type="hidden" name="chkTa" id="cntChkTa" value="0">
+	<input type="hidden" name="chkLicense" id="licenseCount" value="0">
+	<input type="hidden" name="chkCareer" id="careerCount" value="0">
 </s:form>
 </body>
 <script>
@@ -228,7 +228,12 @@ $("#skillinput").keyup(function() {
 	$(this).val($(this).val().toUpperCase());
 	$(this).val($(this).val().replace(/[\{\}\[\]\/?.;:|\)*~`!^\-_<>@\$%&\\\=\(\'\"]|[가-힣]|[ㄱ-ㅎ]|[ㅏ-ㅣ]|[0-9]/gi,""));
 });
-
+//logout 
+$("#logout").click(function() { //로그아웃 클릭
+		if(confirm("로그 아웃 하시겠습니까?")){
+			location.href='<s:url action="logout" namespace="/login"/>';
+		}
+});
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/addworkerjQuery.js?version=20412331233123133"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/addworkerjQuery.js?version=20170626"></script>
 </html>

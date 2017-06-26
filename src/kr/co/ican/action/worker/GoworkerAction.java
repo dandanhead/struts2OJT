@@ -8,6 +8,7 @@ import kr.co.ican.service.worker.WorkerService;
 import kr.co.ican.service.worker.WorkerServiceImpl;
 import kr.co.ican.vo.MemberVO;
 
+//사원 목록 list
 public class GoworkerAction extends ActionSupport {
 	
 	private static final long serialVersionUID = 1L;

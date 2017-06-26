@@ -29,13 +29,6 @@ $( "input[name='iml_acudate']" ).datepicker({
     nextText: '다음 달',
     prevText: '이전 달' 
 });
-
-// logout 
-$("#logout").click(function() { //로그아웃 클릭
-		if(confirm("로그 아웃 하시겠습니까?")){
-			location.href="logout.do";
-		}
-});
 // 타업체 인력 input tag 추가 (회사명 입력)
 $("#conamelabel").hide();
 $("input[name='outsideperson']").hide();

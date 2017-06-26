@@ -1,5 +1,6 @@
 package kr.co.ican.vo;
 
+// 사원 기본 정보 관련 VO
 public class MemberVO {
 	
 	private int im_idx;

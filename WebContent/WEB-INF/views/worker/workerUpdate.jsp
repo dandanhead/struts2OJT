@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -256,6 +257,12 @@ $("#skillinput").keyup(function() {
 	$(this).val($(this).val().toUpperCase());
 	$(this).val($(this).val().replace(/[\{\}\[\]\/?.;:|\)*~`!^\-_<>@\$%&\\\=\(\'\"]|[가-힣]|[ㄱ-ㅎ]|[ㅏ-ㅣ]|[0-9]/gi,""));
 });
+//logout 
+$("#logout").click(function() { //로그아웃 클릭
+		if(confirm("로그 아웃 하시겠습니까?")){
+			location.href='<s:url action="logout" namespace="/login"/>';
+		}
+});
 </script>
-<script type="text/javascript" src="js/updateworkerjQuery.js?version=20170611232354341"></script>
+<script type="text/javascript" src="js/updateworkerjQuery.js?version=20170626"></script>
 </html>

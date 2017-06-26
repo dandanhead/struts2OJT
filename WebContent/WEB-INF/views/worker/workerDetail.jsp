@@ -2,6 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -265,7 +266,7 @@
 <script type="text/javascript">
 	$("#logout").click(function() {
 			if(confirm("로그 아웃 하시겠습니까?")){
-				location.href="logout.do";
+				location.href='<s:url action="logout" namespace="/login"/>';
 			}
 	});
 	

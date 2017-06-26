@@ -1,5 +1,7 @@
 package kr.co.ican.vo;
 
+
+// 사원 자격증 관련 VO
 public class MemLicenseVO {
 
     private int iml_im_idx;

@@ -1,5 +1,6 @@
 package kr.co.ican.vo;
 
+// 사원 경력 관련 VO
 public class ExperienceVO {
 	
 	private int ime_im_idx;

@@ -11,6 +11,7 @@ import kr.co.ican.vo.ExperienceVO;
 import kr.co.ican.vo.MemLicenseVO;
 import kr.co.ican.vo.MemberVO;
 
+// 사원 추가, 삭제 , update 관련
 public class WorkerDAO {
 
 	
@@ -135,11 +136,10 @@ public class WorkerDAO {
 		return result > 0 ? true : false;
 	}
 	// 사원 기본정보 insert
-	public boolean addWorkerInfo(MemberVO mvo , Connection conn, PreparedStatement psmt, ResultSet rs) { // 사원 기본정보 넣기
+	public boolean addWorkerInfo(MemberVO mvo , Connection conn, PreparedStatement psmt, ResultSet rs)throws SQLException { // 사원 기본정보 넣기
         String sql = "";
         int cnt = 1;
         int result = 0;
-        try {
 			sql = " INSERT INTO ICAN_MEMBER(IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_RESIGN, IM_STATUS, IM_SCNUM, IM_ADDRESS, IM_DETAILADDR, IM_POSTCODE, IM_AUTH, IM_SKILL) "
 				 +" VALUES(MEMBER_SEQ.NEXTVAL, ? , ? , ? , ? , ? , 0 , 0 , ? , ? , ? , ? , ? , ?)";
 			
@@ -159,90 +159,72 @@ public class WorkerDAO {
 			
 			result = psmt.executeUpdate();
 
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
 		return result > 0 ? true : false;
 	}
 	// 기본 경력 insert
-	public boolean basicWorkerExp(MemberVO mvo, Connection conn, PreparedStatement psmt, ResultSet rs) {
+	public boolean basicWorkerExp(MemberVO mvo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
 		String sql = "";
         int cnt = 1;
         int result = 0;
-        try {
-			if("타업체인력".equals(mvo.getIm_dname())){
-				sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
-						+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, ? , ? , '미배정') ";
-				
-				psmt = conn.prepareStatement(sql);
-				psmt.setString(cnt++, mvo.getOutsideperson());
-				psmt.setInt(cnt++, mvo.getIm_auth());
-			}else{
-				sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
-						+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, '아이캔매니지먼트(주)', ? , '미배정') ";
+        
+		if("타업체인력".equals(mvo.getIm_dname())){
+			sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
+					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, ? , ? , '미배정') ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mvo.getOutsideperson());
+			psmt.setInt(cnt++, mvo.getIm_auth());
+		}else{
+			sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
+					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, '아이캔매니지먼트(주)', ? , '미배정') ";
 
-				psmt = conn.prepareStatement(sql);
-				psmt.setInt(cnt++, mvo.getIm_auth());
-			}
-			
-			result = psmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_auth());
 		}
+		
+		result = psmt.executeUpdate();
+			
 		return result > 0 ? true : false;
 	}
 	// 경력 insert
-	public boolean addWorkerExp(ExperienceVO evo, Connection conn, PreparedStatement psmt, ResultSet rs) {
+	public boolean addWorkerExp(ExperienceVO evo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
 		String sql = "";
         int cnt = 1;
         int result = 0;
-        try {
-        	System.out.println("DAO(경험치 삽입 ) = "+evo.toString());
-			sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
-				+ " VALUES(MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
+    	System.out.println("DAO(경험치 삽입 ) = "+evo.toString());
+		sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
+			+ " VALUES(MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
 
-			psmt = conn.prepareStatement(sql);
-			psmt.setString(cnt++, evo.getIme_regi_date());
-			psmt.setString(cnt++, evo.getIme_exit_date());
-			psmt.setString(cnt++, evo.getIme_coname());
-			psmt.setInt(cnt++, evo.getIme_auth());
-			psmt.setString(cnt++, evo.getIme_roll());
+		psmt = conn.prepareStatement(sql);
+		psmt.setString(cnt++, evo.getIme_regi_date());
+		psmt.setString(cnt++, evo.getIme_exit_date());
+		psmt.setString(cnt++, evo.getIme_coname());
+		psmt.setInt(cnt++, evo.getIme_auth());
+		psmt.setString(cnt++, evo.getIme_roll());
+		
+		result = psmt.executeUpdate();
 			
-			result = psmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
         
 		return result > 0 ? true : false;
 	}
 	
 	// 자격증 insert
-	public boolean addWorkerLicense(MemLicenseVO mlvo, Connection conn, PreparedStatement psmt, ResultSet rs) {
+	public boolean addWorkerLicense(MemLicenseVO mlvo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
 		 String sql = "";
 	        int cnt = 1;
 	        int result = 0;
-	        try {
-				sql = " INSERT INTO ICAN_MEM_LICENSE ( IML_IM_IDX, IML_LNAME , IML_ACQDATE, IML_ORGANIZATION ) "
-					+ " VALUES( MEMBER_SEQ.CURRVAL , ? , ? , ?) ";
+			
+	        sql = " INSERT INTO ICAN_MEM_LICENSE ( IML_IM_IDX, IML_LNAME , IML_ACQDATE, IML_ORGANIZATION ) "
+				+ " VALUES( MEMBER_SEQ.CURRVAL , ? , ? , ?) ";
+			
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mlvo.getIml_lname());
+			psmt.setString(cnt++, mlvo.getIml_acqdate());
+			psmt.setString(cnt++, mlvo.getIml_organization());
+			
+			result = psmt.executeUpdate();
 				
-				
-				psmt = conn.prepareStatement(sql);
-				psmt.setString(cnt++, mlvo.getIml_lname());
-				psmt.setString(cnt++, mlvo.getIml_acqdate());
-				psmt.setString(cnt++, mlvo.getIml_organization());
-				
-				result = psmt.executeUpdate();
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return false;
-			}
 			return result > 0 ? true : false;
 	}
 }

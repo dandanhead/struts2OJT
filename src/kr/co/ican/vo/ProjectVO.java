@@ -1,5 +1,7 @@
 package kr.co.ican.vo;
 
+
+//프로젝트 정보 관련 vO
 public class ProjectVO {
 
 	private int ipl_idx; //프로젝트 번호

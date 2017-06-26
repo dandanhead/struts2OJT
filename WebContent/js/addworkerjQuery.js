@@ -1,11 +1,5 @@
 var liccnt = 0; //자격증 row count
 var cnt = 0; //경력 row 카운트
-// logout 
-$("#logout").click(function() { //로그아웃 클릭
-		if(confirm("로그 아웃 하시겠습니까?")){
-			location.href="logout.do";
-		}
-});
 // 타업체 인력 input tag 추가 (회사명 입력)
 $("#conamelabel").hide();
 $("input[name='outsideperson']").hide();

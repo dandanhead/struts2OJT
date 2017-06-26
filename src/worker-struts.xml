@@ -13,7 +13,7 @@
  			<result>/WEB-INF/views/worker/addWorkers.jsp</result>
  		</action>
  		<action name="addworkerAf" class="kr.co.ican.action.worker.AddWorkerAction" method="validation">
- 			<result name="success" type="chain">goWorker</result>
+ 			<result name="success" type="redirectAction">goWorker</result>
  			<result name="fail">/WEB-INF/views/worker/addWorkers.jsp</result>
  			<result name="dberr">/WEB-INF/views/worker/addWorkersFail.jsp</result>
  		</action>

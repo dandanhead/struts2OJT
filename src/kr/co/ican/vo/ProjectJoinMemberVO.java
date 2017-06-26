@@ -1,5 +1,6 @@
 package kr.co.ican.vo;
 
+//사원프로젝트 참여 VO
 public class ProjectJoinMemberVO {
 
 	private int ipjl_im_idx; //사번

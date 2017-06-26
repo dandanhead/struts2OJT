@@ -11,7 +11,7 @@ import kr.co.ican.vo.ExperienceVO;
 import kr.co.ican.vo.MemberVO;
 
 
-
+// 로그인 관련 service
 public class LoginServiceImpl implements LoginServices {
 	
 	@Override

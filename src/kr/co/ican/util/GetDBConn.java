@@ -1,4 +1,4 @@
-package kr.co.ican.dbconn;
+package kr.co.ican.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

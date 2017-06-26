@@ -1,4 +1,4 @@
-package kr.co.ican.vo;
+package kr.co.ican.worker.vo;
 
 
 // 사원 자격증 관련 VO

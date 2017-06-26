@@ -1,20 +1,22 @@
-package kr.co.ican.action.login;
+package kr.co.ican.login.action;
 
+import java.io.IOException;
 import com.opensymphony.xwork2.ActionSupport;
 
-import kr.co.ican.service.login.LoginServiceImpl;
-import kr.co.ican.service.login.LoginServices;
-import kr.co.ican.vo.MemberVO;
+import kr.co.ican.login.service.LoginService;
+import kr.co.ican.worker.vo.MemberVO;
 
 
-//Find ID
-public class FindPwAction extends ActionSupport{
+//Find PW
+public class FindIdAction extends ActionSupport{
+	
 	
 	private static final long serialVersionUID = 1L;
 	
 	private MemberVO mvo;
 	private int startnum;
 	private int endnum;
+	
 	
 	public MemberVO getMvo() {
 		return mvo;
@@ -42,19 +44,19 @@ public class FindPwAction extends ActionSupport{
 
 	@Override
 	public String execute() throws Exception {
+		
 		if(isvalidator()){
+			LoginService service = new LoginService();
 			
-			LoginServices service = new LoginServiceImpl();
-			String im_scnum = startnum + "-"+endnum;
+			String im_scnum = startnum + "-" + endnum;
 			mvo.setIm_scnum(im_scnum);
-			
-			mvo = service.findPw(mvo);
+			mvo = service.findId(mvo);
 			
 			if(mvo == null){
 				addFieldError("mvoIsNull", "등록된 정보가 없습니다.");
 				return "fail";
 			}else{
-				addFieldError("successmessage", "찾으시는 비밀번호는 : " + mvo.getIm_pw() + " 입니다.");
+				
 				return "success";
 			}
 			
@@ -63,27 +65,19 @@ public class FindPwAction extends ActionSupport{
 		}
 	}
 	
-	
-	// validation
-	private boolean isvalidator(){
+	//validation
+	private boolean isvalidator() throws IOException{
 		boolean flag =true;
+		
 		//1. 이름
 		//2. 주민번호
-		//3. mail check
 		if(!isblank()){
+					
 			addFieldError("im_name", "이름은 공백일 수 없습니다.");
 			flag = false;
 		}
 		if(!isScnumblank()){
 			addFieldError("im_scnum", "주민번호 13자리를 정확히 입력해 주세요.");
-			flag = false;
-		}
-		if(!isMailCheck()){
-			addFieldError("im_email", "이메일 주소는 공백일 수 없습니다.");
-			flag = false;
-		}
-		if(!isMailFormCheck()){
-			addFieldError("im_email", "이메일 주소 형식이 아닙니다.");
 			flag = false;
 		}
 		
@@ -116,26 +110,5 @@ public class FindPwAction extends ActionSupport{
 		}
 	}
 	
-	// email null check
-	private boolean isMailCheck(){
-		String usermail = mvo.getIm_email().trim();
-		
-		if(usermail == null || ("").equals(usermail)){
-			return false;
-		}else{
-			return true;
-		}
-		
-	}
-	
-	// eamil form check
-	private boolean isMailFormCheck(){
-		String usermail = mvo.getIm_email().trim();
-		if(usermail.indexOf("@") == -1){
-			return false;
-		}else{
-			return true;
-		}
-	}
 	
 }

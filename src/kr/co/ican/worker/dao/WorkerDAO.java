@@ -1,4 +1,4 @@
-package kr.co.ican.dao;
+package kr.co.ican.worker.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.co.ican.vo.ExperienceVO;
-import kr.co.ican.vo.MemLicenseVO;
-import kr.co.ican.vo.MemberVO;
+import kr.co.ican.worker.vo.ExperienceVO;
+import kr.co.ican.worker.vo.MemLicenseVO;
+import kr.co.ican.worker.vo.MemberVO;
 
 // 사원 추가, 삭제 , update 관련
 public class WorkerDAO {

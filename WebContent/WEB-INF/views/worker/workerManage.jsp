@@ -14,7 +14,7 @@
 </head>
 <body>
 <jsp:include page="../layout/header.jsp"/> <!--header  -->
-<form id="frm">
+<s:form id="frm" style="width:80%; margin:auto;" namespace="/">
 <input type="hidden" value="${wsearch}" id="whatSearch" name="wsearch">
 	<div id="notice" class="layer">
 		<hr>
@@ -59,7 +59,7 @@
 				<c:if test="${not empty workerlist }">
 					<tr>
 						<td>${mvo.im_idx }</td>
-						<td><a href="workerDetail.do?idx=${mvo.im_idx}&expy=${mvo.expYear}&expm=${mvo.expMonth}">${mvo.im_name }</a></td>
+						<td><a href="detailWorker?idx=${mvo.im_idx}&expy=${mvo.expYear}&expm=${mvo.expMonth}">${mvo.im_name }</a></td>
 						<td>${mvo.im_dname }</td>
 						<td>${mvo.im_phone }</td>
 						<c:if test="${empty mvo.expYear or empty mvo.expMonth}">
@@ -150,7 +150,7 @@
 		</tr>
 	</table>
 </div>
-</form>
+</s:form>
 </body>
 <script type="text/javascript">
 	$("#logout").click(function() {

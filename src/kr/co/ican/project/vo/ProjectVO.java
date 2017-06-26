@@ -1,4 +1,4 @@
-package kr.co.ican.vo;
+package kr.co.ican.project.vo;
 
 
 //프로젝트 정보 관련 vO
@@ -25,29 +25,6 @@ public class ProjectVO {
 	private int end = 15;
 	
 	public ProjectVO() {
-	}
-
-	public ProjectVO(int ipl_idx, String ipl_pname, String ipl_sdate, String ipl_eptdate, String ipl_edate,
-			String ipl_content, String ipl_doc, String ipl_charge, String ipl_client, String ipl_address,
-			String ipl_detailaddr, String ipl_postcode, int ipl_req_num, int recordCountPerPage, int pageNumber,
-			int start, int end) {
-		this.ipl_idx = ipl_idx;
-		this.ipl_pname = ipl_pname;
-		this.ipl_sdate = ipl_sdate;
-		this.ipl_eptdate = ipl_eptdate;
-		this.ipl_edate = ipl_edate;
-		this.ipl_content = ipl_content;
-		this.ipl_doc = ipl_doc;
-		this.ipl_charge = ipl_charge;
-		this.ipl_client = ipl_client;
-		this.ipl_address = ipl_address;
-		this.ipl_detailaddr = ipl_detailaddr;
-		this.ipl_postcode = ipl_postcode;
-		this.ipl_req_num = ipl_req_num;
-		this.recordCountPerPage = recordCountPerPage;
-		this.pageNumber = pageNumber;
-		this.start = start;
-		this.end = end;
 	}
 
 	public int getIpl_idx() {

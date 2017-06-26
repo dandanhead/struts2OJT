@@ -177,6 +177,7 @@
 	<input type="hidden" name="chkTa" id="cntChkTa" value="0">
 	<input type="hidden" name="chkLicense" id="licenseCount" value="0">
 	<input type="hidden" name="chkCareer" id="careerCount" value="0">
+	<input type="hidden" name="errMessage" id="errmsg" value="${errMessage}">
 </s:form>
 </body>
 <script>
@@ -234,6 +235,13 @@ $("#logout").click(function() { //로그아웃 클릭
 			location.href='<s:url action="logout" namespace="/login"/>';
 		}
 });
+$(function() {
+	var msg = $("#errmsg").val();
+	if(msg != null && msg != ""){
+		alert(msg);
+	}
+});
+
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/addworkerjQuery.js?version=20170626"></script>
 </html>

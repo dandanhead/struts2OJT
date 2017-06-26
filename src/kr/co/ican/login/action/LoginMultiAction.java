@@ -1,14 +1,13 @@
-package kr.co.ican.action.login;
+package kr.co.ican.login.action;
 
 import java.util.Map;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
-import kr.co.ican.service.login.LoginServiceImpl;
-import kr.co.ican.service.login.LoginServices;
-import kr.co.ican.vo.ExperienceVO;
-import kr.co.ican.vo.MemberVO;
+import kr.co.ican.login.service.LoginService;
+import kr.co.ican.worker.vo.ExperienceVO;
+import kr.co.ican.worker.vo.MemberVO;
 
 // 로그인 
 public class LoginMultiAction implements Action{
@@ -41,7 +40,7 @@ public class LoginMultiAction implements Action{
 	
 	public String loginAf() throws Exception{
 		//service
-		LoginServices service = new LoginServiceImpl();
+		LoginService service = new LoginService();
 		
 		//Member Check
 		mvo = service.checkMember(mvo);

@@ -1,28 +1,25 @@
-package kr.co.ican.action.worker;
+package kr.co.ican.worker.action;
 
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import com.opensymphony.xwork2.ActionSupport;
-import kr.co.ican.service.worker.WorkerService;
-import kr.co.ican.service.worker.WorkerServiceImpl;
-import kr.co.ican.vo.ExperienceVO;
-import kr.co.ican.vo.MemLicenseVO;
-import kr.co.ican.vo.MemberVO;
+import kr.co.ican.worker.service.WorkerService;
+import kr.co.ican.worker.vo.ExperienceVO;
+import kr.co.ican.worker.vo.MemLicenseVO;
+import kr.co.ican.worker.vo.MemberVO;
 
 //사원추가
 public class AddWorkerAction extends ActionSupport {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	private MemberVO mvo;
 	
 	private String confirmPw; // pw dupl check
-	
 	private String snumF; // 주민번호 앞자리
 	private String snumE; // 주민번호 뒷자리
-	
 	private String sphone; //전화번호 앞자리
 	private String mphone; // 중간자리
 	private String ephone; // 끝자리
@@ -44,7 +41,10 @@ public class AddWorkerAction extends ActionSupport {
 	private String[] ime_auth;
 	private String[] ime_roll;
 	
-	public MemberVO getMvo() {
+	//err Message
+	private String errMessage;
+	
+	public MemberVO getMvo() { //
 		return mvo;
 	}
 
@@ -196,11 +196,19 @@ public class AddWorkerAction extends ActionSupport {
 		this.chkCareer = chkCareer;
 	}
 	
+	public String getErrMessage() {
+		return errMessage;
+	}
+
+	public void setErrMessage(String errMessage) {
+		this.errMessage = errMessage;
+	}
+
 	public String validation() throws SQLException, ParseException{
 		
 		boolean chkInsert = false;
 		//service 
-		WorkerService wservice = new WorkerServiceImpl();
+		WorkerService wservice = new WorkerService();
 		// trim and delete space
 		String chkpw = mvo.getIm_pw().trim().replace(" ", "");
 		String chkpwconfirm = confirmPw.trim().replace(" ", "");
@@ -236,60 +244,79 @@ public class AddWorkerAction extends ActionSupport {
 		//validation
 		if(chkpw == null || ("").equals(chkpw) || chkpwconfirm == null || ("").equals(chkpwconfirm)){// pw 공백 체크
 			addFieldError("chkpw", "패스워드를 입력해 주세요.");
+			errMessage = "패스워드를 입력해 주세요.";
 			return "fail";
 		}else if(!chkpw.equals(chkpwconfirm)){// pw 일치
 			addFieldError("chkpwconfirm", "패스워드가 일치 하지 않습니다.");
+			errMessage = "패스워드가 일치 하지 않습니다.";
 			return "fail";
 		}else if(chkpw.length() < 6 || chkpw.length() > 15){// pw 길이
 			addFieldError("chkpw", "패스워드는 6자리 이상 15자리 이하로 입력해 주세요.");
+			errMessage = "패스워드는 6자리 이상 15자리 이하로 입력해 주세요.";
 			return "fail";
 		}else if(chkname == null || ("").equals(chkname)){// 이름 공백
 			addFieldError("chkname", "이름을 입력해 주세요.");
+			errMessage = "이름을 입력해 주세요.";
 			return "fail";
 		}else if(chksnumF == null || ("").equals(chksnumF) || chksnumE == null || ("").equals(chksnumE)){
 			addFieldError("chkscnum", "주민등록번호를 입력 해 주세요.");
+			errMessage = "주민등록번호를 입력 해 주세요.";
 			return "fail";
 		}else if(!wservice.onlyInputNumber(chksnumF) || !wservice.onlyInputNumber(chksnumE)){
 			addFieldError("chkscnum", "주민등록번호는 숫자만 입력 가능합니다.");
+			errMessage = "주민등록번호는 숫자만 입력 가능합니다.";
 			return "fail";
 		}else if(!wservice.scnumValidation(chksnumF, chksnumE)){
 			addFieldError("chkscnum", "유효한 주민등록번호가 아닙니다.");
+			errMessage = "유효한 주민등록번호가 아닙니다.";
 			return "fail";
 		}else if(scnumflag){
 			addFieldError("chkscnum", "이미 등록된 주민등록번호 입니다.");
+			errMessage = "이미 등록된 주민등록번호 입니다.";
 			return "fail";
 		}else if(!wservice.onlyInputNumber(chksphone) || !wservice.onlyInputNumber(chkmphone) || !wservice.onlyInputNumber(chkephone)){
 			addFieldError("chkphone", "전화번호는 숫자만 입력가능합니다.");
+			errMessage = "전화번호는 숫자만 입력가능합니다.";
 			return "fail";
 		}else if(chksphone.length() != 3 || chkmphone.length() > 4 || chkmphone.length() < 3 || chkephone.length() != 4){
 			addFieldError("chkphone", "전화번호를 정확히 입력해 주세요.");
+			errMessage = "전화번호를 정확히 입력해 주세요.";
 			return "fail";
 		}else if(phonelflag){
 			addFieldError("chkphone", "이미 등록된 핸드폰번호 입니다.");
+			errMessage = "이미 등록된 핸드폰번호 입니다.";
 			return "fail";
 		}else if(chkemail == null || ("").equals(chkemail)){
 			addFieldError("chkemail", "이메일 주소를 입력해 주세요.");
+			errMessage = "이메일 주소를 입력해 주세요.";
 			return "fail";
 		}else if(chkemail.indexOf("@") == -1){
 			addFieldError("chkemail", "이메일 주소 형식이 아닙니다.");
+			errMessage = "이메일 주소 형식이 아닙니다.";
 			return "fail";
 		}else if(emailflag){
 			addFieldError("chkemail", "이미 등록된 이메일 입니다.");
+			errMessage = "이미 등록된 이메일 입니다.";
 			return "fail";
 		}else if(chkTa == 1 && ("").equals(outsidecompany)){
 			addFieldError("chkTaCoName", "타업체 인력인 경우 회사명을 반드시 입력해야 합니다.");
+			errMessage = "타업체 인력인 경우 회사명을 반드시 입력해야 합니다.";
 			return "fail";
 		}else if(chkpostcode == null || ("").equals(chkpostcode)){
 			addFieldError("chkaddress", "우편번호를 입력해 주세요.");
+			errMessage = "우편번호를 입력해 주세요.";
 			return "fail";
 		}else if(chkaddress == null || ("").equals(chkaddress)){
 			addFieldError("chkaddress", "주소를 입력해 주세요.");
+			errMessage = "주소를 입력해 주세요.";
 			return "fail";
 		}else if(chkdetailaddr == null || ("").equals(chkdetailaddr)){
 			addFieldError("chkaddress", "상세주소를 입력해 주세요.");
+			errMessage = "상세주소를 입력해 주세요.";
 			return "fail";
 		}else if(chkskill == null || ("").equals(chkskill)){
 			addFieldError("chkskill", "사용스킬을 입력해 주세요.");
+			errMessage = "사용스킬을 입력해 주세요.";
 			return "fail";
 		}else if(chkLicense > 0 || chkCareer > 0){
 			
@@ -297,18 +324,22 @@ public class AddWorkerAction extends ActionSupport {
 				
 				if(!wservice.arrayNullCheck(ime_regi_date) || !wservice.arrayNullCheck(ime_exit_date) || !wservice.arrayNullCheck(ime_auth) || !wservice.arrayNullCheck(ime_roll)){
 					addFieldError("chkcareer", "경력사항에 입력하지 않은 값이 있습니다.");
+					errMessage = "경력사항에 입력하지 않은 값이 있습니다.";
 					return "fail";
 				}
 				if(!wservice.careerSdateCompareEdate(ime_regi_date, ime_exit_date)){
 					addFieldError("chkcareer", "경력 종료일이 시작일 보다 먼저일 수 없습니다.");
+					errMessage = "경력 종료일이 시작일 보다 먼저일 수 없습니다.";
 					return "fail";
 				}
 				if(!wservice.inputDateCompareCurrDate(ime_regi_date) || !wservice.inputDateCompareCurrDate(ime_exit_date)){
 					addFieldError("chkcareer", "경력 시작일 또는 종료일은 현재날짜보다 같거나 이후 일 수 없습니다.");
+					errMessage = "경력 시작일 또는 종료일은 현재날짜보다 같거나 이후 일 수 없습니다.";
 					return "fail";
 				}
 				if(!wservice.careerDuplCheckDate(ime_regi_date, ime_exit_date)){
 					addFieldError("chkcareer", "중복된 경력기간이 존재합니다.");
+					errMessage = "중복된 경력기간이 존재합니다.";
 					return "fail";
 				}
 				
@@ -326,10 +357,12 @@ public class AddWorkerAction extends ActionSupport {
 				//자격증 o 경력 x
 				if(!wservice.arrayNullCheck(iml_lname) || !wservice.arrayNullCheck(iml_acqdate) || !wservice.arrayNullCheck(iml_organization)){
 					addFieldError("chklicense", "자격증 항목에 입력하지 않은 값이 있습니다.");
+					errMessage = "자격증 항목에 입력하지 않은 값이 있습니다.";
 					return "fail";
 				}
 				if(!wservice.inputDateCompareCurrDate(iml_acqdate)){
 					addFieldError("chklicense", "자격증 취득일은 현재 날짜 보다 이후 일 수 없습니다.");
+					errMessage = "자격증 취득일은 현재 날짜 보다 이후 일 수 없습니다.";
 					return "fail";
 				}
 				
@@ -346,26 +379,32 @@ public class AddWorkerAction extends ActionSupport {
 				//자격증 o 경력 o
 				if(!wservice.arrayNullCheck(ime_regi_date) || !wservice.arrayNullCheck(ime_exit_date) || !wservice.arrayNullCheck(ime_auth) || !wservice.arrayNullCheck(ime_roll)){
 					addFieldError("chkcareer", "경력사항에 입력하지 않은 값이 있습니다.");
+					errMessage = "경력사항에 입력하지 않은 값이 있습니다.";
 					return "fail";
 				}
 				if(!wservice.careerSdateCompareEdate(ime_regi_date, ime_exit_date)){
 					addFieldError("chkcareer", "경력 종료일이 시작일 보다 먼저일 수 없습니다.");
+					errMessage = "경력 종료일이 시작일 보다 먼저일 수 없습니다.";
 					return "fail";
 				}
 				if(!wservice.inputDateCompareCurrDate(ime_regi_date) || !wservice.inputDateCompareCurrDate(ime_exit_date)){
 					addFieldError("chkcareer", "경력 시작일 또는 종료일은 현재날짜보다 같거나 이후 일 수 없습니다.");
+					errMessage = "경력 시작일 또는 종료일은 현재날짜보다 같거나 이후 일 수 없습니다.";
 					return "fail";
 				}
 				if(!wservice.careerDuplCheckDate(ime_regi_date, ime_exit_date)){
 					addFieldError("chkcareer", "중복된 경력기간이 존재합니다.");
+					errMessage = "중복된 경력기간이 존재합니다.";
 					return "fail";
 				}
 				if(!wservice.arrayNullCheck(iml_lname) || !wservice.arrayNullCheck(iml_acqdate) || !wservice.arrayNullCheck(iml_organization)){
 					addFieldError("chklicense", "자격증 항목에 입력하지 않은 값이 있습니다.");
+					errMessage = "자격증 항목에 입력하지 않은 값이 있습니다.";
 					return "fail";
 				}
 				if(!wservice.inputDateCompareCurrDate(iml_acqdate)){
 					addFieldError("chklicense", "자격증 취득일은 현재 날짜 보다 이후 일 수 없습니다.");
+					errMessage = "자격증 취득일은 현재 날짜 보다 이후 일 수 없습니다.";
 					return "fail";
 				}
 				elist = wservice.makeListExp(ime_regi_date, ime_exit_date, ime_coname, ime_auth , ime_roll, chkCareer);

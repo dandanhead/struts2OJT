@@ -1,4 +1,4 @@
-package kr.co.ican.service.worker;
+package kr.co.ican.worker.service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,16 +9,47 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import kr.co.ican.dao.WorkerDAO;
-import kr.co.ican.dbconn.GetDBConn;
-import kr.co.ican.vo.ExperienceVO;
-import kr.co.ican.vo.MemLicenseVO;
-import kr.co.ican.vo.MemberVO;
+import kr.co.ican.project.vo.ProjectVO;
+import kr.co.ican.util.GetDBConn;
+import kr.co.ican.worker.dao.WorkerDAO;
+import kr.co.ican.worker.vo.ExperienceVO;
+import kr.co.ican.worker.vo.MemLicenseVO;
+import kr.co.ican.worker.vo.MemberVO;
 
 //Worker 관련 services
-public class WorkerServiceImpl implements WorkerService {
+public class WorkerService {
 
-	@Override
+	
+	public MemberVO getMemberDetail(int im_idx) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<ExperienceVO> getMemberExperiences(int im_idx) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getTotalHistory(int im_idx) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public List<MemLicenseVO> getMemberLicenses(int im_idx) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getRegiDate(int im_idx) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<ProjectVO> getMemberProjects(int im_idx) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public List<MemberVO> getWorkerList( MemberVO mvo) throws SQLException {
 	    Connection conn = null;
 		PreparedStatement psmt = null;
@@ -40,7 +71,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return mlist;
 	}
 
-	@Override
 	public int getWorkerCount() throws SQLException {// Total counting Member
 	    Connection conn = null;
 		PreparedStatement psmt = null;
@@ -59,7 +89,6 @@ public class WorkerServiceImpl implements WorkerService {
 		
 	}
 
-	@Override
 	public boolean chkDuplPhone(MemberVO mvo) throws SQLException {// Check Duplicate Phone Number
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -75,7 +104,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return flag;
 	}
 
-	@Override
 	public boolean chkDuplEmail(MemberVO mvo) throws SQLException { // Check Duplicate E-Mail Address
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -88,7 +116,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return flag;
 	}
 
-	@Override
 	public boolean chkDuplScnum(MemberVO mvo) throws SQLException {// Check Duplicate Social Number
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -101,7 +128,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return flag;
 	}
 
-	@Override
 	public boolean addWorker(MemberVO mvo, List<ExperienceVO> elist, List<MemLicenseVO> liclist) throws SQLException{ // add Worker
 		//Insert Check Flag
 		boolean basicInfoFlag = false;
@@ -148,19 +174,18 @@ public class WorkerServiceImpl implements WorkerService {
 		}
 		
 		//4. insert check
-		if(!basicInfoFlag || !licenseFlag || !basicExpFlag || !careerFlag){
+		if(basicInfoFlag == false || !licenseFlag || !basicExpFlag || !careerFlag){
 			conn.rollback(); //roll back
-			GetDBConn.close(conn, psmt, rs);
+			conn.close();
 			return false;
 		}else{
 			conn.commit(); // commit
-			GetDBConn.close(conn, psmt, rs);
+			conn.close();
 			return true;
 		}
 		
 	}
 	//for validation
-	@Override
 	public boolean scnumValidation(String chksnumF, String chksnumE) {
 
 		if(chksnumF.length() != 6 && chksnumE.length() != 7){
@@ -223,7 +248,6 @@ public class WorkerServiceImpl implements WorkerService {
 		}
 	}
 
-	@Override
 	public boolean onlyInputNumber(String num) {
 
 		for (int i = 0; i < num.length(); i++) {
@@ -236,7 +260,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return true;
 	}
 
-	@Override
 	public boolean arrayNullCheck(String[] str) {
 		for (int idx = 0; idx < str.length; idx++) {
 			if(("").equals(str[idx])){
@@ -247,7 +270,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return true;
 	}
 
-	@Override
 	public boolean careerSdateCompareEdate(String[] sdate, String[] edate) throws ParseException {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -268,7 +290,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return true;
 	}
 
-	@Override
 	public boolean inputDateCompareCurrDate(String[] inputdate) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date comparedate = null; // 입력받은 날짜
@@ -286,7 +307,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return true;
 	}
 
-	@Override
 	public boolean careerDuplCheckDate(String[] sdate, String[] edate) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date startdate = null;
@@ -316,7 +336,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return true;
 	}
 
-	@Override
 	public List<ExperienceVO> makeListExp(String[] regi, String[] exit, String[] coname, String[] auth, String[] roll,
 			int count) {
 		List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
@@ -334,7 +353,6 @@ public class WorkerServiceImpl implements WorkerService {
 		return elist;
 	}
 
-	@Override
 	public List<MemLicenseVO> makeListLicense(String[] lname, String[] acqdate, String[] organization, int count) {
 		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
 

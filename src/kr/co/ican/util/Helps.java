@@ -1,4 +1,4 @@
-package kr.co.ican.help;
+package kr.co.ican.util;
 
 // method Utility
 public class Helps {

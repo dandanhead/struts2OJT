@@ -14,7 +14,7 @@
 		<!--로그인  -->
 		<action name="loginAf" class="kr.co.ican.action.login.LoginMultiAction" method="loginAf">
 			<result name="success">/WEB-INF/views/main/main.jsp</result>
-			<result name="fail">/WEB-INF/views/login/loginFailed.jsp</result>
+			<result name="fail" >/WEB-INF/views/login/loginFailed.jsp</result>
 		</action>
 		<!--로그아웃  -->
 		<action name="logout" class="kr.co.ican.action.login.LoginMultiAction" method="logout">

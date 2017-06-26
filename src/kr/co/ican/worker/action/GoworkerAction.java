@@ -1,12 +1,10 @@
-package kr.co.ican.action.worker;
+package kr.co.ican.worker.action;
 
 import java.util.List;
 
 import com.opensymphony.xwork2.ActionSupport;
-
-import kr.co.ican.service.worker.WorkerService;
-import kr.co.ican.service.worker.WorkerServiceImpl;
-import kr.co.ican.vo.MemberVO;
+import kr.co.ican.worker.service.WorkerService;
+import kr.co.ican.worker.vo.MemberVO;
 
 //사원 목록 list
 public class GoworkerAction extends ActionSupport {
@@ -42,8 +40,6 @@ public class GoworkerAction extends ActionSupport {
 		this.totalRecordCount = totalRecordCount;
 	}
 	
-	
-	
 	public int getPageCountPerScreen() {
 		return pageCountPerScreen;
 	}
@@ -54,7 +50,7 @@ public class GoworkerAction extends ActionSupport {
 
 	@Override
 	public String execute() throws Exception {
-		WorkerService wservice = new WorkerServiceImpl();
+		WorkerService wservice = new WorkerService();
 		
 		totalRecordCount =  wservice.getWorkerCount();
 		

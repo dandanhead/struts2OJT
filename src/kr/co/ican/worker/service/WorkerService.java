@@ -1,13 +1,8 @@
 package kr.co.ican.worker.service;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.util.GetDBConn;
@@ -20,324 +15,231 @@ import kr.co.ican.worker.vo.MemberVO;
 public class WorkerService {
 
 	
-	public MemberVO getMemberDetail(int im_idx) throws SQLException {
+	public MemberVO getMemberDetail(int im_idx) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<ExperienceVO> getMemberExperiences(int im_idx) throws SQLException {
+	public List<ExperienceVO> getMemberExperiences(int im_idx) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public int getTotalHistory(int im_idx) throws SQLException {
+	public int getTotalHistory(int im_idx) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public List<MemLicenseVO> getMemberLicenses(int im_idx) throws SQLException {
+	public List<MemLicenseVO> getMemberLicenses(int im_idx) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getRegiDate(int im_idx) throws SQLException {
+	public String getRegiDate(int im_idx) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<ProjectVO> getMemberProjects(int im_idx) throws SQLException {
+	public List<ProjectVO> getMemberProjects(int im_idx) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<MemberVO> getWorkerList( MemberVO mvo) throws SQLException {
+	public List<MemberVO> getWorkerList( MemberVO mvo) {
 	    Connection conn = null;
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
-		
 		WorkerDAO wdao = new WorkerDAO();
 		List<MemberVO> mlist = new ArrayList<MemberVO>();
-		conn = GetDBConn.getConnection();
-		// Paging
+		
+		// Paging vo setting start - end
 		int pageNumber = mvo.getPageNumber(); //current Page Number
 		int start = (pageNumber)*mvo.getRecordCountPerPage() + 1; // List Strat Number
 		int end = (pageNumber + 1)*mvo.getRecordCountPerPage(); //List End Number
 		mvo.setStart(start);
 		mvo.setEnd(end);
-		mlist = wdao.getWorkerList(conn, psmt, rs, mvo);
 		
-		GetDBConn.close(conn, psmt, rs);
+		try {
+			conn = GetDBConn.getConnection();
+			mlist = wdao.getWorkerList(conn , mvo);
+		} catch (Exception e) {
+			mlist = null;
+		}finally {
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		return mlist;
 	}
 
-	public int getWorkerCount() throws SQLException {// Total counting Member
+	public int getWorkerCount() {// Total counting Member
 	    Connection conn = null;
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
-		
-		conn = GetDBConn.getConnection();
-		
-		int totalcount = 0;
 		WorkerDAO wdao = new WorkerDAO();
-		
-		totalcount = wdao.getWorkerCount(conn, psmt, rs); 
-		
-		GetDBConn.close(conn, psmt, rs);
+		int totalcount = 0;
+		try {
+			conn = GetDBConn.getConnection();
+			totalcount = wdao.getWorkerCount(conn); 
+		} catch (Exception e) {
+			totalcount = -1;
+		}finally {
+			
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		return totalcount;
 		
 	}
 
-	public boolean chkDuplPhone(MemberVO mvo) throws SQLException {// Check Duplicate Phone Number
+	public boolean chkDuplPhone(MemberVO mvo){// Check Duplicate Phone Number
 		Connection conn = null;
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
-		conn = GetDBConn.getConnection();
 		WorkerDAO wdao = new WorkerDAO();
 		boolean flag  = false;
-		
-		flag = wdao.chkDuplPhone(mvo, conn, psmt, rs);
-		
-		GetDBConn.close(conn, psmt, rs);
-		
+		try {
+			conn = GetDBConn.getConnection();
+			flag = wdao.chkDuplPhone(mvo, conn);
+		} catch (Exception e) {
+			flag = false;
+		}finally {
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return flag;
 	}
 
-	public boolean chkDuplEmail(MemberVO mvo) throws SQLException { // Check Duplicate E-Mail Address
+	public boolean chkDuplEmail(MemberVO mvo) { // Check Duplicate E-Mail Address
 		Connection conn = null;
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
-		conn = GetDBConn.getConnection();
 		WorkerDAO wdao = new WorkerDAO();
 		boolean flag  = false;
-		flag = wdao.chkDuplEmail(mvo, conn, psmt, rs);
-		GetDBConn.close(conn, psmt, rs);
+		try {
+			conn = GetDBConn.getConnection();
+			flag = wdao.chkDuplEmail(mvo, conn);
+		} catch (SQLException e) {
+			flag = false;
+		}finally {
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return flag;
 	}
 
-	public boolean chkDuplScnum(MemberVO mvo) throws SQLException {// Check Duplicate Social Number
+	public boolean chkDuplScnum(MemberVO mvo) {// Check Duplicate Social Number
 		Connection conn = null;
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
-		conn = GetDBConn.getConnection();
 		WorkerDAO wdao = new WorkerDAO();
 		boolean flag  = false;
-		flag = wdao.chkDuplScnum(mvo, conn, psmt, rs);
-		GetDBConn.close(conn, psmt, rs);
+		try {
+			
+			conn = GetDBConn.getConnection();
+			flag = wdao.chkDuplScnum(mvo, conn);
+		} catch (Exception e) {
+			e.printStackTrace();
+			flag = false;
+		}finally {
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return flag;
 	}
 
-	public boolean addWorker(MemberVO mvo, List<ExperienceVO> elist, List<MemLicenseVO> liclist) throws SQLException{ // add Worker
+	public boolean addWorker(MemberVO mvo, List<ExperienceVO> elist, List<MemLicenseVO> liclist) { // add Worker
 		//Insert Check Flag
 		boolean basicInfoFlag = false;
 		boolean licenseFlag = false;
 		boolean basicExpFlag = false;
 		boolean careerFlag = false;
+		
+		boolean lastResult = false;
 		//Create
 		Connection conn = null;
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
-		
-		conn = GetDBConn.getConnection();
-		conn.setAutoCommit(false);
-		
-		WorkerDAO wdao = new WorkerDAO();
-		//1. 기본정보 and 기본 경력 추가
-		basicInfoFlag = wdao.addWorkerInfo(mvo, conn, psmt, rs); // 기본 정보
-		basicExpFlag = wdao.basicWorkerExp(mvo, conn, psmt, rs); // 기본 경력
-		//2. 자격증
-		if(liclist != null && liclist.size() > 0){
+		try{
+			conn = GetDBConn.getConnection();
+			conn.setAutoCommit(false);
+
+			WorkerDAO wdao = new WorkerDAO();
 			
-			for (int idx = 0; idx < liclist.size(); idx++) {
-				
-				licenseFlag = wdao.addWorkerLicense(liclist.get(idx), conn, psmt, rs);
-				if(!licenseFlag){
-					break;
-				}
-			}
-		}else{
-			licenseFlag = true;
-		}
-		//3. 경력
-		if (elist != null && elist.size() > 0) {
+			// 1. 기본정보 and 기본 경력 추가
+			basicInfoFlag = wdao.addWorkerInfo(mvo, conn); // 기본 정보
+			basicExpFlag = wdao.basicWorkerExp(mvo, conn); // 기본 경력
 			
-			for (int idx = 0; idx < elist.size(); idx++) {
-				
-				careerFlag = wdao.addWorkerExp(elist.get(idx), conn, psmt, rs);
-				if(!careerFlag){
-					break;
-				}
-			}
-		}else{
-			careerFlag =true;
-		}
-		
-		//4. insert check
-		if(basicInfoFlag == false || !licenseFlag || !basicExpFlag || !careerFlag){
-			conn.rollback(); //roll back
-			conn.close();
-			return false;
-		}else{
-			conn.commit(); // commit
-			conn.close();
-			return true;
-		}
-		
-	}
-	//for validation
-	public boolean scnumValidation(String chksnumF, String chksnumE) {
+			// 2. 자격증
+			if (liclist != null && liclist.size() > 0) {
 
-		if(chksnumF.length() != 6 && chksnumE.length() != 7){
-			return false;
-		}
-		
-		String gender = chksnumE.substring(0, 1);
-		int gendernum = Integer.parseInt(gender);
-		
-		if(gendernum > 2){
-			chksnumF = "20" + chksnumF;
-		}else{
-			chksnumF = "19" + chksnumF; 
-		}
-		
-		int year = Integer.parseInt(chksnumF.substring(0, 4)); // 19xx
-		int month = Integer.parseInt(chksnumF.substring(4, 6)); // 09
-		int day = Integer.parseInt(chksnumF.substring(6, 8)); // 24
-		
-		// 월 체크
-		if(month < 1 || month > 12){
-			return false;
-		}
-		
-		int maxDaysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-		int maxDay = maxDaysInMonth[month -1];
-		
-		//윤년 체크
-		if(month == 2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)){
-			maxDay = 29;
-		}
-		
-		//일 체크
-		if(day <= 0 || day > maxDay){
-			return false;
-		}
-		
-		//주민번호 뒷자리 유효성 체크
-		String fullscnum = chksnumF + chksnumE; // 198509101239901
-		fullscnum = fullscnum.substring(2, 15); // 8809101928191
-		int maxlength = fullscnum.length();
-		
-		int lastnum = Integer.parseInt(String.valueOf(fullscnum.charAt(maxlength -1))); 
-		int result = 0;
-		
-		for (int idx = 0; idx < maxlength -1; idx++) {
-			if(idx > 7){
-				result += (idx+2-8) * Integer.parseInt(String.valueOf(fullscnum.charAt(idx)));
-			}else{
-				result += (idx + 2) * Integer.parseInt(String.valueOf(fullscnum.charAt(idx)));
-			}
-		}
-		
-		result = 11 - (result % 11);
-		
-		if(lastnum == result){
-			return true;
-		}else{
-			return false;
-		}
-	}
+				for (int idx = 0; idx < liclist.size(); idx++) {
 
-	public boolean onlyInputNumber(String num) {
-
-		for (int i = 0; i < num.length(); i++) {
-			char ch = num.charAt(i);
-
-			if (ch < '0' || ch > '9') {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean arrayNullCheck(String[] str) {
-		for (int idx = 0; idx < str.length; idx++) {
-			if(("").equals(str[idx])){
-				return false;
-			}
-		}
-		
-		return true;
-	}
-
-	public boolean careerSdateCompareEdate(String[] sdate, String[] edate) throws ParseException {
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date startdate = null;
-		Date enddate = null;
-
-		// 시작일 종료일 날짜 비교
-		for (int idx = 0; idx < sdate.length; idx++) {
-
-			startdate = dateFormat.parse(sdate[idx]);
-			enddate = dateFormat.parse(edate[idx]);
-			
-			if (startdate.compareTo(enddate) >= 0) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public boolean inputDateCompareCurrDate(String[] inputdate) throws ParseException {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date comparedate = null; // 입력받은 날짜
-		Date curdate = dateFormat.parse(dateFormat.format(new Date())); // 현재날짜
-		
-		for (int idx = 0; idx < inputdate.length; idx++) {
-			
-			comparedate = dateFormat.parse(inputdate[idx]);
-			
-			if(comparedate.compareTo(curdate) >= 0){
-				return false;
-			}
-		}
-		
-		return true;
-	}
-
-	public boolean careerDuplCheckDate(String[] sdate, String[] edate) throws ParseException {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date startdate = null;
-		Date enddate = null;
-		Date startnext = null;
-		Date endnext = null;
-		
-		for (int idx = 0; idx < sdate.length; idx++) {
-			for (int iddx = 0; iddx < edate.length; iddx++) {
-				if(idx != iddx){
-					startdate = dateFormat.parse(sdate[idx]);
-					enddate = dateFormat.parse(edate[idx]);
-					startnext = dateFormat.parse(sdate[iddx]);
-					endnext = dateFormat.parse(edate[iddx]);
-					
-					if(startdate.compareTo(startnext) <= 0 && startnext.compareTo(enddate) <= 0){
-						return false;
+					licenseFlag = wdao.addWorkerLicense(liclist.get(idx), conn);
+					if (!licenseFlag) {
+						break;
 					}
-					if(startdate.compareTo(endnext) <= 0 && endnext.compareTo(enddate) <= 0){
-						return false;
-					}
-					
 				}
+			} else {
+				licenseFlag = true;
+			}
+			// 3. 경력
+			if (elist != null && elist.size() > 0) {
+
+				for (int idx = 0; idx < elist.size(); idx++) {
+
+					careerFlag = wdao.addWorkerExp(elist.get(idx), conn);
+					if (!careerFlag) {
+						break;
+					}
+				}
+			} else {
+				careerFlag = true;
+			}
+
+			// 4. insert check
+			if (basicInfoFlag == false || !licenseFlag || !basicExpFlag || !careerFlag) {
+				conn.rollback(); // roll back
+				
+				lastResult = false;
+			} else {
+				conn.commit(); // commit
+				lastResult = true;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			lastResult = false;
+		}finally {
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		
-		return true;
+		return lastResult;
+		
 	}
 
-	public List<ExperienceVO> makeListExp(String[] regi, String[] exit, String[] coname, String[] auth, String[] roll,
-			int count) {
+	// make Experience List
+	public List<ExperienceVO> makeListExp(String[] regi, String[] exit, String[] coname, String[] auth, String[] roll,	int count) {
 		List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
 
 		for (int idx = 0; idx < count; idx++) {
@@ -352,7 +254,7 @@ public class WorkerService {
 
 		return elist;
 	}
-
+	// make License List
 	public List<MemLicenseVO> makeListLicense(String[] lname, String[] acqdate, String[] organization, int count) {
 		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
 
@@ -366,9 +268,5 @@ public class WorkerService {
 
 		return liclist;
 	}
-	
-	
-	
-	 
 	
 }	

@@ -15,8 +15,9 @@ import kr.co.ican.worker.vo.MemberVO;
 public class WorkerDAO {
 
 	
-	public List<MemberVO> getWorkerList(Connection conn, PreparedStatement psmt, ResultSet rs, MemberVO mvo) throws SQLException{
-		
+	public List<MemberVO> getWorkerList(Connection conn, MemberVO mvo) throws SQLException{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
         List<MemberVO> list = new ArrayList<MemberVO>();
         int cnt = 1;
        	String sql = "";
@@ -69,11 +70,21 @@ public class WorkerDAO {
 			list.add(vo);
 	     }
 	    
+	    if(rs != null){
+	    	rs.close();
+	    }
+	    
+	    if(psmt != null){
+	    	psmt.close();
+	    }
+	    
         return list;
 	}
 
-	public int getWorkerCount(Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException {
+	public int getWorkerCount(Connection conn) throws SQLException {
 		
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 	    int result= 0;
 	    
 	    String sql = "";
@@ -87,11 +98,23 @@ public class WorkerDAO {
 	   		 
 			result = rs.getInt(1);
 		}
+		
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+		
 	    return result;
 	}
 	
 	// 휴대폰 중복찾기
-	public boolean chkDuplPhone(MemberVO mvo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
+	public boolean chkDuplPhone(MemberVO mvo, Connection conn) throws SQLException{
+		
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 		
 		int result = 0;
 		String sql = "  SELECT * FROM ICAN_MEMBER WHERE IM_PHONE = ?  ";
@@ -103,41 +126,70 @@ public class WorkerDAO {
 			result++;
 		}
 		
-		return result > 0 ? true : false;
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+		
+		return result > 0 ? false : true;
 	}
 	// 이메일 중복찾기
-	public boolean chkDuplEmail(MemberVO mvo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
-		
+	public boolean chkDuplEmail(MemberVO mvo, Connection conn) throws SQLException{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 		int result = 0;
 		String sql = "  SELECT * FROM ICAN_MEMBER WHERE IM_EMAIL = ?  ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(1, mvo.getIm_email());
+		
 		
 		rs = psmt.executeQuery();
 		while (rs.next()) {
 			result++;
 		}
 		
-		return result > 0 ? true : false;
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+		
+		return result > 0 ? false : true;
 	}
 	// 주민등록번호 중복찾기
-	public boolean chkDuplScnum(MemberVO mvo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
-		
+	public boolean chkDuplScnum(MemberVO mvo, Connection conn) throws SQLException{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 		int result = 0;
 		String sql = "  SELECT * FROM ICAN_MEMBER WHERE IM_SCNUM = ?  ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(1, mvo.getIm_scnum());
 		
 		rs = psmt.executeQuery();
+		
 		while (rs.next()) {
 			result++;
 		}
 		
-		return result > 0 ? true : false;
+		if(rs != null){
+			rs.close();
+		}
+		if(psmt != null){
+			psmt.close();
+		}
+		
+		return result > 0 ? false : true;
 	}
 	// 사원 기본정보 insert
-	public boolean addWorkerInfo(MemberVO mvo , Connection conn, PreparedStatement psmt, ResultSet rs)throws SQLException { // 사원 기본정보 넣기
-        String sql = "";
+	public boolean addWorkerInfo(MemberVO mvo , Connection conn)throws SQLException { // 사원 기본정보 넣기
+        
+		PreparedStatement psmt = null;
+		String sql = "";
         int cnt = 1;
         int result = 0;
 			sql = " INSERT INTO ICAN_MEMBER(IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_RESIGN, IM_STATUS, IM_SCNUM, IM_ADDRESS, IM_DETAILADDR, IM_POSTCODE, IM_AUTH, IM_SKILL) "
@@ -159,11 +211,18 @@ public class WorkerDAO {
 			
 			result = psmt.executeUpdate();
 
+			if(psmt != null){
+				psmt.close();
+			}
+			
 		return result > 0 ? true : false;
 	}
 	// 기본 경력 insert
-	public boolean basicWorkerExp(MemberVO mvo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
+	public boolean basicWorkerExp(MemberVO mvo, Connection conn) throws SQLException{
+		
+		PreparedStatement psmt = null;
 		String sql = "";
+		
         int cnt = 1;
         int result = 0;
         
@@ -184,10 +243,16 @@ public class WorkerDAO {
 		
 		result = psmt.executeUpdate();
 			
+		if(psmt != null){
+			psmt.close();
+		}
+		
 		return result > 0 ? true : false;
 	}
 	// 경력 insert
-	public boolean addWorkerExp(ExperienceVO evo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
+	public boolean addWorkerExp(ExperienceVO evo, Connection conn) throws SQLException{
+		
+		PreparedStatement psmt = null;
 		String sql = "";
         int cnt = 1;
         int result = 0;
@@ -204,27 +269,34 @@ public class WorkerDAO {
 		
 		result = psmt.executeUpdate();
 			
-        
+        if(psmt != null){
+        	psmt.close();
+        }
 		return result > 0 ? true : false;
 	}
 	
 	// 자격증 insert
-	public boolean addWorkerLicense(MemLicenseVO mlvo, Connection conn, PreparedStatement psmt, ResultSet rs) throws SQLException{
-		 String sql = "";
-	        int cnt = 1;
-	        int result = 0;
-			
-	        sql = " INSERT INTO ICAN_MEM_LICENSE ( IML_IM_IDX, IML_LNAME , IML_ACQDATE, IML_ORGANIZATION ) "
+	public boolean addWorkerLicense(MemLicenseVO mlvo, Connection conn) throws SQLException{
+		
+		PreparedStatement psmt = null;
+		String sql = "";
+		int cnt = 1;
+		int result = 0;
+
+		sql = " INSERT INTO ICAN_MEM_LICENSE ( IML_IM_IDX, IML_LNAME , IML_ACQDATE, IML_ORGANIZATION ) "
 				+ " VALUES( MEMBER_SEQ.CURRVAL , ? , ? , ?) ";
-			
-			
-			psmt = conn.prepareStatement(sql);
-			psmt.setString(cnt++, mlvo.getIml_lname());
-			psmt.setString(cnt++, mlvo.getIml_acqdate());
-			psmt.setString(cnt++, mlvo.getIml_organization());
-			
-			result = psmt.executeUpdate();
-				
-			return result > 0 ? true : false;
+
+		psmt = conn.prepareStatement(sql);
+		psmt.setString(cnt++, mlvo.getIml_lname());
+		psmt.setString(cnt++, mlvo.getIml_acqdate());
+		psmt.setString(cnt++, mlvo.getIml_organization());
+
+		result = psmt.executeUpdate();
+
+		if (psmt != null) {
+			psmt.close();
+		}
+
+		return result > 0 ? true : false;
 	}
 }

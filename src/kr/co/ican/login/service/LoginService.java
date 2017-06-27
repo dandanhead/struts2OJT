@@ -26,6 +26,7 @@ public class LoginService {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			vo = null;
 			
 		}finally {
 			
@@ -58,11 +59,14 @@ public class LoginService {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			vo = null;
+			
 		}finally {
 			
 			if(conn != null){
 				try {
 					conn.close();
+					
 				} catch (SQLException e) {
 					
 					e.printStackTrace();
@@ -86,6 +90,7 @@ public class LoginService {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			vo = null;
 			
 		}finally {
 			
@@ -101,7 +106,7 @@ public class LoginService {
 		
 		return vo;
 	}
-
+	
 	public ExperienceVO getMemberStartDate(MemberVO mvo){
 		Connection conn = null;
 		
@@ -112,9 +117,11 @@ public class LoginService {
 			evo = mdao.getMemberStartDate(conn, mvo);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			mvo = null;
 		}finally {
 			if(conn != null){
 				try {
+					
 					conn.close();
 				} catch (SQLException e) {
 					
@@ -125,7 +132,5 @@ public class LoginService {
 		
 		return evo;
 	}
-	
-	 
 	
 }

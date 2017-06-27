@@ -9,7 +9,6 @@ import java.sql.Statement;
 // get DB Connection
 public class GetDBConn {
 	
-
 	private GetDBConn(){}
 	
 	static{

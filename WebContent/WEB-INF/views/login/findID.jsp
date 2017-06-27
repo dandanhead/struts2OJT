@@ -22,29 +22,35 @@ div.layer{
 <form method="post" id="findfrm">
 	<div class="layer">
 		<label>Name</label>
-		<input type="text" class="form-control" name="mvo.im_name" id="inputname">
+		<input type="text" class="form-control" name="mvo.im_name" id="inputname" value="${mvo.im_name}">
 		<div>
 			<label>Social Number</label>
 			<div class="row">
 			  <div class="col-xs-6">
-			    <input type="text" class="form-control" placeholder="앞 자리" name="startnum" id="inputstartnum">
+			    <input type="text" class="form-control" placeholder="앞 자리" name="startnum" id="inputstartnum" value="${startnum}">
 			  </div>
 			  <div class="col-xs-6">
 			    <input type="password" class="form-control" placeholder="뒷 자리" name="endnum" id="inputendnum" maxlength="7">
 			  </div>
 			</div>
-			<s:fielderror/>
+			<b style="color: red;"><s:fielderror fieldName="errmsg"/></b>
 		</div>
 		<br>
 		<div>
 			<a href="#none" id="getId" class="btn btn-default" style="width: 30%;">Find</a>
 		</div>
 	</div>
+	<input type="hidden" name="alertmsg" id="alertmessage" value="${alertmsg}"/>
 </form>
 
 </body>
 <script type="text/javascript">
-	
+	$(function() {
+		var msg = $("#alertmessage").val();
+		if( msg!= null && msg != ""){
+			alert(msg);
+		}
+	});
 	$("#inputstartnum").on("keyup", function() {
 		if($(this).val().length > 6){
 			$(this).val($(this).val().substring(0 , 6));

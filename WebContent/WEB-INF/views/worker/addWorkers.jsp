@@ -165,10 +165,11 @@
 					</tr>
 			</table>
 			</div>
+			
 			<br>
 			<hr>
 			<div style="width: 40%; margin: auto;">
-				<button type="submit" class="btn btn-default" style="width: 40%;">Submit</button>
+				<button type="button" class="btn btn-default" style="width: 40%;" id="submitbtn">Submit</button>
 				<a class="btn btn-default" href="goWorker.do" style="width: 40%;" id="chkchk">Return</a>
 			</div>
 		</div>
@@ -223,7 +224,11 @@ $("#findaddr").click(function() {
         }
     }).open();
 });
-
+$("#submitbtn").click(function() {
+	if(confirm("등록 하시겠습니까?")){
+		$("#frm").submit();
+	}
+});
 //스킬 입력시 영어 대문자만 허용,콤마로 구분 , skillinput
 $("#skillinput").keyup(function() {
 	$(this).val($(this).val().toUpperCase());

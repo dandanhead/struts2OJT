@@ -1,16 +1,16 @@
 package kr.co.ican.login.action;
 
 import java.util.Map;
-
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
-
+import com.opensymphony.xwork2.ActionSupport;
 import kr.co.ican.login.service.LoginService;
 import kr.co.ican.worker.vo.ExperienceVO;
 import kr.co.ican.worker.vo.MemberVO;
 
 // 로그인 
-public class LoginMultiAction implements Action{
+public class LoginMultiAction extends ActionSupport{
+	
+	private static final long serialVersionUID = -1706257301891741290L;
 	
 	private MemberVO mvo;
 	private ExperienceVO evo;
@@ -31,14 +31,13 @@ public class LoginMultiAction implements Action{
 		this.evo = evo;
 	}
 
-	@Override
-	public String execute() throws Exception {
-		
+	 public String start() {
+			
 		return SUCCESS;
-		
+																	
 	}
 	
-	public String loginAf() throws Exception{
+	public String loginAf(){
 		//service
 		LoginService service = new LoginService();
 		
@@ -58,6 +57,7 @@ public class LoginMultiAction implements Action{
 				
 				return "success";
 			}else{
+				
 				return "fail";
 			}
 		
@@ -66,13 +66,7 @@ public class LoginMultiAction implements Action{
 		}
 	}
 	
-	 public String start() throws Exception{
-		
-		return SUCCESS;
-																	
-	}
-	 
-	public String logout() throws Exception{
+	public String logout(){
 		
 		// session invalidate
 		ActionContext context = ActionContext.getContext();

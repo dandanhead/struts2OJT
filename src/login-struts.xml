@@ -8,33 +8,31 @@
    <!--login -->
    <package name="login" extends="struts-default" namespace="/login">
 		<!-- start -->
-		<action name="start" class="kr.co.ican.action.login.LoginMultiAction" method="start">
+		<action name="start" class="kr.co.ican.login.action.LoginMultiAction" method="start">
 			<result>/WEB-INF/views/login/login.jsp</result>
 		</action>
 		<!--로그인  -->
-		<action name="loginAf" class="kr.co.ican.action.login.LoginMultiAction" method="loginAf">
+		<action name="loginAf" class="kr.co.ican.login.action.LoginMultiAction" method="loginAf">
 			<result name="success">/WEB-INF/views/main/main.jsp</result>
 			<result name="fail" >/WEB-INF/views/login/loginFailed.jsp</result>
 		</action>
 		<!--로그아웃  -->
-		<action name="logout" class="kr.co.ican.action.login.LoginMultiAction" method="logout">
+		<action name="logout" class="kr.co.ican.login.action.LoginMultiAction" method="logout">
 			<result name="success">/WEB-INF/views/login/doLogout.jsp</result>
 		</action>
 		<!--아이디 찾기(사번 찾기)  -->
 		<action name="findId">
 			<result>/WEB-INF/views/login/findID.jsp</result>
 		</action>
-		<action name="getFindId" class="kr.co.ican.action.login.FindIdAction">
-			<result name="success">/WEB-INF/views/login/getResultID.jsp</result>
-			<result name="fail">/WEB-INF/views/login/findID.jsp</result>
+		<action name="getFindId" class="kr.co.ican.login.action.FindIdAction">
+			<result name="success">/WEB-INF/views/login/findID.jsp</result>
 		</action>
 		<!--패스워드 찾기(패스워드 찾기)  -->
 		<action name="findPw">
 			<result>/WEB-INF/views/login/findPW.jsp</result>
 		</action>
-		<action name="getFindPw" class="kr.co.ican.action.login.FindPwAction">
-			<result name="success">/WEB-INF/views/login/getResultPW.jsp</result>
-			<result name="fail">/WEB-INF/views/login/findPW.jsp</result>
+		<action name="getFindPw" class="kr.co.ican.login.action.FindPwAction">
+			<result name="success">/WEB-INF/views/login/findPW.jsp</result>
 		</action>
 		<!-- main -->
 		<action name="goMain">

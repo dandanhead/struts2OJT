@@ -6,7 +6,7 @@
  	<!-- worker  -->
  	<package name="worker" namespace="/worker" extends="struts-default">
  		<!-- goWorker List  -->
- 		<action name="goWorker" class="kr.co.ican.action.worker.GoworkerAction">
+ 		<action name="goWorker" class="kr.co.ican.worker.action.GoworkerAction">
  			<result name="success">/WEB-INF/views/worker/workerManage.jsp</result>
  		</action>
  		<!--add Worker View Page  -->
@@ -14,13 +14,13 @@
  			<result>/WEB-INF/views/worker/addWorkers.jsp</result>
  		</action>
  		<!-- Insert Worker -->
- 		<action name="addworkerAf" class="kr.co.ican.action.worker.AddWorkerAction" method="validation">
+ 		<action name="addworkerAf" class="kr.co.ican.worker.action.AddWorkerAction" method="validation">
  			<result name="success" type="redirectAction">goWorker</result>
  			<result name="fail">/WEB-INF/views/worker/addWorkers.jsp</result>
  			<result name="dberr">/WEB-INF/views/worker/addWorkersFail.jsp</result>
  		</action>
  		<!--Worker Detail Page  -->
- 		<action name="detailWorker" class="kr.co.ican.action.worker.DetailWorkerAction">
+ 		<action name="detailWorker" class="kr.co.ican.worker.action.DetailWorkerAction">
  			<result name="success">/WEB-INF/views/worker/workerDetail.jsp</result>
  			<result name="fail">/WEB-INF/views/error/error.jsp</result>
  		</action>

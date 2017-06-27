@@ -14,7 +14,7 @@
 </head>
 <body>
 <jsp:include page="../layout/header.jsp"/> <!--header  -->
-<jsp:useBean id="tips" class="kr.co.ican.help.Helps"/> <!--helps  -->
+<jsp:useBean id="tips" class="kr.co.ican.util.Helps"/> <!--helps  -->
 <hr>
 <div id="info" class="layer" style="text-align: center;">
 		<form class="form-inline">

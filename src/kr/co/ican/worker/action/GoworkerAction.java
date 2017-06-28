@@ -6,7 +6,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import kr.co.ican.worker.service.WorkerService;
 import kr.co.ican.worker.vo.MemberVO;
 
-//사원 목록 list
+//사원 목록 list 
 public class GoworkerAction extends ActionSupport {
 	
 	private static final long serialVersionUID = 1L;
@@ -52,15 +52,14 @@ public class GoworkerAction extends ActionSupport {
 	public String execute() throws Exception {
 		WorkerService wservice = new WorkerService();
 		
-		totalRecordCount =  wservice.getWorkerCount();
-		
 		if(mvo == null){
 			mvo = new MemberVO();
 		}
-		workerlist = wservice.getWorkerList(mvo);
+		
+		totalRecordCount =  wservice.getWorkerCount(); // total Count of Worker
+		workerlist = wservice.getWorkerList(mvo);// get Worker List
 		
 		return "success";
 	}
-
 	
 }

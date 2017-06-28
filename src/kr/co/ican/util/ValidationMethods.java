@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// validation methods
 public class ValidationMethods {
 
 	//null check
@@ -147,6 +148,7 @@ public class ValidationMethods {
 		return true;
 	}
 	
+	// PW length check
 	public boolean stringLengthCheck(String chkstr){
 		chkstr = chkstr.trim().replaceAll(" ", "");
 		if(chkstr.length() < 6 || chkstr.length() > 15){
@@ -156,7 +158,7 @@ public class ValidationMethods {
 		}
 	}
 	
-	//for validation
+	// Social Number validation
 	public boolean scnumValidation(String chksnumF, String chksnumE) {
 
 		if (chksnumF.length() != 6 && chksnumE.length() != 7) {
@@ -171,7 +173,7 @@ public class ValidationMethods {
 		} else {
 			chksnumF = "19" + chksnumF;
 		}
-
+		
 		int year = Integer.parseInt(chksnumF.substring(0, 4)); // 19xx
 		int month = Integer.parseInt(chksnumF.substring(4, 6)); // 09
 		int day = Integer.parseInt(chksnumF.substring(6, 8)); // 24

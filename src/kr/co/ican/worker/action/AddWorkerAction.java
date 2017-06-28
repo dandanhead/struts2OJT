@@ -1,11 +1,7 @@
 package kr.co.ican.worker.action;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import com.opensymphony.xwork2.ActionSupport;
-
 import kr.co.ican.validation.ValidationCheck;
 import kr.co.ican.validation.ValidationVO;
 import kr.co.ican.worker.service.WorkerService;
@@ -19,6 +15,7 @@ public class AddWorkerAction extends ActionSupport {
 	private static final long serialVersionUID = 4564922580484687790L;
 
 	private MemberVO mvo; // 각종 입력 정보들 
+	
 	
 	private String confirmPw; // pw dupl check
 	private String snumF; // 주민번호 앞자리
@@ -34,8 +31,8 @@ public class AddWorkerAction extends ActionSupport {
 	private String[] iml_organization;
 	
  	//타업체
-	private String outsideperson;
 	private int chkTa;
+	private String outsideperson;
 	//career
 	private int chkCareer; //career count
 	private String[] ime_regi_date;
@@ -103,14 +100,6 @@ public class AddWorkerAction extends ActionSupport {
 		this.ephone = ephone;
 	}
 
-	public String getOutsideperson() {
-		return outsideperson;
-	}
-
-	public void setOutsideperson(String outsideperson) {
-		this.outsideperson = outsideperson;
-	}
-	
 	public String[] getIml_lname() {
 		return iml_lname;
 	}
@@ -206,6 +195,14 @@ public class AddWorkerAction extends ActionSupport {
 	public void setErrMessage(String errMessage) {
 		this.errMessage = errMessage;
 	}
+	
+	public String getOutsideperson() {
+		return outsideperson;
+	}
+
+	public void setOutsideperson(String outsideperson) {
+		this.outsideperson = outsideperson;
+	}
 
 	public String validation(){
 		
@@ -221,6 +218,11 @@ public class AddWorkerAction extends ActionSupport {
 			
 			List<MemLicenseVO> liclist  = service.makeListLicense(iml_lname, iml_acqdate, iml_organization, chkLicense);
 			List<ExperienceVO> elist =  service.makeListExp(ime_regi_date, ime_exit_date, ime_coname, ime_auth, ime_roll, chkCareer);
+			
+			if(chkTa > 0){
+				
+				getMvo().setOutsideperson(outsideperson); //타업체의 경우 회사명 추가
+			}
 			
 			insertCheck = service.addWorker(getMvo(), elist, liclist); // insert patr
 		}

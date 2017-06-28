@@ -18,21 +18,6 @@ public class ExperienceVO {
 	
 	public ExperienceVO() {
 	}
-
-	public ExperienceVO(int ime_im_idx, String ime_regi_date, String ime_exit_date, String ime_coname, int ime_auth,
-			String ime_roll, int recordCountPerPage, int pageNumber, int start, int end) {
-		super();
-		this.ime_im_idx = ime_im_idx;
-		this.ime_regi_date = ime_regi_date;
-		this.ime_exit_date = ime_exit_date;
-		this.ime_coname = ime_coname;
-		this.ime_auth = ime_auth;
-		this.ime_roll = ime_roll;
-		this.recordCountPerPage = recordCountPerPage;
-		this.pageNumber = pageNumber;
-		this.start = start;
-		this.end = end;
-	}
 	
 	public String getIme_roll() {
 		return ime_roll;
@@ -54,31 +39,21 @@ public class ExperienceVO {
 		return pageNumber;
 	}
 
-
-
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
-
-
 
 	public int getStart() {
 		return start;
 	}
 
-
-
 	public void setStart(int start) {
 		this.start = start;
 	}
 
-
-
 	public int getEnd() {
 		return end;
 	}
-
-
 
 	public void setEnd(int end) {
 		this.end = end;

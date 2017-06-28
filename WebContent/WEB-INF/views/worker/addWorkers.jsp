@@ -114,7 +114,7 @@
 					<option value="관리부">관리부</option>
 				</select>
 				<label id="conamelabel" hidden="true">※타업체 인력인 경우 소속 회사를 입력해야 합니다.</label>
-				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname" hidden="true">
+				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname" hidden="true" placeholder="회사명을 입력 해 주세요.">
 				 <b style="color: red;"><s:fielderror fieldName="chkTaCoName"/></b>
 			</div>
 			<br>

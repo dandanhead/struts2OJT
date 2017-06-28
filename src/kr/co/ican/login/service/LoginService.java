@@ -11,6 +11,7 @@ import kr.co.ican.worker.vo.MemberVO;
 // 로그인 관련 service
 public class LoginService {
 	
+	// login check
 	public MemberVO checkMember(MemberVO mvo){
 		
 	    Connection conn = null;
@@ -46,6 +47,7 @@ public class LoginService {
 		return vo;
 	}
 	
+	// 아이디 찾기
 	public MemberVO findId(MemberVO mvo){
 		
 		Connection conn = null;
@@ -77,6 +79,7 @@ public class LoginService {
 		return vo;
 	}
 
+	// pw 찾기
 	public MemberVO findPw(MemberVO mvo){
 		
 		Connection conn = null;
@@ -107,6 +110,7 @@ public class LoginService {
 		return vo;
 	}
 	
+	//입사일 받아오기
 	public ExperienceVO getMemberStartDate(MemberVO mvo){
 		Connection conn = null;
 		

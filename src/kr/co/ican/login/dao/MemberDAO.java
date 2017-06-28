@@ -46,9 +46,14 @@ public class MemberDAO {
 				result++;
 			}
 		//close
-		psmt.close();
-		rs.close();
-			
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+		//return	
 		if(result == 0){
 			
 			return null;
@@ -82,8 +87,13 @@ public class MemberDAO {
         }
         
 		//close
-		psmt.close();
-		rs.close();        
+        if(psmt != null){
+        	psmt.close();
+        }
+        if(rs != null){
+        	rs.close(); 
+        }
+		       
         //return
         if(result == 0){
         	return null;
@@ -112,8 +122,12 @@ public class MemberDAO {
 			result++;
 		}
 		//close
-		psmt.close();
-		rs.close(); 
+		if(psmt != null){
+			psmt.close();
+		}
+		if(rs != null){
+			rs.close(); 
+		}
 		//return
 		if (result == 0) {
 			return null;
@@ -148,8 +162,12 @@ public class MemberDAO {
 			result++;
 		}
 		//close
-		psmt.close();
-		rs.close(); 
+		if(psmt != null){
+			psmt.close();
+		}
+		if(rs != null){
+			rs.close(); 
+		}
 		//return		
 		if (result == 0) {
 			return null;

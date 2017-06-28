@@ -58,7 +58,6 @@ public class FindIdAction extends ActionSupport{
 		ValidationVO vvo = new ValidationVO();
 		vvo = val.findIdValidation(mvo, startnum, endnum);
 		// set alertmsg
-		
 		if(vvo != null){
 			alertmsg = vvo.getMsg();
 		}else{

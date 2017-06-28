@@ -118,8 +118,8 @@
 			<jsp:param value="${totalRecordCount }" name="totalRecordCount"/>
 		</jsp:include>
 	</div>
-	<input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty mvo.pageNumber)?0: mvo.pageNumber }"/>
-	<input type="hidden" name="recordCountPerPage" id="_recordCountPerPage"	value="${(empty mvo.recordCountPerPage)?0: mvo.recordCountPerPage }"/>
+	<input type="hidden" name="mvo.pageNumber" id="_pageNumber" value="${(empty mvo.pageNumber)?0: mvo.pageNumber }"/>
+	<input type="hidden" name="mvo.recordCountPerPage" id="_recordCountPerPage"	value="${(empty mvo.recordCountPerPage)?0: mvo.recordCountPerPage }"/>
 
 <div id="selectDetail" class="layer">
 	<table style="width: 100%;">
@@ -163,14 +163,14 @@
 			$("#_pageNumber").val(pageNumber);
 	        $("#category").empty();
 	        $("#keyword").empty();
-			$("#frm").attr("target", "_self").attr("action", "goWorker.do").submit();
+			$("#frm").attr("target", "_self").attr("action", "goWorker").submit();
 		}else if($("#whatSearch").val() == "detail"){
 			$("#_pageNumber").val(pageNumber);
 			$("#selectDept").empty();
-			$("#frm").attr("target", "_self").attr("action", "goWorker.do").submit();
+			$("#frm").attr("target", "_self").attr("action", "goWorker").submit();
 		}else{
 			$("#_pageNumber").val(pageNumber);
-			$("#frm").attr("target", "_self").attr("action", "goWorker.do").submit();
+			$("#frm").attr("target", "_self").attr("action", "goWorker").submit();
 		}
 	};
 	$(document).ready(function(){

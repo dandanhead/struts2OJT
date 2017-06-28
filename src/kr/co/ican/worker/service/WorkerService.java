@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.util.GetDBConn;
+import kr.co.ican.util.Helps;
 import kr.co.ican.worker.dao.WorkerDAO;
 import kr.co.ican.worker.vo.ExperienceVO;
 import kr.co.ican.worker.vo.MemLicenseVO;
@@ -14,48 +14,130 @@ import kr.co.ican.worker.vo.MemberVO;
 //Worker 관련 services
 public class WorkerService {
 
-	
+	// 사원 상세정보 가져오기
 	public MemberVO getMemberDetail(int im_idx) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		MemberVO mvo = new MemberVO();
+		try {
+			conn = GetDBConn.getConnection();
+			mvo = wdao.getMemberDetail(conn, im_idx);
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			mvo = null;
+			
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return mvo;
 	}
 
-	public List<ExperienceVO> getMemberExperiences(int im_idx) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ExperienceVO> getMemberExperiences(ExperienceVO evo) {// worker`s project history list
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
+		
+		try {
+			conn = GetDBConn.getConnection();
+			elist = wdao.getMemberExperiences(evo, conn);
+		} catch (Exception e) {
+			e.printStackTrace();
+			elist = null;
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return elist;
 	}
 
-	public int getTotalHistory(int im_idx) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<MemLicenseVO> getMemberLicenses(MemLicenseVO licvo) {// worker`s License list
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
+		try {
+			conn = GetDBConn.getConnection();
+			liclist = wdao.getMemberLicenses(licvo, conn);
+		} catch (Exception e) {
+			e.printStackTrace();
+			liclist = null;
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return liclist;
 	}
 
-	public List<MemLicenseVO> getMemberLicenses(int im_idx) {
-		// TODO Auto-generated method stub
-		return null;
+//	public String getRegiDate(int im_idx) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+	public int getWorkerExpCount(ExperienceVO evo) { // Counting worker`s Experience 
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		int result = 0;
+		
+		try {
+			conn = GetDBConn.getConnection();
+			result = wdao.getWorkerExpCount(evo, conn);
+
+		} catch (Exception e) {
+			result = -1;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+	
+	public int getWorkerLicCount(MemLicenseVO licvo) { // Counting worker`s License 
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		int result = 0;
+		
+		try {
+			conn = GetDBConn.getConnection();
+			result = wdao.getWorkerLicCount(licvo, conn);
+
+		} catch (Exception e) {
+			result = -1;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
 	}
 
-	public String getRegiDate(int im_idx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<ProjectVO> getMemberProjects(int im_idx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<MemberVO> getWorkerList( MemberVO mvo) {
+	public List<MemberVO> getWorkerList( MemberVO mvo) { // 사원 리스트
 	    Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		List<MemberVO> mlist = new ArrayList<MemberVO>();
-		
-		// Paging vo setting start - end
-		int pageNumber = mvo.getPageNumber(); //current Page Number
-		int start = (pageNumber)*mvo.getRecordCountPerPage() + 1; // List Strat Number
-		int end = (pageNumber + 1)*mvo.getRecordCountPerPage(); //List End Number
-		mvo.setStart(start);
-		mvo.setEnd(end);
+		Helps help = new Helps();
+		mvo = help.setWorkerListPaging(mvo); // set paging
 		
 		try {
 			conn = GetDBConn.getConnection();
@@ -91,6 +173,7 @@ public class WorkerService {
 					conn.close();
 				}
 			} catch (SQLException e) {
+				totalcount = -1;
 				e.printStackTrace();
 			}
 		}
@@ -114,7 +197,7 @@ public class WorkerService {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				flag = false;
 				e.printStackTrace();
 			}
 		}
@@ -137,6 +220,7 @@ public class WorkerService {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+				flag =false;
 			}
 		}
 		return flag;
@@ -159,6 +243,7 @@ public class WorkerService {
 					conn.close();
 				}
 			} catch (SQLException e) {
+				flag =false;
 				e.printStackTrace();
 			}
 		}
@@ -187,24 +272,23 @@ public class WorkerService {
 			
 			// 2. 자격증
 			if (liclist != null && liclist.size() > 0) {
-
 				for (int idx = 0; idx < liclist.size(); idx++) {
 
 					licenseFlag = wdao.addWorkerLicense(liclist.get(idx), conn);
-					if (!licenseFlag) {
+					if (licenseFlag == false) {
 						break;
 					}
 				}
 			} else {
 				licenseFlag = true;
 			}
+			
 			// 3. 경력
 			if (elist != null && elist.size() > 0) {
-
 				for (int idx = 0; idx < elist.size(); idx++) {
 
 					careerFlag = wdao.addWorkerExp(elist.get(idx), conn);
-					if (!careerFlag) {
+					if (careerFlag == false) {
 						break;
 					}
 				}
@@ -213,15 +297,20 @@ public class WorkerService {
 			}
 
 			// 4. insert check
-			if (basicInfoFlag == false || !licenseFlag || !basicExpFlag || !careerFlag) {
+			if (basicInfoFlag == false || licenseFlag == false || basicExpFlag == false || careerFlag == false) {
 				conn.rollback(); // roll back
-				
 				lastResult = false;
 			} else {
 				conn.commit(); // commit
 				lastResult = true;
 			}
 		}catch(SQLException e){
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 			lastResult = false;
 		}finally {
@@ -251,7 +340,6 @@ public class WorkerService {
 			evo.setIme_roll(roll[idx]);
 			elist.add(evo);
 		}
-
 		return elist;
 	}
 	// make License List
@@ -265,7 +353,6 @@ public class WorkerService {
 			licvo.setIml_organization(organization[idx]);
 			liclist.add(licvo);
 		}
-
 		return liclist;
 	}
 	

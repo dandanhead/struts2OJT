@@ -47,7 +47,7 @@ public class LoginMultiAction extends ActionSupport{
 		if(mvo != null){
 			// get Member`s Start Date
 			evo = service.getMemberStartDate(mvo);
-			
+			// make session
 			if(evo != null){
 				ActionContext context = ActionContext.getContext(); //session
 				Map<String, Object> session = context.getSession();

@@ -13,7 +13,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="../login/doLogout.jsp"></jsp:include> <!--로그아웃체크  -->
 <jsp:include page="../layout/header.jsp"/> <!--header  -->
 <div class="layer">
 <form id="frm">
@@ -41,16 +40,16 @@
 			<tr>
 				<td>이름<input type="text" readonly="readonly" value="${mvo.im_name}" class="form-control"></td>
 				<td>phone<input type="tel" readonly="readonly" value="${mvo.im_phone}" class="form-control"></td>
-				<td>나이<input type="number" readonly="readonly" value="${age}" class="form-control"></td>
+				<td>나이<input type="number" readonly="readonly" value="" class="form-control"></td>
 			</tr>
 			<tr>
 				<td>주민번호<input type="text" readonly="readonly" value="${mvo.im_scnum }" class="form-control"></td>
 				<td>이메일<input type="email" readonly="readonly" value="${mvo.im_email }" class="form-control"></td>
-				<td>경력<input type="text" readonly="readonly" value="${experience}" class="form-control"></td>
+				<td>경력<input type="text" readonly="readonly" value="" class="form-control"></td>
 			</tr>
 			<tr>
-				<td>입사일<input type="text" readonly="readonly" value="${fn:substring(regiDate, 0 , 10)}" class="form-control"></td>
-				<td>성별<input type="text" readonly="readonly" value="${gender}" class="form-control"></td>
+				<td>입사일<input type="text" readonly="readonly" value="" class="form-control"></td>
+				<td>성별<input type="text" readonly="readonly" value="" class="form-control"></td>
 				<td>집주소<input type="text" readonly="readonly" value="(${mvo.im_postcode})${mvo.im_address}&nbsp;${mvo.im_detailaddr}" class="form-control"></td>
 			</tr>
 			<tr>
@@ -182,15 +181,15 @@
 			</c:if>
 		</tbody>
 	</table>
- 		<jsp:include page="../paging/paging.jsp" flush="false">
-			<jsp:param value="${pageNumber }" name="pageNumber"/>
+ 		<%-- <jsp:include page="../paging/paging.jsp" flush="false">
+			<jsp:param value="${evo.pageNumber }" name="evo.pageNumber"/>
 			<jsp:param value="${pageCountPerScreen }" name="pageCountPerScreen"/>
-			<jsp:param value="${recordCountPerPage }" name="recordCountPerPage"/>
+			<jsp:param value="${evo.recordCountPerPage }" name="evo.recordCountPerPage"/>
 			<jsp:param value="${totalRecordCount }" name="totalRecordCount"/>
-		</jsp:include>
+		</jsp:include> --%>
 	
-	<input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty pageNumber)?0:pageNumber }"/>
-	<input type="hidden" name="recordCountPerPage" id="_recordCountPerPage"	value="${(empty recordCountPerPage)?0:recordCountPerPage }"/>
+	<input type="hidden" name="evo.pageNumber" id="_pageNumber" value="${(empty evo.pageNumber)?0:evo.pageNumber }"/>
+	<input type="hidden" name="evo.recordCountPerPage" id="_recordCountPerPage"	value="${(empty evo.recordCountPerPage)?0:evo.recordCountPerPage }"/>
 	<div>
 		<h3><b>Project History</b></h3>
 	</div>

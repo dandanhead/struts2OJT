@@ -6,6 +6,8 @@ import kr.co.ican.worker.action.AddWorkerAction;
 import kr.co.ican.worker.service.WorkerService;
 import kr.co.ican.worker.vo.MemberVO;
 
+
+// validation check 
 public class ValidationCheck extends ValidationMethods{
 
 	
@@ -344,7 +346,6 @@ public class ValidationCheck extends ValidationMethods{
 		}
 		// 경력이 존재할 때
 		if(avo.getChkCareer() > 0){
-			
 			valflag = arrayNullCheck(avo.getIme_regi_date()); // 경력 시작 null chk
 			if(valflag == false){
 				vvo.setMsg("경력 사항에 입력하지 않은 곳이 있습니다.");
@@ -412,7 +413,6 @@ public class ValidationCheck extends ValidationMethods{
 		
 		//라이센스 존재할 때
 		if(avo.getChkLicense() > 0){
-			
 			valflag = arrayNullCheck(avo.getIml_lname()); // 자격증명 null chk
 			if(valflag == false){
 				vvo.setMsg("자격증란에 입력 하지 않은 값이 있습니다.");

@@ -6,14 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import kr.co.ican.worker.vo.ExperienceVO;
 import kr.co.ican.worker.vo.MemLicenseVO;
 import kr.co.ican.worker.vo.MemberVO;
 
-// 사원 추가, 삭제 , update 관련
+// 사원  관련  DAO
 public class WorkerDAO {
-
+	
 	
 	public List<MemberVO> getWorkerList(Connection conn, MemberVO mvo) throws SQLException{
 		PreparedStatement psmt = null;
@@ -256,7 +255,6 @@ public class WorkerDAO {
 		String sql = "";
         int cnt = 1;
         int result = 0;
-    	System.out.println("DAO(경험치 삽입 ) = "+evo.toString());
 		sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
 			+ " VALUES(MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
 
@@ -298,5 +296,176 @@ public class WorkerDAO {
 		}
 
 		return result > 0 ? true : false;
+	}
+	
+	
+	// 사원 상세정보 가져오기
+	public MemberVO getMemberDetail(Connection conn, int im_idx)throws SQLException {
+		
+		PreparedStatement psmt = null;
+        ResultSet rs = null;
+        String sql = "";
+        int cnt = 1;
+        
+		sql = " SELECT "
+			+ " 	IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
+			+ " 	IM_DETAILADDR,IM_POSTCODE, IM_AUTH, IM_SKILL "
+			+ " FROM "
+			+ " 	ICAN_MEMBER WHERE IM_IDX = ? ";
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(1, im_idx);
+		
+		rs = psmt.executeQuery();
+		MemberVO mvo = new MemberVO();
+		while (rs.next()) {
+			cnt = 1;
+			mvo.setIm_idx(rs.getInt(cnt++));
+			mvo.setIm_pw(rs.getString(cnt++));
+			mvo.setIm_dname(rs.getString(cnt++));
+			mvo.setIm_name(rs.getString(cnt++));
+			mvo.setIm_phone(rs.getString(cnt++));
+			mvo.setIm_email(rs.getString(cnt++));
+			mvo.setIm_status(rs.getInt(cnt++));
+			mvo.setIm_scnum(rs.getString(cnt++));
+			mvo.setIm_address(rs.getString(cnt++));
+			mvo.setIm_detailaddr(rs.getString(cnt++));
+			mvo.setIm_postcode(rs.getString(cnt++));
+			mvo.setIm_auth(rs.getInt(cnt++));
+			mvo.setIm_skill(rs.getString(cnt++));
+			
+		}
+		
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+        
+		return mvo;
+	}
+	
+	// 사원 라이센스 정보 가져오기
+	public List<MemLicenseVO> getMemberLicenses(MemLicenseVO lvo , Connection conn) throws SQLException{
+		
+		PreparedStatement psmt = null;
+        ResultSet rs = null;
+        
+        int cnt = 1;
+        String sql = "";
+        
+		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
+
+		sql = "  SELECT * FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(cnt++, lvo.getIml_im_idx());
+
+		rs = psmt.executeQuery();
+
+		while (rs.next()) {
+			cnt = 1;
+			MemLicenseVO mlvo = new MemLicenseVO();
+			mlvo.setIml_im_idx(rs.getInt(cnt++));
+			mlvo.setIml_lname(rs.getString(cnt++));
+			mlvo.setIml_acqdate(rs.getString(cnt++));
+			mlvo.setIml_organization(rs.getString(cnt++));
+
+			liclist.add(mlvo);
+		}
+		
+		if (rs != null) {
+			rs.close();
+		}
+		if (psmt != null) {
+			psmt.close();
+		}
+		
+		return liclist;
+	}
+	
+	//사원 경력 정보 가져오기
+	public List<ExperienceVO> getMemberExperiences(ExperienceVO evo, Connection conn) throws SQLException{
+		PreparedStatement psmt = null;
+        ResultSet rs = null;
+        String sql = "";
+        int cnt = 1;
+        List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
+        
+		sql = " SELECT IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL "
+			+ " FROM (SELECT ROW_NUMBER() OVER (ORDER BY IME_REGI_DATE DESC) AS RNUM, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH , IME_ROLL"
+			+ "       FROM ICAN_MEM_EXP "
+			+ "       WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NOT NULL) "
+			+ " WHERE RNUM BETWEEN ? AND ? ";
+		
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(cnt++, evo.getIme_im_idx());
+		psmt.setInt(cnt++, evo.getStart());
+		psmt.setInt(cnt++, evo.getEnd());
+		
+		rs = psmt.executeQuery();
+		
+		while (rs.next()) {
+			
+			cnt = 1;
+			ExperienceVO expvo = new ExperienceVO();
+			expvo.setIme_regi_date(rs.getString(cnt++));
+			expvo.setIme_exit_date(rs.getString(cnt++));
+			expvo.setIme_coname(rs.getString(cnt++));
+			expvo.setIme_auth(rs.getInt(cnt++));
+			expvo.setIme_roll(rs.getString(cnt++));
+			
+			elist.add(expvo);
+		}
+		
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+		
+		return elist;
+	}
+	
+	public int getWorkerExpCount(ExperienceVO evo , Connection conn ) throws SQLException{
+		PreparedStatement psmt = null;
+        ResultSet rs = null;
+        int result= 0;
+        
+        String sql = "";
+        sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? ";
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(1, evo.getIme_im_idx());
+		
+		rs = psmt.executeQuery();
+		
+		while (rs.next()) {
+	   		 
+			result = rs.getInt(1);
+		}
+	        
+        return result;
+	}
+	
+	public int getWorkerLicCount(MemLicenseVO licvo, Connection conn ) throws SQLException{
+		PreparedStatement psmt = null;
+        ResultSet rs = null;
+        int result= 0;
+        
+        String sql = "";
+        sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_LICENSE WHERE IME_IM_IDX = ? ";
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(1, licvo.getIml_im_idx());
+		
+		rs = psmt.executeQuery();
+		
+		while (rs.next()) {
+	   		 
+			result = rs.getInt(1);
+		}
+	        
+        return result;
 	}
 }

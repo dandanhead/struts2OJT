@@ -29,7 +29,7 @@
 				<label>이름</label> <input type="text" class="form-control" value="${login.im_name }" readonly="readonly">
 			</div>
 			<div class="form-group">
-				<label>입사일</label> <input type="text" class="form-control" value="${tips.yymmdd(evo.ime_regi_date)}" readonly="readonly">
+				<label>입사일</label> <input type="text" class="form-control" value="${tips.yymmdd(regidate)}" readonly="readonly">
 			</div>
 			<div class="form-group">
 				<label>연락처</label> <input type="tel" class="form-control" value="${login.im_phone}" readonly="readonly">

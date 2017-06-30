@@ -52,14 +52,25 @@ public class GoworkerAction extends ActionSupport {
 	public String execute() throws Exception {
 		WorkerService wservice = new WorkerService();
 		
-		if(mvo == null){
-			mvo = new MemberVO();
+		try {
+			//init
+			if(mvo == null){
+				mvo = new MemberVO();
+			}
+			//service
+			totalRecordCount =  wservice.getWorkerCount(); // total Count of Worker
+			workerlist = wservice.getWorkerList(mvo);// get Worker List
+			
+			//page
+			if(totalRecordCount < 0 || workerlist == null){
+				return "error";
+			}
+			return "success";
+			
+		} catch (Exception e) {
+			return "error";
 		}
 		
-		totalRecordCount =  wservice.getWorkerCount(); // total Count of Worker
-		workerlist = wservice.getWorkerList(mvo);// get Worker List
-		
-		return "success";
 	}
 	
 }

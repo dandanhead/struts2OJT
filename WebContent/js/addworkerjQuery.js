@@ -1,10 +1,15 @@
-var liccnt = 0; //자격증 row count
-var cnt = 0; //경력 row 카운트
+var liccnt = $("#licenseCount").val(); //자격증 row count
+var cnt = $("#careerCount").val(); //경력 row 카운트
 // 타업체 인력 input tag 추가 (회사명 입력)
-$("#conamelabel").hide();
-$("input[name='outsideperson']").hide();
-
+$(function() {
+	if($("#depsel").val() != '타업체인력'){
+		
+		$("#conamelabel").hide();
+		$("input[name='outsideperson']").hide();
+	}
+});
 $("select[name='mvo.im_dname']").change(function () {
+	
 	if("타업체인력" == $(this).val()){
 		$("#conamelabel").show();
 		$("input[name='outsideperson']").show();
@@ -15,6 +20,31 @@ $("select[name='mvo.im_dname']").change(function () {
 		$("#cntChkTa").val(0);
 	}
 });
+
+//datepicker 설정
+$( "input[name='ime_regi_date']" ).datepicker({
+	dateFormat:'yy-mm-dd',
+    changeMonth: true, 
+    changeYear: true,
+    nextText: '다음 달',
+    prevText: '이전 달' 
+});
+$( "input[name='ime_exit_date']" ).datepicker({
+	dateFormat:'yy-mm-dd',
+    changeMonth: true, 
+    changeYear: true,
+    nextText: '다음 달',
+    prevText: '이전 달' 
+});
+//datepicker 설정
+$( "input[name='iml_acqdate']" ).datepicker({
+	dateFormat:'yy-mm-dd',
+    changeMonth: true, 
+    changeYear: true,
+    nextText: '다음 달',
+    prevText: '이전 달' 
+});
+
 // 자격증 추가
 $("#addLicense").click(function () {
 	

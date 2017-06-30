@@ -3,7 +3,6 @@ package kr.co.ican.worker.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.ican.worker.vo.ExperienceVO;
@@ -14,7 +13,7 @@ import kr.co.ican.worker.vo.MemberVO;
 public class WorkerDAO {
 	
 	
-	public List<MemberVO> getWorkerList(Connection conn, MemberVO mvo) throws SQLException{
+	public List<MemberVO> getWorkerList(Connection conn, MemberVO mvo) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
         List<MemberVO> list = new ArrayList<MemberVO>();
@@ -80,7 +79,7 @@ public class WorkerDAO {
         return list;
 	}
 
-	public int getWorkerCount(Connection conn) throws SQLException {
+	public int getWorkerCount(Connection conn) throws Exception {
 		
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -110,19 +109,49 @@ public class WorkerDAO {
 	}
 	
 	// 휴대폰 중복찾기
-	public boolean chkDuplPhone(MemberVO mvo, Connection conn) throws SQLException{
+	public boolean chkDuplPhone(MemberVO mvo, Connection conn) throws Exception{
 		
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
-		
+		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT * FROM ICAN_MEMBER WHERE IM_PHONE = ?  ";
+		String sql = "  SELECT COUNT(*) FROM ICAN_MEMBER WHERE IM_PHONE = ?  ";
 		psmt = conn.prepareStatement(sql);
-		psmt.setString(1, mvo.getIm_phone());
+		psmt.setString(cnt++, mvo.getIm_phone());
 		
 		rs = psmt.executeQuery();
 		while (rs.next()) {
-			result++;
+			cnt = 1;
+			result = rs.getInt(cnt++);
+		}
+		
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+		
+		return result > 0 ? false : true;
+	}
+	
+	// update 휴대폰 중복찾기
+	public boolean updateChkDuplPhone(MemberVO mvo, Connection conn) throws Exception{
+		
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		int cnt = 1;
+		int result = 0;
+		String sql = "  SELECT COUNT(*) FROM (SELECT IM_PHONE FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE IM_PHONE = ? ";
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(cnt++, mvo.getIm_idx());
+		psmt.setString(cnt++, mvo.getIm_email());
+		
+		rs = psmt.executeQuery();
+		while (rs.next()) {
+			cnt = 1;
+			result = rs.getInt(cnt++);
 		}
 		
 		if(rs != null){
@@ -136,18 +165,20 @@ public class WorkerDAO {
 		return result > 0 ? false : true;
 	}
 	// 이메일 중복찾기
-	public boolean chkDuplEmail(MemberVO mvo, Connection conn) throws SQLException{
+	public boolean chkDuplEmail(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
+		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT * FROM ICAN_MEMBER WHERE IM_EMAIL = ?  ";
+		String sql = "  SELECT COUNT(*) FROM ICAN_MEMBER WHERE IM_EMAIL = ?  ";
 		psmt = conn.prepareStatement(sql);
-		psmt.setString(1, mvo.getIm_email());
+		psmt.setString(cnt++, mvo.getIm_email());
 		
 		
 		rs = psmt.executeQuery();
 		while (rs.next()) {
-			result++;
+			cnt = 1;
+			result = rs.getInt(cnt++);
 		}
 		
 		if(rs != null){
@@ -160,19 +191,48 @@ public class WorkerDAO {
 		
 		return result > 0 ? false : true;
 	}
+	// 이메일 중복찾기
+	public boolean updateChkDuplEmail(MemberVO mvo, Connection conn) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		int cnt = 1;
+		int result = 0;
+		String sql = "  SELECT COUNT(*) FROM (SELECT IM_EMAIL FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE  IM_EMAIL = ?  ";
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(cnt++, mvo.getIm_idx());
+		psmt.setString(cnt++, mvo.getIm_email());
+		
+		
+		rs = psmt.executeQuery();
+		while (rs.next()) {
+			cnt = 1;
+			result = rs.getInt(cnt++);
+		}
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+		
+		return result > 0 ? false : true;
+	}
 	// 주민등록번호 중복찾기
-	public boolean chkDuplScnum(MemberVO mvo, Connection conn) throws SQLException{
+	public boolean chkDuplScnum(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		int result = 0;
-		String sql = "  SELECT * FROM ICAN_MEMBER WHERE IM_SCNUM = ?  ";
+		int cnt = 1;
+		String sql = "  SELECT COUNT(*) FROM ICAN_MEMBER WHERE IM_SCNUM = ?  ";
 		psmt = conn.prepareStatement(sql);
-		psmt.setString(1, mvo.getIm_scnum());
+		psmt.setString(cnt++, mvo.getIm_scnum());
 		
 		rs = psmt.executeQuery();
 		
 		while (rs.next()) {
-			result++;
+			cnt = 1;
+			result = rs.getInt(cnt++);
 		}
 		
 		if(rs != null){
@@ -185,13 +245,17 @@ public class WorkerDAO {
 		return result > 0 ? false : true;
 	}
 	// 사원 기본정보 insert
-	public boolean addWorkerInfo(MemberVO mvo , Connection conn)throws SQLException { // 사원 기본정보 넣기
+	public boolean addWorkerInfo(MemberVO mvo , Connection conn)throws Exception { // 사원 기본정보 넣기
         
 		PreparedStatement psmt = null;
 		String sql = "";
         int cnt = 1;
         int result = 0;
-			sql = " INSERT INTO ICAN_MEMBER(IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_RESIGN, IM_STATUS, IM_SCNUM, IM_ADDRESS, IM_DETAILADDR, IM_POSTCODE, IM_AUTH, IM_SKILL) "
+			sql = " INSERT INTO "
+					+ "		ICAN_MEMBER("
+					+ "					IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_RESIGN, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
+					+ "					IM_DETAILADDR, IM_POSTCODE, IM_AUTH, IM_SKILL"
+					+ "					) "
 				 +" VALUES(MEMBER_SEQ.NEXTVAL, ? , ? , ? , ? , ? , 0 , 0 , ? , ? , ? , ? , ? , ?)";
 			
 			psmt = conn.prepareStatement(sql);
@@ -217,7 +281,7 @@ public class WorkerDAO {
 		return result > 0 ? true : false;
 	}
 	// 기본 경력 insert
-	public boolean basicWorkerExp(MemberVO mvo, Connection conn) throws SQLException{
+	public boolean basicWorkerExp(MemberVO mvo, Connection conn) throws Exception{
 		
 		PreparedStatement psmt = null;
 		String sql = "";
@@ -226,14 +290,20 @@ public class WorkerDAO {
         int result = 0;
         
 		if("타업체인력".equals(mvo.getIm_dname())){
-			sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
+			sql = " INSERT INTO "
+					+ "			ICAN_MEM_EXP ( "
+					+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
+					+ "						 ) "
 					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, ? , ? , '미배정') ";
 			
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(cnt++, mvo.getOutsideperson());
 			psmt.setInt(cnt++, mvo.getIm_auth());
 		}else{
-			sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
+			sql = " INSERT INTO "
+					+ "			ICAN_MEM_EXP ( "
+					+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
+					+ "						 ) "
 					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, '아이캔매니지먼트(주)', ? , '미배정') ";
 
 			psmt = conn.prepareStatement(sql);
@@ -249,14 +319,17 @@ public class WorkerDAO {
 		return result > 0 ? true : false;
 	}
 	// 경력 insert
-	public boolean addWorkerExp(ExperienceVO evo, Connection conn) throws SQLException{
+	public boolean addWorkerExp(ExperienceVO evo, Connection conn) throws Exception{
 		
 		PreparedStatement psmt = null;
 		String sql = "";
         int cnt = 1;
         int result = 0;
-		sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
-			+ " VALUES(MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
+		sql = " INSERT INTO "
+				+ "			ICAN_MEM_EXP ( "
+				+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
+				+ "						 ) "
+			+ " VALUES ( MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
 
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(cnt++, evo.getIme_regi_date());
@@ -274,14 +347,17 @@ public class WorkerDAO {
 	}
 	
 	// 자격증 insert
-	public boolean addWorkerLicense(MemLicenseVO mlvo, Connection conn) throws SQLException{
+	public boolean addWorkerLicense(MemLicenseVO mlvo, Connection conn) throws Exception{
 		
 		PreparedStatement psmt = null;
 		String sql = "";
 		int cnt = 1;
 		int result = 0;
 
-		sql = " INSERT INTO ICAN_MEM_LICENSE ( IML_IM_IDX, IML_LNAME , IML_ACQDATE, IML_ORGANIZATION ) "
+		sql = " INSERT INTO "
+				+ "			ICAN_MEM_LICENSE ( "
+				+ "								IML_IM_IDX, IML_LNAME , IML_ACQDATE, IML_ORGANIZATION "
+				+ "							 ) "
 				+ " VALUES( MEMBER_SEQ.CURRVAL , ? , ? , ?) ";
 
 		psmt = conn.prepareStatement(sql);
@@ -300,7 +376,7 @@ public class WorkerDAO {
 	
 	
 	// 사원 상세정보 가져오기
-	public MemberVO getMemberDetail(Connection conn, int im_idx)throws SQLException {
+	public MemberVO getMemberDetail(Connection conn, int im_idx)throws Exception {
 		
 		PreparedStatement psmt = null;
         ResultSet rs = null;
@@ -347,7 +423,7 @@ public class WorkerDAO {
 	}
 	
 	// 사원 라이센스 정보 가져오기
-	public List<MemLicenseVO> getMemberLicenses(MemLicenseVO lvo , Connection conn) throws SQLException{
+	public List<MemLicenseVO> getMemberLicenses(MemLicenseVO lvo , Connection conn) throws Exception{
 		
 		PreparedStatement psmt = null;
         ResultSet rs = null;
@@ -357,7 +433,12 @@ public class WorkerDAO {
         
 		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
 
-		sql = "  SELECT * FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
+		sql = "  SELECT "
+				+ "		IML_IM_IDX, IML_LNAME, IML_ACQDATE, IML_ORGANIZATION "
+				+ " FROM "
+				+ "		ICAN_MEM_LICENSE "
+				+ " WHERE "
+				+ "		IML_IM_IDX = ? ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setInt(cnt++, lvo.getIml_im_idx());
 
@@ -385,17 +466,25 @@ public class WorkerDAO {
 	}
 	
 	//사원 경력 정보 가져오기
-	public List<ExperienceVO> getMemberExperiences(ExperienceVO evo, Connection conn) throws SQLException{
+	public List<ExperienceVO> getMemberExperiences(ExperienceVO evo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
         ResultSet rs = null;
         String sql = "";
         int cnt = 1;
         List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
         
-		sql = " SELECT IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL "
-			+ " FROM (SELECT ROW_NUMBER() OVER (ORDER BY IME_REGI_DATE DESC) AS RNUM, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH , IME_ROLL"
-			+ "       FROM ICAN_MEM_EXP "
-			+ "       WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NOT NULL) "
+		sql = " SELECT "
+				+ "		IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL "
+			+ " FROM ("
+			+ "			SELECT "
+			+ "					ROW_NUMBER() OVER (ORDER BY IME_REGI_DATE DESC) AS RNUM, IME_REGI_DATE, "
+			+ "					IME_EXIT_DATE, IME_CONAME, IME_AUTH , IME_ROLL "
+			+ "           FROM "
+			+ "					ICAN_MEM_EXP "
+			+ "       	  WHERE "
+			+ "					IME_IM_IDX = ? "
+			+ "				AND IME_EXIT_DATE IS NOT NULL "
+			+ "		 ) "
 			+ " WHERE RNUM BETWEEN ? AND ? ";
 		
 		psmt = conn.prepareStatement(sql);
@@ -429,7 +518,7 @@ public class WorkerDAO {
 		return elist;
 	}
 	
-	public int getWorkerExpCount(ExperienceVO evo , Connection conn ) throws SQLException{
+	public int getWorkerExpCount(ExperienceVO evo , Connection conn ) throws Exception{
 		PreparedStatement psmt = null;
         ResultSet rs = null;
         int result= 0;
@@ -449,13 +538,13 @@ public class WorkerDAO {
         return result;
 	}
 	
-	public int getWorkerLicCount(MemLicenseVO licvo, Connection conn ) throws SQLException{
+	public int getWorkerLicCount(MemLicenseVO licvo, Connection conn ) throws Exception{
 		PreparedStatement psmt = null;
         ResultSet rs = null;
         int result= 0;
         
         String sql = "";
-        sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_LICENSE WHERE IME_IM_IDX = ? ";
+        sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setInt(1, licvo.getIml_im_idx());
 		
@@ -468,4 +557,64 @@ public class WorkerDAO {
 	        
         return result;
 	}
+	
+	// get Member Start Date
+	public String getRegiDate(Connection conn, MemberVO mvo) throws Exception {
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String resultstr = "";
+		int cnt = 1;
+		String sql = "";
+		sql = " SELECT TRUNC(IME_REGI_DATE) FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(cnt++, mvo.getIm_idx());
+
+		rs = psmt.executeQuery();
+
+		while (rs.next()) {
+			cnt = 1;
+
+			resultstr = rs.getString(cnt++);
+		}
+		// close
+		if (psmt != null) {
+			psmt.close();
+		}
+		if (rs != null) {
+			rs.close();
+		}
+		// return
+		return resultstr;
+	}
+	
+	public ExperienceVO getOutSidePersonCompany(int idx, Connection conn) throws Exception{
+		
+		ExperienceVO vo = new ExperienceVO();
+		
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		int cnt = 1;
+		String sql = "";
+		sql = " SELECT IME_CONAME FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(cnt++, idx);
+		
+		rs = psmt.executeQuery();
+		while (rs.next()) {
+			cnt = 1;
+			vo.setIme_coname(rs.getString(cnt++));
+			
+		}
+		
+		if(rs != null){
+			rs.close();
+		}
+		
+		if(psmt != null){
+			psmt.close();
+		}
+				
+		return vo;
+	}
+	
 }

@@ -4,7 +4,6 @@ import java.util.Map;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import kr.co.ican.login.service.LoginService;
-import kr.co.ican.worker.vo.ExperienceVO;
 import kr.co.ican.worker.vo.MemberVO;
 
 // 로그인 
@@ -13,8 +12,8 @@ public class LoginMultiAction extends ActionSupport{
 	private static final long serialVersionUID = -1706257301891741290L;
 	
 	private MemberVO mvo;
-	private ExperienceVO evo;
-
+	private String regidate;
+	
 	public MemberVO getMvo() {
 		return mvo;
 	}
@@ -23,15 +22,15 @@ public class LoginMultiAction extends ActionSupport{
 		this.mvo = mvo;
 	}
 	
-	public ExperienceVO getEvo() {
-		return evo;
+	public String getRegidate() {
+		return regidate;
 	}
 
-	public void setEvo(ExperienceVO evo) {
-		this.evo = evo;
+	public void setRegidate(String regidate) {
+		this.regidate = regidate;
 	}
 
-	 public String start() {
+	public String start() {
 			
 		return SUCCESS;
 																	
@@ -46,19 +45,24 @@ public class LoginMultiAction extends ActionSupport{
 		
 		if(mvo != null){
 			// get Member`s Start Date
-			evo = service.getMemberStartDate(mvo);
+			try {
+				regidate = service.getRegiDate(mvo);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "error";
+			}
 			// make session
-			if(evo != null){
+			if(regidate != null){
 				ActionContext context = ActionContext.getContext(); //session
 				Map<String, Object> session = context.getSession();
-				session.put("evo", evo);
+				session.put("regidate", regidate);
 				session.put("login", mvo);
 				context.setSession(session);
 				
 				return "success";
 			}else{
 				
-				return "fail";
+				return "error";
 			}
 		
 		}else{

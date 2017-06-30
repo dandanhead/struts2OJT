@@ -56,15 +56,21 @@ public class FindPwAction extends ActionSupport{
 		ValidationCheck val = new ValidationCheck();
 		ValidationVO vvo = new ValidationVO();
 		
-		vvo = val.findPwValidation(mvo, startnum, endnum);
-		
-		if(vvo != null){
-			alertmsg = vvo.getMsg();
-		}else{
-			alertmsg = "error 가 발생했습니다. 관리자에게 문의하세요";
+		try {
+			
+			vvo = val.findPwValidation(mvo, startnum, endnum);
+			
+			if(vvo != null){
+				alertmsg = vvo.getMsg();
+			}else{
+				alertmsg = "error 가 발생했습니다. 관리자에게 문의하세요";
+			}
+			
+			return "success";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
 		}
-		
-		return "success";
 	}
-	
 }

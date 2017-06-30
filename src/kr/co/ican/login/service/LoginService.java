@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import kr.co.ican.login.dao.MemberDAO;
 import kr.co.ican.util.GetDBConn;
-import kr.co.ican.worker.vo.ExperienceVO;
+import kr.co.ican.worker.dao.WorkerDAO;
 import kr.co.ican.worker.vo.MemberVO;
 
 
@@ -48,7 +48,7 @@ public class LoginService {
 	}
 	
 	// 아이디 찾기
-	public MemberVO findId(MemberVO mvo){
+	public MemberVO findId(MemberVO mvo) throws Exception{
 		
 		Connection conn = null;
 		
@@ -58,11 +58,11 @@ public class LoginService {
 			conn = GetDBConn.getConnection();
 			//dao
 			vo = mdao.findId(conn,mvo);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			
 			e.printStackTrace();
 			vo = null;
-			
+			throw e;
 		}finally {
 			
 			if(conn != null){
@@ -80,7 +80,7 @@ public class LoginService {
 	}
 
 	// pw 찾기
-	public MemberVO findPw(MemberVO mvo){
+	public MemberVO findPw(MemberVO mvo) throws Exception{
 		
 		Connection conn = null;
 		
@@ -90,10 +90,11 @@ public class LoginService {
 			conn = GetDBConn.getConnection();
 			//dao
 			vo = mdao.findPw(conn , mvo);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			
 			e.printStackTrace();
 			vo = null;
+			throw e;
 			
 		}finally {
 			
@@ -111,17 +112,18 @@ public class LoginService {
 	}
 	
 	//입사일 받아오기
-	public ExperienceVO getMemberStartDate(MemberVO mvo){
+	public String getRegiDate(MemberVO mvo) throws Exception{
 		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
 		
-		ExperienceVO evo = new ExperienceVO();
-		MemberDAO mdao = new MemberDAO();
+		String resultstr = "";
 		try {
 			conn = GetDBConn.getConnection();
-			evo = mdao.getMemberStartDate(conn, mvo);
-		} catch (SQLException e) {
+			resultstr = wdao.getRegiDate(conn, mvo);
+		} catch (Exception e) {
 			e.printStackTrace();
 			mvo = null;
+			throw e;
 		}finally {
 			if(conn != null){
 				try {
@@ -133,8 +135,7 @@ public class LoginService {
 				}
 			}
 		}
-		
-		return evo;
+		return resultstr;
 	}
 	
 }

@@ -53,15 +53,21 @@ public class FindIdAction extends ActionSupport{
 	@Override
 	public String execute() throws Exception {
 		
-		//validation
-		ValidationCheck val = new ValidationCheck();
-		ValidationVO vvo = new ValidationVO();
-		vvo = val.findIdValidation(mvo, startnum, endnum);
-		// set alertmsg
-		if(vvo != null){
-			alertmsg = vvo.getMsg();
-		}else{
-			alertmsg = "error가 발생했습니다. 관리자에게 문의하세요";
+		try {
+			
+			//validation
+			ValidationCheck val = new ValidationCheck();
+			ValidationVO vvo = new ValidationVO();
+			vvo = val.findIdValidation(mvo, startnum, endnum);
+			// set alertmsg
+			if(vvo != null){
+				alertmsg = vvo.getMsg();
+			}else{
+				alertmsg = "error가 발생했습니다. 관리자에게 문의하세요";
+			}
+			
+		} catch (Exception e) {
+			return "error";
 		}
 		
 		return "success";

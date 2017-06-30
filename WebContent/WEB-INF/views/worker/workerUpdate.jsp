@@ -1,4 +1,3 @@
-<%@page import="kr.co.ican.vo.ExperienceVO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -24,126 +23,87 @@
 		</div>
 		<hr> <!-- 공통 css -->
 	</div>
-<form id="frm" method="post">
-	<input type="hidden" id="chkmailDupl" value="${mvo.im_email}">
-	<input type="hidden" id="chkphoneDupl" value="${mvo.im_phone}">
-	<!-- change flag -->
-	<input type="hidden" id="licFlag" value="0" name="licflag">
-	<input type="hidden" id="skillFlag" value="0" name="skillflag">
-	<input type="hidden" id="expFlag" value="0" name="expflag">
-	<!--사번  -->
-	<input type="hidden" name="im_idx" value="${mvo.im_idx}">
-	<!--받아온 경력 size  -->
-	<input type="hidden" id="expsize" value="${fn:length(elist)}">
-	<input type="hidden" id="licsize" value="${fn:length(liclist)}">
+<s:form id="frm" method="post" action="updateAf" namespace="/worker">
 	<div class="layer" style="margin-left: 30%;">
 		<div class="addform" style="float: left;">
 		<h2><b>Information</b></h2>
+		<h5><strong style="color: red;">* 항목은 필수 입력 입니다.</strong></h5>
 			<div>
-				<label>PW</label>
-				<input type="password" class="form-control" style="width: 40%;" name="im_pw" id="chkpw" value="${mvo.im_pw}">
-			</div>
-			<div>
-				<label>PW(Confirm)</label>
-				<input type="password" class="form-control" style="width: 40%;" id="confirmpw" value="${mvo.im_pw}">
-			</div>
-			<div>
-				<label>Name</label>
-				<input type="text" class="form-control" style="width: 40%;" name="im_name" id="chkname" readonly="readonly" value="${mvo.im_name}">
-			</div>
-			<div>
-				<label>Social Num</label>
-				<c:forTokens items="${mvo.im_scnum}" delims="-" var="idx" varStatus="vs">
-					<c:if test="${vs.count eq 1 }">
-						<c:set value="${idx}" var="startnum"/>
-					</c:if>
-					<c:if test="${vs.count eq 2 }">
-						<c:set value="${idx}" var="endnum"/>
-					</c:if>
-				</c:forTokens>
-				<div class="row">
-				  <div class="col-xs-3">
-				    <input type="text" class="form-control" placeholder="앞 자리" id="snumF" value="${startnum}" readonly="readonly">
-				  </div>
-				  <div class="col-xs-3">
-				    <input type="password" class="form-control" placeholder="뒷 자리" id="snumE" value="${endnum}" readonly="readonly">
-				  </div>
-				  <input type="hidden" value="" name="im_scnum" id="chkscnum">
-				</div>
-			</div>
-			<div>
-				<label>Phone</label>
-				<div class="row">
-				  <div class="col-xs-2">
-				  	<c:forTokens items="${mvo.im_phone }" delims="-" var="idx" varStatus="vs">
-				  		<c:if test="${vs.count eq 1}">
-				  			<c:set value="${idx}" var="sphone"/>
-				  		</c:if>
-				  		<c:if test="${vs.count eq 2}">
-				  			<c:set value="${idx}" var="mphone"/>
-				  		</c:if>
-				  		<c:if test="${vs.count eq 3}">
-				  			<c:set value="${idx}" var="ephone"/>
-				  		</c:if>
-				  	</c:forTokens>
-				    <input type="text" class="form-control" placeholder="010" id="sphone" style="width: 80%" value="${sphone}">
-				  </div>
-				  <div class="col-xs-2">
-				    <input type="text" class="form-control" id="mphone" style="width: 80%" value="${mphone}">
-				  </div>
-				  <div class="col-xs-2">
-				    <input type="text" class="form-control" id="ephone" style="width: 80%" value="${ephone}">
-				  </div>
-				  <input type="hidden" value="" name="im_phone" id="chkphone">
-				</div>
-			</div>
-			<div>
-				<label>E-mail</label>
-				<input type="email" class="form-control" name="im_email" id="chkemail" style="width: 50%" value="${mvo.im_email}">
-			</div>
-			<div>
-				<label>Address</label>
+				<label>* PW</label>
 				<br>
-				<input type="text" id="postcode" style="width: 30%" placeholder="우편번호" name="im_postcode" readonly="readonly" value="${mvo.im_postcode}">
+				<input type="password" class="form-control" style="width: 40%;" name="mvo.im_pw" id="chkpw" value="${mvo.im_pw}">
+				<b style="color: red;"><s:fielderror fieldName="chkpw"/></b>
+			</div>
+			<br>
+			<div>
+				<label>* PW(Confirm)</label>
+				<input type="password" class="form-control" style="width: 40%;" id="confirmpw" name="confirmPw" value="${confirmPw}">
+				<b style="color: red;"><s:fielderror fieldName="chkpwconfirm"/></b>
+			</div>
+			<br>
+			<div>
+				<label>* Name</label>
+				<input type="text" class="form-control" style="width: 40%;" name="mvo.im_name" id="chkname" value="${mvo.im_name}">
+				<b style="color: red;"><s:fielderror fieldName="chkname"/></b>
+			</div>
+			<br>
+			<div>
+				<label>* Social Num</label>
+				<div class="row">
+				  <div class="col-xs-3">
+				    <input type="text" class="form-control" placeholder="앞 자리" name="snumF" value="${snumF}" maxlength="6">
+				  </div>
+				  <div class="col-xs-3">
+				    <input type="password" class="form-control" placeholder="뒷 자리" name="snumE" value="${snumE}" maxlength="7">
+				  </div>
+				</div>
+				<b style="color: red;"><s:fielderror fieldName="chkscnum"/></b>
+			</div>
+			<br>
+			<div>
+				<label>* Phone</label>
+				<div class="row">
+				  <div class="col-xs-2">
+				    <input type="text" class="form-control" placeholder="010" name="sphone" style="width: 80%" value="${sphone}" maxlength="3">
+				  </div>
+				  <div class="col-xs-2">
+				    <input type="text" class="form-control" name="mphone" style="width: 80%" value="${mphone}" maxlength="4">
+				  </div>
+				  <div class="col-xs-2">
+				    <input type="text" class="form-control" name="ephone" style="width: 80%" value="${ephone}" maxlength="4">
+				  </div>
+				</div>
+				<b style="color: red;"><s:fielderror fieldName="chkphone"/></b>
+			</div>
+			<br>
+			<div>
+				<label>* E-mail</label>
+				<input type="email" class="form-control" name="mvo.im_email" id="chkemail" style="width: 50%" value="${mvo.im_email}">
+				 <b style="color: red;"><s:fielderror fieldName="chkemail"/></b>
+			</div>
+			<br>
+			<div>
+				<label>* Address</label>
+				<br>
+				<input type="text" id="postcode" style="width: 30%" placeholder="우편번호" name="mvo.im_postcode" readonly="readonly" value="${ mvo.im_postcode}">
 				<a href="#none" class="btn btn-default" style="width: 20%" id="findaddr">우편번호찾기</a>
 				<br>
-				<input type="text"  class="form-control" id="tempaddress" style="width: 50%" placeholder="도로명 또는 지번 주소" readonly="readonly" value="${mvo.im_address}" name="im_address">
-				<input type="text"  class="form-control" id="detailaddress" style="width: 50%" placeholder="상세 주소" value="${mvo.im_detailaddr}" name="im_detailaddr">
+				<input type="text"  class="form-control" id="tempaddress" style="width: 50%" placeholder="도로명 또는 지번 주소" readonly="readonly" name="mvo.im_address" value="${mvo.im_address}">
+				<input type="text"  class="form-control" id="detailaddress" style="width: 50%" placeholder="상세 주소" name="mvo.im_detailaddr" value="${mvo.im_detailaddr}">
 			</div>
+			<b style="color: red;"><s:fielderror fieldName="chkaddress"/></b>
+			<br>
 			<div class="chkbox">
-				<label>Language</label>
-				<input type="text" name="im_skill" class="form-control" style="width: 50%; text-transform: uppercase; ime-mode: disabled;" id="skillinput" value="${mvo.im_skill}">
+				<label>* Language and Skill</label>
+				<div style="color: red;">사용가능 언어 및 환경은 영어로만 입력 하실 수 있으며 comma(,) 로 구분합니다.</div>
+				<br>
+				<input type="text" name="mvo.im_skill" class="form-control" style="width: 50%; text-transform: uppercase; ime-mode: disabled;" id="skillinput"  value="${mvo.im_skill}">
+				<b style="color: red;"><s:fielderror fieldName="chkskill"/></b>
 			</div>
-			<div class="licensechkbox">
-				<label>License</label>
-				<a class="btn btn-default" style="width: 30%; float: right;" id="addLicense">Add License</a>
-				<div>
-					<table class="table table-striped" id="ltb">
-						<colgroup>
-							<col width="30%">
-							<col width="30%">
-							<col width="30%">
-							<col width="10%">
-						</colgroup>
-						<tr>
-							<th>자격증 명</th>
-							<th>취득일</th>
-							<th colspan="2">발급기관</th>
-						</tr>
-						<c:forEach items="${liclist}" var="idx">
-				 		<tr>
-						    <td><input class="form-control" type="text" style="width: 100%;" name="iml_lname" value="${idx.iml_lname}"></td>
-						    <td><input class="form-control" type="text" style="width: 100%;" name="iml_acudate" readonly="readonly" value="${fn:substring(idx.iml_acqdate, 0 , 10)}"></td>
-						    <td><input class="form-control" type="text" style="width: 100%;" name="iml_organization" value="${idx.iml_organization}"></td>
-						    <td><a class="btn btn-default">cancle</a></td>
-	  					 </tr> 
-						</c:forEach>
-					</table>
-				</div>
-			</div>
+			<br>
 			<div id="selectDep">
-				<label>Department</label>
-				<select class="form-control" style="width: 30%;" name="im_dname">
+				<label>* Department</label>
+				<select class="form-control" style="width: 30%;" name="mvo.im_dname" id="depsel">
 					<option value="대표이사" <c:if test="${mvo.im_dname eq '대표이사'}">selected</c:if>>대표이사</option>
 					<option value="전무이사" <c:if test="${mvo.im_dname eq '전무이사'}">selected</c:if>>전무이사</option>
 					<option value="상무이사" <c:if test="${mvo.im_dname eq '상무이사'}">selected</c:if>>상무이사</option>
@@ -151,44 +111,72 @@
 					<option value="SI사업부" <c:if test="${mvo.im_dname eq 'SI사업부'}">selected</c:if>>SI사업부</option>
 					<option value="타업체인력"<c:if test="${mvo.im_dname eq '타업체인력'}">selected</c:if> >타업체인력</option>
 					<option value="FreeLancer"<c:if test="${mvo.im_dname eq 'FreeLancer'}">selected</c:if> >FreeLancer</option>
-					<option value="관리부" <c:if test="${mvo.im_dname eq '관리부'}">selected</c:if>>관리부</option>
+					<option value="관리부">관리부</option>
 				</select>
 				<label id="conamelabel">※타업체 인력인 경우 소속 회사를 입력해야 합니다.</label>
-				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname">
-				
+				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname" placeholder="회사명을 입력 해 주세요." value="${evo.ime_coname}">
 			</div>
+			<br>
 			<div>
-				<label>Authority</label>
-				<select class="form-control" style="width: 30%;" name="im_auth">
-						<option value="0" <c:if test="${mvo.im_auth eq 0}">selected</c:if>>Developer</option>
-						<option value="1" <c:if test="${mvo.im_auth eq 1}">selected</c:if>>Manager</option>
+				<label>* Authority</label>
+				<select class="form-control" style="width: 30%;" name="mvo.im_auth">
+						<option selected="selected" value="0">Developer</option>
+						<option value="1">Manager</option>
 				</select>
 			</div>
 			<br>
 			<hr>
+			<h2><b>License</b></h2>
+			<a class="btn btn-default" style="width: 20%; float: right; margin-right: 17%;" id="addLicense">Add License</a>
+			<b style="color: red;"><s:fielderror fieldName="chklicense"/></b>
+			<table class="table table-striped" id="ltb" style="width: 40%; margin: auto;">
+				<colgroup>
+					<col width="30%">
+					<col width="30%">
+					<col width="30%">
+					<col width="10%">
+				</colgroup>
+				<tr>
+					<th>자격증 명</th>
+					<th>취득일</th>
+					<th colspan="2">발급기관</th>
+				</tr>
+				<c:if test="${not empty liclist}">
+					<c:forEach items="${liclist}" var="idx">
+							<tr>
+								<td><input class="form-control" type="text"	style="width: 100%;" name="iml_lname" value="${idx.iml_lname}"></td>
+								<td><input class="form-control" type="text" style="width: 100%;" name="iml_acqdate" readonly="readonly" value="${fn:substring(idx.iml_acqdate, 0 , 10)}"></td>
+								<td><input class="form-control" type="text" style="width: 100%;" name="iml_organization" value="${idx.iml_organization}"></td>
+								<td><a class="btn btn-default">cancle</a></td>
+							</tr>
+					</c:forEach>
+				</c:if>
+			</table>
+			<hr>
+			<div style="width: 40%; margin: auto;'" >
 			<h2><b>Experience</b></h2>
-			<!-- 경력 보여주기  -->
-			<a class="btn btn-default" style="width: 30%; float: right;" id="addCareers">Add Careers</a>
-				<div>
-					<table class="table table-striped" id="ctb">
-						<colgroup>
-							<col width="13%">
-							<col width="13%">
-							<col width="20%">
-							<col width="20%">
-							<col width="24%">
-							<col width="10%">
-						</colgroup>
-						<tr>
-							<th colspan="2">근무기간</th>
-							<th>회사명</th>
-							<th>직위</th>
-							<th colspan="2">역할</th>
-						</tr>
+			<a class="btn btn-default" style="width: 24%; float: right;" id="addCareers">Add Careers</a>
+			<b style="color: red;"><s:fielderror fieldName="chkcareer"/></b>
+			<table class="table table-striped" id="ctb">
+					<colgroup>
+						<col width="18%">
+						<col width="18%">
+						<col width="18%">
+						<col width="18%">
+						<col width="18%">
+						<col width="10%">
+					</colgroup>
+					<tr>
+						<th colspan="2">근무기간</th>
+						<th>회사명</th>
+						<th>직위</th>
+						<th colspan="2">역할</th>
+					</tr>
+					<c:if test="${ not empty elist}">
 						<c:forEach items="${elist}" var="iddx">
-							<tr class="trappend">
-								<td><input class="form-control" type="text" style="width: 100%;" name="ime_regi_date" readonly="readonly" value="${iddx.ime_regi_date}"></td>
-								<td><input class="form-control" type="text" style="width: 100%;" name="ime_exit_date" readonly="readonly" value="${iddx.ime_exit_date}"></td>
+							<tr class="trappend">																					
+								<td><input class="form-control" type="text" style="width: 100%;" name="ime_regi_date" readonly="readonly" value="${fn:substring(iddx.ime_regi_date , 0 , 10)}"></td>
+								<td><input class="form-control" type="text" style="width: 100%;" name="ime_exit_date" readonly="readonly" value="${fn:substring(iddx.ime_exit_date , 0 , 10)}"></td>
 								<td><input class="form-control" type="text" style="width: 100%;" name="ime_coname" value="${iddx.ime_coname}"></td>
 								<td>
 									<select class="form-control" style="width: 80%;" name="ime_auth">
@@ -200,17 +188,28 @@
 								<td><a class="btn btn-default">cancle</a></td>
 							</tr>
 						</c:forEach>
-					</table>
-				</div>
-			<div >
-				<a class="btn btn-default" href="#none" style="width: 40%;" id="addbtn">Submit</a>
+					</c:if>
+			</table>
+			</div>
+			
+			<br>
+			<hr>
+			<div style="width: 40%; margin: auto;">
+				<button type="button" class="btn btn-default" style="width: 40%;" id="submitbtn">Submit</button>
 				<a class="btn btn-default" href="goWorker.do" style="width: 40%;" id="chkchk">Return</a>
 			</div>
 		</div>
 	</div>
-</form>
+	<!--hidden values  -->
+	<input type="hidden" name="chkTa" id="cntChkTa" value="0">
+	<input type="hidden" name="idx" value="${idx}">
+	<input type="hidden" name="chkLicense" id="licenseCount" value="${chkLicense}">
+	<input type="hidden" name="chkCareer" id="careerCount" value="${chkCareer}">
+	<input type="hidden" name="errMessage" id="errmsg" value="${errMessage}">
+</s:form>
 </body>
 <script>
+//주소 API
 $("#findaddr").click(function() {
 	new daum.Postcode({
         oncomplete: function(data) {
@@ -252,7 +251,12 @@ $("#findaddr").click(function() {
         }
     }).open();
 });
-//대문자 영어 대문자
+$("#submitbtn").click(function() {
+	if(confirm("등록 하시겠습니까?")){
+		$("#frm").submit();
+	}
+});
+//스킬 입력시 영어 대문자만 허용,콤마로 구분 , skillinput
 $("#skillinput").keyup(function() {
 	$(this).val($(this).val().toUpperCase());
 	$(this).val($(this).val().replace(/[\{\}\[\]\/?.;:|\)*~`!^\-_<>@\$%&\\\=\(\'\"]|[가-힣]|[ㄱ-ㅎ]|[ㅏ-ㅣ]|[0-9]/gi,""));
@@ -263,6 +267,13 @@ $("#logout").click(function() { //로그아웃 클릭
 			location.href='<s:url action="logout" namespace="/login"/>';
 		}
 });
+$(function() {
+	var msg = $("#errmsg").val();
+	if(msg != null && msg != ""){
+		alert(msg);
+	}
+});
+
 </script>
-<script type="text/javascript" src="js/updateworkerjQuery.js?version=20170626"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/addworkerjQuery.js?version=20123323233123126"></script>
 </html>

@@ -7,15 +7,17 @@ import java.util.List;
 import kr.co.ican.util.GetDBConn;
 import kr.co.ican.util.Helps;
 import kr.co.ican.worker.dao.WorkerDAO;
+import kr.co.ican.worker.vo.AddWorkerVO;
 import kr.co.ican.worker.vo.ExperienceVO;
 import kr.co.ican.worker.vo.MemLicenseVO;
 import kr.co.ican.worker.vo.MemberVO;
+import kr.co.ican.worker.vo.UpdateWorkerVO;
 
 //Worker 관련 services
 public class WorkerService {
 
 	// 사원 상세정보 가져오기
-	public MemberVO getMemberDetail(int im_idx) {
+	public MemberVO getMemberDetail(int im_idx)throws Exception {
 		
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
@@ -28,7 +30,7 @@ public class WorkerService {
 			
 			e.printStackTrace();
 			mvo = null;
-			
+			throw e;
 		}finally {
 			try {
 				conn.close();
@@ -40,7 +42,7 @@ public class WorkerService {
 		return mvo;
 	}
 
-	public List<ExperienceVO> getMemberExperiences(ExperienceVO evo) {// worker`s project history list
+	public List<ExperienceVO> getMemberExperiences(ExperienceVO evo) throws Exception{// worker`s project history list
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
@@ -51,6 +53,7 @@ public class WorkerService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			elist = null;
+			throw e;
 		}finally {
 			try {
 				conn.close();
@@ -62,7 +65,7 @@ public class WorkerService {
 		return elist;
 	}
 
-	public List<MemLicenseVO> getMemberLicenses(MemLicenseVO licvo) {// worker`s License list
+	public List<MemLicenseVO> getMemberLicenses(MemLicenseVO licvo)throws Exception {// worker`s License list
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
@@ -72,6 +75,7 @@ public class WorkerService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			liclist = null;
+			throw e;
 		}finally {
 			try {
 				conn.close();
@@ -83,12 +87,7 @@ public class WorkerService {
 		return liclist;
 	}
 
-//	public String getRegiDate(int im_idx) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-	public int getWorkerExpCount(ExperienceVO evo) { // Counting worker`s Experience 
+	public int getWorkerExpCount(ExperienceVO evo) throws Exception{ // Counting worker`s Experience 
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		int result = 0;
@@ -98,7 +97,9 @@ public class WorkerService {
 			result = wdao.getWorkerExpCount(evo, conn);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			result = -1;
+			throw e;
 		} finally {
 			try {
 				conn.close();
@@ -110,7 +111,7 @@ public class WorkerService {
 		return result;
 	}
 	
-	public int getWorkerLicCount(MemLicenseVO licvo) { // Counting worker`s License 
+	public int getWorkerLicCount(MemLicenseVO licvo) throws Exception{ // Counting worker`s License 
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		int result = 0;
@@ -121,6 +122,8 @@ public class WorkerService {
 
 		} catch (Exception e) {
 			result = -1;
+			e.printStackTrace();
+			throw e;
 		} finally {
 			try {
 				conn.close();
@@ -132,7 +135,7 @@ public class WorkerService {
 		return result;
 	}
 
-	public List<MemberVO> getWorkerList( MemberVO mvo) { // 사원 리스트
+	public List<MemberVO> getWorkerList( MemberVO mvo) throws Exception{ // 사원 리스트
 	    Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		List<MemberVO> mlist = new ArrayList<MemberVO>();
@@ -144,6 +147,8 @@ public class WorkerService {
 			mlist = wdao.getWorkerList(conn , mvo);
 		} catch (Exception e) {
 			mlist = null;
+			e.printStackTrace();
+			throw e;
 		}finally {
 			try {
 				if(conn != null){
@@ -157,7 +162,7 @@ public class WorkerService {
 		return mlist;
 	}
 
-	public int getWorkerCount() {// Total counting Member
+	public int getWorkerCount() throws Exception{// Total counting Member
 	    Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		int totalcount = 0;
@@ -166,6 +171,8 @@ public class WorkerService {
 			totalcount = wdao.getWorkerCount(conn); 
 		} catch (Exception e) {
 			totalcount = -1;
+			e.printStackTrace();
+			throw e;
 		}finally {
 			
 			try {
@@ -182,7 +189,7 @@ public class WorkerService {
 		
 	}
 
-	public boolean chkDuplPhone(MemberVO mvo){// Check Duplicate Phone Number
+	public boolean chkDuplPhone(MemberVO mvo)throws Exception{// Check Duplicate Phone Number
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		boolean flag  = false;
@@ -191,6 +198,32 @@ public class WorkerService {
 			flag = wdao.chkDuplPhone(mvo, conn);
 		} catch (Exception e) {
 			flag = false;
+			e.printStackTrace();
+			throw e;
+		}finally {
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				flag = false;
+				e.printStackTrace();
+			}
+		}
+		return flag;
+	}
+	
+	public boolean updateChkDuplPhone(MemberVO mvo)throws Exception{// Check Duplicate Phone Number
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		boolean flag  = false;
+		try {
+			conn = GetDBConn.getConnection();
+			flag = wdao.updateChkDuplPhone(mvo, conn);///
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+			throw e;
 		}finally {
 			try {
 				if(conn != null){
@@ -204,7 +237,7 @@ public class WorkerService {
 		return flag;
 	}
 
-	public boolean chkDuplEmail(MemberVO mvo) { // Check Duplicate E-Mail Address
+	public boolean chkDuplEmail(MemberVO mvo) throws Exception{ // Check Duplicate E-Mail Address
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		boolean flag  = false;
@@ -213,7 +246,37 @@ public class WorkerService {
 			flag = wdao.chkDuplEmail(mvo, conn);
 		} catch (SQLException e) {
 			flag = false;
-		}finally {
+			
+		}catch(Exception ee){
+			throw ee;
+		}
+		finally {
+			try {
+				if(conn != null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				flag =false;
+			}
+		}
+		return flag;
+	}
+	
+	public boolean updateChkDuplEmail(MemberVO mvo) throws Exception{ // Check Duplicate E-Mail Address
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		boolean flag  = false;
+		try {
+			conn = GetDBConn.getConnection();
+			flag = wdao.updateChkDuplEmail(mvo, conn);
+		} catch (SQLException e) {
+			flag = false;
+			
+		}catch(Exception ee){
+			throw ee;
+		}
+		finally {
 			try {
 				if(conn != null){
 					conn.close();
@@ -226,7 +289,7 @@ public class WorkerService {
 		return flag;
 	}
 
-	public boolean chkDuplScnum(MemberVO mvo) {// Check Duplicate Social Number
+	public boolean chkDuplScnum(MemberVO mvo) throws Exception{// Check Duplicate Social Number
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		boolean flag  = false;
@@ -237,6 +300,7 @@ public class WorkerService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			flag = false;
+			throw e;
 		}finally {
 			try {
 				if(conn != null){
@@ -250,70 +314,71 @@ public class WorkerService {
 		return flag;
 	}
 
-	public boolean addWorker(MemberVO mvo, List<ExperienceVO> elist, List<MemLicenseVO> liclist) { // add Worker
+	public boolean addWorker(MemberVO mvo, List<ExperienceVO> elist, List<MemLicenseVO> liclist) throws Exception{ // add Worker
 		//Insert Check Flag
-		boolean basicInfoFlag = false;
-		boolean licenseFlag = false;
-		boolean basicExpFlag = false;
-		boolean careerFlag = false;
-		
 		boolean lastResult = false;
 		//Create
 		Connection conn = null;
 		try{
 			conn = GetDBConn.getConnection();
 			conn.setAutoCommit(false);
-
 			WorkerDAO wdao = new WorkerDAO();
 			
-			// 1. 기본정보 and 기본 경력 추가
-			basicInfoFlag = wdao.addWorkerInfo(mvo, conn); // 기본 정보
-			basicExpFlag = wdao.basicWorkerExp(mvo, conn); // 기본 경력
+			// 1. 기본사원정보 추가
+			lastResult = wdao.addWorkerInfo(mvo, conn); // 기본 정보
 			
-			// 2. 자격증
+			if(lastResult == false){
+				conn.rollback();
+				return lastResult;
+			}
+			
+			// 2. 기본 경력 추가 
+			lastResult = wdao.basicWorkerExp(mvo, conn); // 기본 경력
+			
+			if(lastResult == false){
+				conn.rollback();
+				return lastResult;
+			}
+			
+			// 3. 자격증
 			if (liclist != null && liclist.size() > 0) {
+				
 				for (int idx = 0; idx < liclist.size(); idx++) {
 
-					licenseFlag = wdao.addWorkerLicense(liclist.get(idx), conn);
-					if (licenseFlag == false) {
-						break;
+					lastResult = wdao.addWorkerLicense(liclist.get(idx), conn);
+					
+					if (lastResult == false) {
+						conn.rollback();
+						return lastResult;
 					}
 				}
-			} else {
-				licenseFlag = true;
-			}
-			
+			} 
 			// 3. 경력
 			if (elist != null && elist.size() > 0) {
+				
 				for (int idx = 0; idx < elist.size(); idx++) {
 
-					careerFlag = wdao.addWorkerExp(elist.get(idx), conn);
-					if (careerFlag == false) {
-						break;
+					lastResult = wdao.addWorkerExp(elist.get(idx), conn);
+					
+					if (lastResult == false) {
+						conn.rollback();
+						return lastResult;
 					}
 				}
-			} else {
-				careerFlag = true;
 			}
-
-			// 4. insert check
-			if (basicInfoFlag == false || licenseFlag == false || basicExpFlag == false || careerFlag == false) {
-				conn.rollback(); // roll back
-				lastResult = false;
-			} else {
-				conn.commit(); // commit
-				lastResult = true;
+			
+			if(lastResult == true){
+				conn.commit();
 			}
-		}catch(SQLException e){
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
+			
+		}catch(Exception ee){
+			
+			conn.rollback();
+			ee.printStackTrace();
 			lastResult = false;
-		}finally {
+			throw ee;
+		}
+		finally {
 			try {
 				if(conn != null){
 					conn.close();
@@ -325,8 +390,32 @@ public class WorkerService {
 		
 		return lastResult;
 		
+		
 	}
-
+	public String getRegiDate(MemberVO mvo) throws Exception{
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		String resultstr = "";
+		try {
+			conn = GetDBConn.getConnection();
+			resultstr = wdao.getRegiDate(conn, mvo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultstr = null;
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return resultstr;
+		
+	}
 	// make Experience List
 	public List<ExperienceVO> makeListExp(String[] regi, String[] exit, String[] coname, String[] auth, String[] roll,	int count) {
 		List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
@@ -356,4 +445,71 @@ public class WorkerService {
 		return liclist;
 	}
 	
+	public UpdateWorkerVO goWorkerUpdate(UpdateWorkerVO uvo) throws Exception{
+		
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		
+		MemberVO mvo = new MemberVO();
+		List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
+		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
+		ExperienceVO evo = new ExperienceVO();
+		
+		try {
+			
+			conn = GetDBConn.getConnection();
+			
+			mvo = wdao.getMemberDetail(conn, uvo.getMvo().getIm_idx()); // mvo
+			liclist = wdao.getMemberLicenses(uvo.getLicvo(), conn); //license list
+			elist = wdao.getMemberExperiences(uvo.getEvo(), conn); //exp list
+			evo = wdao.getOutSidePersonCompany(uvo.getMvo().getIm_idx(), conn);
+			
+			uvo.setMvo(mvo);
+			uvo.setLiclist(liclist);
+			uvo.setElist(elist);
+			uvo.setEvo(evo);
+			
+		} catch (Exception e) {
+			
+			uvo = null;
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					
+					conn.close();
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return uvo;
+	}
+	
+	public boolean updateWorkerInfo(AddWorkerVO avo){
+		//Insert Check Flag
+		boolean lastResult = false;
+		//Create
+		Connection conn = null;
+//		
+//		conn = GetDBConn.getConnection();
+//		conn.setAutoCommit(false);
+		WorkerDAO wdao = new WorkerDAO();
+		
+		// 1. 기본사원정보 update 
+		// 2. 자격증 지우기
+		// 3. 경력 지우기
+		// 4. 자격증 insert
+		// 5. 경력 insert
+		
+		// 6. return
+		/**
+		 * 중간중간 리턴 시킬것
+		 * try catch 잘 잡을 것
+		 * 트랜잭션 활용
+		 */
+		return false;
+	}
 }	

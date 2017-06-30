@@ -15,7 +15,8 @@
 		<action name="loginAf" class="kr.co.ican.login.action.LoginMultiAction" method="loginAf">
 			<result name="success">/WEB-INF/views/main/main.jsp</result>
 			<result name="fail" >/WEB-INF/views/login/loginFailed.jsp</result>
-		</action>
+			<result name="error"/>
+		</action> 
 		<!--로그아웃  -->
 		<action name="logout" class="kr.co.ican.login.action.LoginMultiAction" method="logout">
 			<result name="success">/WEB-INF/views/login/doLogout.jsp</result>
@@ -26,6 +27,7 @@
 		</action>
 		<action name="getFindId" class="kr.co.ican.login.action.FindIdAction">
 			<result name="success">/WEB-INF/views/login/findID.jsp</result>
+			<result name="eroro"/>
 		</action>
 		<!--패스워드 찾기(패스워드 찾기)  -->
 		<action name="findPw">

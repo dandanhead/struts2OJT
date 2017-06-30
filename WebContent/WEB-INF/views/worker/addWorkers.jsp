@@ -103,19 +103,18 @@
 			<br>
 			<div id="selectDep">
 				<label>* Department</label>
-				<select class="form-control" style="width: 30%;" name="mvo.im_dname">
-					<option value="대표이사">대표이사</option>
-					<option value="전무이사">전무이사</option>
-					<option value="상무이사">상무이사</option>
-					<option value="SO사업부">SO사업부</option>
-					<option value="SI사업부">SI사업부</option>
-					<option value="타업체인력">타업체인력</option>
-					<option value="FreeLancer">FreeLancer</option>
+				<select class="form-control" style="width: 30%;" name="mvo.im_dname" id="depsel">
+					<option value="대표이사" <c:if test="${mvo.im_dname eq '대표이사'}">selected</c:if>>대표이사</option>
+					<option value="전무이사" <c:if test="${mvo.im_dname eq '전무이사'}">selected</c:if>>전무이사</option>
+					<option value="상무이사" <c:if test="${mvo.im_dname eq '상무이사'}">selected</c:if>>상무이사</option>
+					<option value="SO사업부" <c:if test="${mvo.im_dname eq 'SO사업부'}">selected</c:if>>SO사업부</option>
+					<option value="SI사업부" <c:if test="${mvo.im_dname eq 'SI사업부'}">selected</c:if>>SI사업부</option>
+					<option value="타업체인력"<c:if test="${mvo.im_dname eq '타업체인력'}">selected</c:if> >타업체인력</option>
+					<option value="FreeLancer"<c:if test="${mvo.im_dname eq 'FreeLancer'}">selected</c:if> >FreeLancer</option>
 					<option value="관리부">관리부</option>
 				</select>
-				<label id="conamelabel" hidden="true">※타업체 인력인 경우 소속 회사를 입력해야 합니다.</label>
-				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname" hidden="true" placeholder="회사명을 입력 해 주세요.">
-				 <b style="color: red;"><s:fielderror fieldName="chkTaCoName"/></b>
+				<label id="conamelabel">※타업체 인력인 경우 소속 회사를 입력해야 합니다.</label>
+				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname" placeholder="회사명을 입력 해 주세요." value="${outsideperson}">
 			</div>
 			<br>
 			<div>
@@ -142,6 +141,16 @@
 					<th>취득일</th>
 					<th colspan="2">발급기관</th>
 				</tr>
+				<c:if test="${not empty liclist}">
+					<c:forEach items="${liclist}" var="idx">
+							<tr>
+								<td><input class="form-control" type="text"	style="width: 100%;" name="iml_lname" value="${idx.iml_lname}"></td>
+								<td><input class="form-control" type="text" style="width: 100%;" name="iml_acqdate" readonly="readonly" value="${fn:substring(idx.iml_acqdate, 0 , 10)}"></td>
+								<td><input class="form-control" type="text" style="width: 100%;" name="iml_organization" value="${idx.iml_organization}"></td>
+								<td><a class="btn btn-default">cancle</a></td>
+							</tr>
+					</c:forEach>
+				</c:if>
 			</table>
 			<hr>
 			<div style="width: 40%; margin: auto;'" >
@@ -163,6 +172,23 @@
 						<th>직위</th>
 						<th colspan="2">역할</th>
 					</tr>
+					<c:if test="${ not empty elist}">
+						<c:forEach items="${elist}" var="iddx">
+							<tr class="trappend">																					
+								<td><input class="form-control" type="text" style="width: 100%;" name="ime_regi_date" readonly="readonly" value="${fn:substring(iddx.ime_regi_date , 0 , 10)}"></td>
+								<td><input class="form-control" type="text" style="width: 100%;" name="ime_exit_date" readonly="readonly" value="${fn:substring(iddx.ime_exit_date , 0 , 10)}"></td>
+								<td><input class="form-control" type="text" style="width: 100%;" name="ime_coname" value="${iddx.ime_coname}"></td>
+								<td>
+									<select class="form-control" style="width: 80%;" name="ime_auth">
+									<option value="0" <c:if test="${iddx.ime_auth eq 0}">selected</c:if>>Developer</option>
+									<option value="1" <c:if test="${iddx.ime_auth eq 1}">selected</c:if>>Manager</option>
+									</select>  
+								</td>
+								<td><input class="form-control" type="text" style="width: 100%;" name="ime_roll" value="${iddx.ime_roll }"></td>
+								<td><a class="btn btn-default">cancle</a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
 			</table>
 			</div>
 			
@@ -176,8 +202,8 @@
 	</div>
 	<!--hidden values  -->
 	<input type="hidden" name="chkTa" id="cntChkTa" value="0">
-	<input type="hidden" name="chkLicense" id="licenseCount" value="0">
-	<input type="hidden" name="chkCareer" id="careerCount" value="0">
+	<input type="hidden" name="chkLicense" id="licenseCount" value="${chkLicense}">
+	<input type="hidden" name="chkCareer" id="careerCount" value="${chkCareer}">
 	<input type="hidden" name="errMessage" id="errmsg" value="${errMessage}">
 </s:form>
 </body>
@@ -248,5 +274,5 @@ $(function() {
 });
 
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/addworkerjQuery.js?version=20170626"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/addworkerjQuery.js?version=20123323233123126"></script>
 </html>

@@ -23,8 +23,10 @@ public class MemberDAO {
 			+ " 		IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IME_REGI_DATE "
      		+ " FROM "
      		+ " 		ICAN_MEMBER IM LEFT JOIN ICAN_MEM_EXP IME "
-     		+ " ON IM.IM_IDX = IME.IME_IM_IDX "
-     		+ " WHERE IME.IME_EXIT_DATE IS NULL AND IM.IM_IDX = ? AND IM.IM_PW = ? ";
+     		+ " ON "
+     		+ "			IM.IM_IDX = IME.IME_IM_IDX "
+     		+ " WHERE "
+     		+ "			IME.IME_EXIT_DATE IS NULL AND IM.IM_IDX = ? AND IM.IM_PW = ? ";
 		
 		
 			psmt = conn.prepareStatement(sql);
@@ -71,8 +73,10 @@ public class MemberDAO {
 		int cnt = 1;
 		int result = 0;
 		
-	     sql = " SELECT IM_IDX "
-      	        + " FROM ICAN_MEMBER WHERE IM_NAME = ? AND IM_SCNUM = ? ";
+	     sql = " SELECT "
+	     		+ "		IM_IDX "
+      	     + " FROM "
+      	     + "		ICAN_MEMBER WHERE IM_NAME = ? AND IM_SCNUM = ? ";
 	      
         psmt = conn.prepareStatement(sql);
         psmt.setString(cnt++, mvo.getIm_name());
@@ -108,7 +112,14 @@ public class MemberDAO {
 		 ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = " select im_pw " + " from ican_member where im_name = ? and im_scnum = ? and im_email = ? ";
+		String sql = " SELECT "
+				+ "				IM_PW  "
+				+ "	     FROM  "
+				+ "				ICAN_MEMBER "
+				+ "		WHERE "
+				+ "				IM_NAME = ?"
+				+ "		    AND IM_SCNUM = ? "
+				+ "         AND IM_EMAIL = ? ";
 
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(cnt++, mvo.getIm_name());
@@ -136,43 +147,4 @@ public class MemberDAO {
 		}
 	}
 	
-	// get Member Start Date
-	public ExperienceVO getMemberStartDate(Connection conn, MemberVO mvo) throws SQLException {
-		 PreparedStatement psmt = null;
-		 ResultSet rs = null;
-		int cnt = 1;
-		int result = 0;
-		String sql = "";
-		ExperienceVO evo = new ExperienceVO();
-		
-		sql = " select * from ican_mem_exp where ime_exit_date is null and ime_im_idx = ? ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(cnt++, mvo.getIm_idx());
-		 
-		rs = psmt.executeQuery();
-		
-		while (rs.next()) {
-			cnt =1;
-			evo.setIme_im_idx(rs.getInt(cnt++));
-			evo.setIme_regi_date(rs.getString(cnt++));
-			evo.setIme_exit_date(rs.getString(cnt++));
-			evo.setIme_coname(rs.getString(cnt++));
-			evo.setIme_auth(rs.getInt(cnt++));
-			
-			result++;
-		}
-		//close
-		if(psmt != null){
-			psmt.close();
-		}
-		if(rs != null){
-			rs.close(); 
-		}
-		//return		
-		if (result == 0) {
-			return null;
-		} else {
-			return evo;
-		}
-	}
 }

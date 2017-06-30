@@ -40,16 +40,16 @@
 			<tr>
 				<td>이름<input type="text" readonly="readonly" value="${mvo.im_name}" class="form-control"></td>
 				<td>phone<input type="tel" readonly="readonly" value="${mvo.im_phone}" class="form-control"></td>
-				<td>나이<input type="number" readonly="readonly" value="" class="form-control"></td>
+				<td>나이<input type="number" readonly="readonly" value="${age}" class="form-control"></td>
 			</tr>
 			<tr>
 				<td>주민번호<input type="text" readonly="readonly" value="${mvo.im_scnum }" class="form-control"></td>
 				<td>이메일<input type="email" readonly="readonly" value="${mvo.im_email }" class="form-control"></td>
-				<td>경력<input type="text" readonly="readonly" value="" class="form-control"></td>
+				<td>경력<input type="text" readonly="readonly" value="${experience}" class="form-control"></td>
 			</tr>
 			<tr>
-				<td>입사일<input type="text" readonly="readonly" value="" class="form-control"></td>
-				<td>성별<input type="text" readonly="readonly" value="" class="form-control"></td>
+				<td>입사일<input type="text" readonly="readonly" value="${fn:substring(regidate, 0 , 10)}" class="form-control"></td>
+				<td>성별<input type="text" readonly="readonly" value="${gender}" class="form-control"></td>
 				<td>집주소<input type="text" readonly="readonly" value="(${mvo.im_postcode})${mvo.im_address}&nbsp;${mvo.im_detailaddr}" class="form-control"></td>
 			</tr>
 			<tr>
@@ -273,7 +273,7 @@
 		
 		if(confirm("수정 하시겠습니까?")){
 			
-			$("#frm").attr({"target" : "_self" , "action" : "workerUpdate.do"}).submit();	
+			$("#frm").attr({"target" : "_self" , "action" : "workerUpdate"}).submit();	
 		}
 	});
 	

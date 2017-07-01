@@ -290,31 +290,31 @@ public class InfoUpdateWorkerAction extends ActionSupport {
 			elist =  service.makeListExp(ime_regi_date, ime_exit_date, ime_coname, ime_auth, ime_roll, chkCareer);
 			mvo.setOutsideperson(outsideperson);
 			
+			// validation
 			vvo = vcheck.updateWorkerAction(avo);
 			
-			System.out.println(vvo.isResultfalg());
-			
 			if(vvo.isResultfalg() == true){
-				System.out.println("validation 통과!");
-				// 1. 기본정보 업데이트
+				// update
+				updatecheck = service.updateWorkerInfo(mvo, liclist, elist);
 				
-				// 2. 기존 경력, 자격증 삭제
-				// 3. 인풋 경력, 자격증 인서트
-				// 4. 롤백 or commit
-				// 5. 페이지 이동 하기
 			}else{
-				errMessage = vvo.getMsg();
-				return "fail";
+				errMessage = vvo.getMsg(); 
+				return "fail"; // validation return
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";  //exception return
 			
-			System.out.println("캐치에 걸림 ㅋㅋㅋ");
 		}
 		
+		//return
+		if(updatecheck == false){
+			errMessage = "지금은 사원정보를 업데이트 할 수 없습니다. 관리자에게 문의하세요.";
+			return "fail"; //update fail return;
+		}else{
+			
+			return "success"; // update success return
+		}
 		
-		
-		return "success";
-		//2. update
-		//3  move page
 	}
 }

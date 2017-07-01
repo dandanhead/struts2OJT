@@ -51,10 +51,10 @@
 				<label>* Social Num</label>
 				<div class="row">
 				  <div class="col-xs-3">
-				    <input type="text" class="form-control" placeholder="앞 자리" name="snumF" value="${snumF}" maxlength="6">
+				    <input type="text" class="form-control" placeholder="앞 자리" name="snumF" value="${snumF}" maxlength="6" readonly="readonly">
 				  </div>
 				  <div class="col-xs-3">
-				    <input type="password" class="form-control" placeholder="뒷 자리" name="snumE" value="${snumE}" maxlength="7">
+				    <input type="password" class="form-control" placeholder="뒷 자리" name="snumE" value="${snumE}" maxlength="7" readonly="readonly">
 				  </div>
 				</div>
 				<b style="color: red;"><s:fielderror fieldName="chkscnum"/></b>

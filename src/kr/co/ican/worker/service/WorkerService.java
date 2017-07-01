@@ -7,7 +7,6 @@ import java.util.List;
 import kr.co.ican.util.GetDBConn;
 import kr.co.ican.util.Helps;
 import kr.co.ican.worker.dao.WorkerDAO;
-import kr.co.ican.worker.vo.AddWorkerVO;
 import kr.co.ican.worker.vo.ExperienceVO;
 import kr.co.ican.worker.vo.MemLicenseVO;
 import kr.co.ican.worker.vo.MemberVO;
@@ -488,28 +487,86 @@ public class WorkerService {
 		return uvo;
 	}
 	
-	public boolean updateWorkerInfo(AddWorkerVO avo){
+	public boolean updateWorkerInfo(MemberVO mvo, List<MemLicenseVO> liclist, List<ExperienceVO> elist)throws Exception{
 		//Insert Check Flag
-		boolean lastResult = false;
+		boolean lastResult = false; // return check
+		boolean existCheck = false; // 삭제 여부 check
 		//Create
 		Connection conn = null;
-//		
-//		conn = GetDBConn.getConnection();
-//		conn.setAutoCommit(false);
+		
+		conn = GetDBConn.getConnection();
+		conn.setAutoCommit(false);
 		WorkerDAO wdao = new WorkerDAO();
 		
-		// 1. 기본사원정보 update 
-		// 2. 자격증 지우기
-		// 3. 경력 지우기
-		// 4. 자격증 insert
-		// 5. 경력 insert
+		try {
+			
+			// 1. 기본사원정보 update
+			lastResult = wdao.updateWorkerInfo(mvo, conn);
+			if(lastResult == false){
+				return lastResult;
+			}
+			// 2. 자격증 지우기
+			existCheck = wdao.chkExistLicence(mvo, conn); // 자격증이 DB에 있는지 체크
+			if(existCheck == true){ // 있다면
+				lastResult = wdao.preupdateWorkerLicense(mvo, conn); // 자격증 삭제
+				if(lastResult == false){
+					return lastResult;
+				}
+			}
+			// 3. 자격증 insert
+			if(liclist.size() != 0 && liclist != null){
+				
+				for (int idx = 0; idx < liclist.size(); idx++) {
+					//liclist.get(idx) == MemLicenseVO
+					lastResult = wdao.updateWorkerLicense(liclist.get(idx), conn , mvo);
+					
+					if(lastResult == false){
+						return lastResult;
+					}
+					
+				}
+				
+			}
+			// 4. 경력 지우기
+			existCheck = wdao.chkExistExp(mvo, conn);
+			if(existCheck == true){
+				lastResult = wdao.preupdateWorkerExp(mvo, conn);
+				if(lastResult == false){
+					return lastResult;
+				}
+			}
+			// 5. 경력 insert
+			if(elist.size() != 0 && elist != null){
+				
+				for (int idx = 0; idx < elist.size(); idx++) {
+					
+					lastResult = wdao.updateWorkerExp(elist.get(idx), conn , mvo);
+					
+					if(lastResult == false){
+						return lastResult;
+					}
+				}
+			}
+			
+			conn.commit();
+			
+		} catch (Exception e) {
+			conn.rollback();
+			e.printStackTrace();
+			throw e;
+		}finally {
+			
+			if(conn != null){
+				
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				
+			}
+		}
 		
-		// 6. return
-		/**
-		 * 중간중간 리턴 시킬것
-		 * try catch 잘 잡을 것
-		 * 트랜잭션 활용
-		 */
-		return false;
+		return lastResult;
 	}
 }	

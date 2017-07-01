@@ -3,6 +3,7 @@ package kr.co.ican.worker.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.ican.worker.vo.ExperienceVO;
@@ -617,4 +618,193 @@ public class WorkerDAO {
 		return vo;
 	}
 	
+	
+	public boolean updateWorkerInfo(MemberVO mvo, Connection conn) throws Exception{
+		PreparedStatement psmt = null;
+		
+		String sql = "";
+        int cnt = 1;
+        int result = 0;
+        try {
+			sql = " UPDATE ICAN_MEMBER SET IM_PW = ? , IM_DNAME = ? , IM_PHONE = ?, IM_EMAIL = ? ,IM_ADDRESS = ?, IM_DETAILADDR = ? ,"
+				+ " IM_POSTCODE = ? , IM_AUTH = ? , IM_SKILL = ?  WHERE IM_IDX = ? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mvo.getIm_pw());
+			psmt.setString(cnt++, mvo.getIm_dname());
+			psmt.setString(cnt++, mvo.getIm_phone());
+			psmt.setString(cnt++, mvo.getIm_email());
+			psmt.setString(cnt++, mvo.getIm_address());
+			psmt.setString(cnt++, mvo.getIm_detailaddr());
+			psmt.setString(cnt++, mvo.getIm_postcode());
+			psmt.setInt(cnt++, mvo.getIm_auth());
+			psmt.setString(cnt++, mvo.getIm_skill());
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result > 0 ? true : false;
+	}
+	
+	public boolean chkExistLicence(MemberVO mvo, Connection conn) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		int result = 0;
+		int cnt = 1;
+		String sql = "";
+
+		try {
+			sql = "  SELECT COUNT(*) FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
+
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getInt(cnt++);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+
+		}
+		
+		return result > 0 ? true : false;
+	}
+	
+	public boolean preupdateWorkerLicense(MemberVO mvo, Connection conn) throws Exception{
+		PreparedStatement psmt = null;
+		
+		String sql = "";
+        int cnt = 1;
+        int result = 0;
+        try {
+        	
+			sql = " DELETE FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result > 0 ? true : false;
+	}
+	
+	public boolean updateWorkerLicense(MemLicenseVO mlvo, Connection conn , MemberVO mvo) throws Exception {
+		PreparedStatement psmt = null;
+		String sql = "";
+		int cnt = 1;
+		int result = 0;
+		try {
+			sql = " INSERT INTO " 
+				    + "ICAN_MEM_LICENSE ( "
+				    + "						IML_IM_IDX, IML_LNAME ,"
+					+ "						IML_ACQDATE, "
+					+ "						IML_ORGANIZATION "
+					+ "					) "
+					+ " VALUES( ? , ? , ? , ?) ";
+
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			psmt.setString(cnt++, mlvo.getIml_lname());
+			psmt.setString(cnt++, mlvo.getIml_acqdate());
+			psmt.setString(cnt++, mlvo.getIml_organization());
+
+			result = psmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result > 0 ? true : false;
+	}
+	
+	
+	public boolean chkExistExp(MemberVO mvo, Connection conn) throws Exception{
+		PreparedStatement psmt = null;
+        ResultSet rs = null;
+        
+        int result= 0;
+        int cnt = 1;
+        String sql = "";
+        
+        try {
+        	sql = "  SELECT COUNT(*) FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NOT NULL ";
+        	psmt = conn.prepareStatement(sql);
+        	psmt.setInt(cnt++, mvo.getIm_idx());
+        	
+        	rs =psmt.executeQuery();
+        	
+        	while (rs.next()) {
+				cnt = 1;
+        		result = rs.getInt(cnt++);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+        
+		return result > 0 ? true : false ;
+	}
+	
+	public boolean preupdateWorkerExp(MemberVO mvo, Connection conn)throws Exception{
+		PreparedStatement psmt = null;
+		String sql = "";
+        int cnt = 1;
+        int result = 0;
+        try {
+			sql = " DELETE FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NOT NULL ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+        
+		return result > 0 ? true : false;
+	}
+	
+	public boolean updateWorkerExp(ExperienceVO evo, Connection conn, MemberVO mvo )throws Exception {
+		
+		PreparedStatement psmt = null;
+		String sql = "";
+        int cnt = 1;
+        int result = 0;
+        try {
+        	
+			sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
+				+ " VALUES(? , ? , ? , ?, ? , ? ) ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			psmt.setString(cnt++, evo.getIme_regi_date());
+			psmt.setString(cnt++, evo.getIme_exit_date());
+			psmt.setString(cnt++, evo.getIme_coname());
+			psmt.setInt(cnt++, evo.getIme_auth());
+			psmt.setString(cnt++, evo.getIme_roll());
+			
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+        
+		return result > 0 ? true : false;
+	}
 }
+

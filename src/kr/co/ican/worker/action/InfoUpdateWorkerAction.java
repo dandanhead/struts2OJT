@@ -238,6 +238,7 @@ public class InfoUpdateWorkerAction extends ActionSupport {
 			elist = uvo.getElist(); //2. 자격증 리스트
 			liclist = uvo.getLiclist(); //3. 경력 리스트
 			evo = uvo.getEvo();
+			outsideperson = uvo.getEvo().getIme_coname();
 			sphone = uvo.getMvo().getIm_phone().split("-")[0];
 			mphone = uvo.getMvo().getIm_phone().split("-")[1];
 			ephone = uvo.getMvo().getIm_phone().split("-")[2];
@@ -284,7 +285,7 @@ public class InfoUpdateWorkerAction extends ActionSupport {
 		avo.setIme_auth(ime_auth);
 		avo.setIme_roll(ime_roll);
 		
-	
+		
 		try {
 			liclist  = service.makeListLicense(iml_lname, iml_acqdate, iml_organization, chkLicense);
 			elist =  service.makeListExp(ime_regi_date, ime_exit_date, ime_coname, ime_auth, ime_roll, chkCareer);
@@ -295,7 +296,7 @@ public class InfoUpdateWorkerAction extends ActionSupport {
 			
 			if(vvo.isResultfalg() == true){
 				// update
-				updatecheck = service.updateWorkerInfo(mvo, liclist, elist);
+				updatecheck = service.updateWorkerInfo(mvo, liclist, elist, chkTa);
 				
 			}else{
 				errMessage = vvo.getMsg(); 

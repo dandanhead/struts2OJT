@@ -806,5 +806,59 @@ public class WorkerDAO {
         
 		return result > 0 ? true : false;
 	}
+	
+	public boolean updateWorkerConame(MemberVO mvo, Connection conn) throws Exception{
+		PreparedStatement psmt = null;
+		String sql = "";
+		int cnt = 1;
+		int result = 0;
+		try {
+			sql = " UPDATE "
+				+ "			ICAN_MEM_EXP "
+				+ " SET "
+				+ "			IME_CONAME = ? "
+				+ " WHERE "
+				+ "			IME_IM_IDX = ? "
+				+ "	AND "
+				+ "			IME_EXIT_DATE IS NULL ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mvo.getOutsideperson());
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return result > 0 ? true : false;
+	}
+	
+	public boolean updateWorkerConameReturn(MemberVO mvo, Connection conn) throws Exception{
+		PreparedStatement psmt = null;
+		String sql = "";
+		int cnt = 1;
+		int result = 0;
+		try {
+			sql = " UPDATE "
+				+ "			ICAN_MEM_EXP "
+				+ " SET "
+				+ "			IME_CONAME = ? "
+				+ " WHERE "
+				+ "			IME_IM_IDX = ? "
+				+ "	AND "
+				+ "			IME_EXIT_DATE IS NULL ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, "아이캔매니지먼트(주)");
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return result > 0 ? true : false;
+	}
 }
 

@@ -14,7 +14,7 @@
 		<s:a namespace="/worker" action="goWorker" class="btn btn-primary">사원관리</s:a>
 	</div>
 	<div class = "topmenu" id="manageProject" style="float: left; width: 25%;">
-		<s:a namespace="/move" action="goProject" class="btn btn-primary">프로젝트 관리</s:a>
+		<s:a namespace="/project" action="goProject" class="btn btn-primary">프로젝트 관리</s:a>
 	</div>
 	<div class = "topmenu"id="mypage" style="float: left; width: 17%; width: 25%;">
 		<a href="#none"  class="btn btn-primary" id="logout">로그아웃</a> 

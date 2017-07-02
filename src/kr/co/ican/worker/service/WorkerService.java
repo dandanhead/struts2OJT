@@ -487,7 +487,7 @@ public class WorkerService {
 		return uvo;
 	}
 	
-	public boolean updateWorkerInfo(MemberVO mvo, List<MemLicenseVO> liclist, List<ExperienceVO> elist)throws Exception{
+	public boolean updateWorkerInfo(MemberVO mvo, List<MemLicenseVO> liclist, List<ExperienceVO> elist, int chkTa)throws Exception{
 		//Insert Check Flag
 		boolean lastResult = false; // return check
 		boolean existCheck = false; // 삭제 여부 check
@@ -535,6 +535,8 @@ public class WorkerService {
 					return lastResult;
 				}
 			}
+			
+			
 			// 5. 경력 insert
 			if(elist.size() != 0 && elist != null){
 				
@@ -545,6 +547,18 @@ public class WorkerService {
 					if(lastResult == false){
 						return lastResult;
 					}
+				}
+			}
+			// 6. 타업체 회사명 바꾸기
+			if(chkTa > 0){
+				lastResult =  wdao.updateWorkerConame(mvo, conn);
+				if(lastResult == false){
+					return lastResult;
+				}
+			}else{
+				lastResult = wdao.updateWorkerConameReturn(mvo, conn);
+				if(lastResult == false){
+					return lastResult;
 				}
 			}
 			

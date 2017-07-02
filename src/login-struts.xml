@@ -7,6 +7,9 @@
 <struts>
    <!--login -->
    <package name="login" extends="struts-default" namespace="/login">
+		<global-results>
+            <result name="error">/WEB-INF/views/error/error.jsp</result>
+        </global-results>
 		<!-- start -->
 		<action name="start" class="kr.co.ican.login.action.LoginMultiAction" method="start">
 			<result>/WEB-INF/views/login/login.jsp</result>

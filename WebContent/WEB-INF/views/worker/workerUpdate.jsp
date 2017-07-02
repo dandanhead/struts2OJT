@@ -114,7 +114,7 @@
 					<option value="관리부">관리부</option>
 				</select>
 				<label id="conamelabel">※타업체 인력인 경우 소속 회사를 입력해야 합니다.</label>
-				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname" placeholder="회사명을 입력 해 주세요." value="${evo.ime_coname}">
+				<input type="text" class="form-control" style="width: 30%" name="outsideperson" id="coname" placeholder="회사명을 입력 해 주세요." value="${outsideperson}">
 			</div>
 			<br>
 			<div>
@@ -201,7 +201,7 @@
 		</div>
 	</div>
 	<!--hidden values  -->
-	<input type="hidden" name="chkTa" id="cntChkTa" value="0">
+	<input type="hidden" name="chkTa" id="cntChkTa" value="${mvo.im_dname eq '타업체인력' ? 1 : 0}">
 	<input type="hidden" name="idx" value="${idx}">
 	<input type="hidden" name="chkLicense" id="licenseCount" value="${chkLicense}">
 	<input type="hidden" name="chkCareer" id="careerCount" value="${chkCareer}">

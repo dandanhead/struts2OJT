@@ -11,4 +11,5 @@
    <!--include  -->
    <include file="login-struts.xml"/>
    <include file="worker-struts.xml"/>
+   <include file="project-struts.xml"/>
 </struts>

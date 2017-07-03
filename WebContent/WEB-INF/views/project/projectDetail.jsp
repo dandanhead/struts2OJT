@@ -58,14 +58,15 @@
 			<td>
 				Document
 				<br>
-				<c:if test="${empty pvo.ipl_doc }">
+				<%-- <c:if test="${empty pvo.ipl_doc }">
 					<input type="text" value="첨부 파일이 없습니다." disabled="disabled" class="form-control"> 
 				</c:if>
 				<c:if test="${not empty pvo.ipl_doc }">
 					<button type="button" class="btn btn-default" aria-label="Left Align" onclick="fileDowns('${pvo.ipl_idx}','${pvo.ipl_doc}')" style="width: 100%;">
 						 <span class="glyphicon glyphicon-download-alt" aria-hidden="true">${pvo.ipl_doc}</span>
 					</button>
-				</c:if>
+				</c:if> --%>
+				<a href="fileDownload?fileName=${pvo.ipl_doc}">${pvo.ipl_doc}</a>
 			</td>
 			<td style="vertical-align: bottom;">
 				<a href="#none" class="btn btn-default">Fix</a>
@@ -122,7 +123,7 @@
 	$("#assignMember").click(function() {
       	window.open("", "popupform", "width = 1024, height = 860, left = 200, top = 100, status = no, scrollbars = yes");
       	
-      	$("#popfrm").attr({"target" : "popupform" , "action" : "assignMember.do"}).submit();
+      	$("#popfrm").attr({"target" : "popupform" , "action" : "assignMember"}).submit();
 	});
 	
 	//logout

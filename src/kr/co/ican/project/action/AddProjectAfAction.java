@@ -16,7 +16,7 @@ public class AddProjectAfAction extends ActionSupport {
 	private static final long serialVersionUID = 1306705384897279716L;
 	
 	// file upload
-	private static final String FilePath = "D://tempupload";
+	private static final String FilePath = "Z://tempupload";
 	private File ipl_doc;
 	private String ipl_docContentType;
 	private String ipl_docFileName;

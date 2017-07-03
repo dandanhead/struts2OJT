@@ -8,6 +8,20 @@
             <result name="error">/WEB-INF/views/error/error.jsp</result>
         </global-results>
    </package>
+   <!--file download  -->
+   <package name="filedownload" extends="struts-default">
+   		<action name="fileDownload" class="kr.co.ican.project.action.FileDownloadAction">
+   			<!-- <interceptor-ref name="exception"/>
+			<interceptor-ref name="staticParams"/>
+			<interceptor-ref name="params"/> -->
+			<param name="dir">Z://tempupload</param>
+			<result name="success" type="stream">
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment; filename=${fileName}</param>
+				<param name="bufferSize">10240000</param>
+			</result>
+   		</action>
+   </package>
    <!--include  -->
    <include file="login-struts.xml"/>
    <include file="worker-struts.xml"/>

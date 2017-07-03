@@ -2,6 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -12,95 +13,89 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div id="top" class="layer"><img alt="no img" src="img/top.png" style="width: 100%;">
-</div>
-<form id="frm">
-	<div id="notice" class="layer">
-		<hr>
-		<div id="pagetitle" style="width: 20%;">
-			<h4><b>Workers Management</b></h4>
-		</div>
-		<hr> <!-- 공통 css -->
-		<table style="width: 100%; margin: auto;" class="table table-striped">
-			<colgroup>
-				<col width="10%;">
-				<col width="15%;">
-				<col width="15%;">
-				<col width="15%;">
-				<col width="15%;">
-				<col width="15%;">
-				<col width="15%;">
-			</colgroup>
-			<thead>
-				<tr style="background-color: #aaa">
-					<td>Department</td>
-					<td>Name</td>
-					<td>Experience</td>
-					<td>SkillRank</td>
-					<td>Status</td>
-					<td>Roll</td>
-					<td></td>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- 사원 리스트  -->
-				<tr>
-					<td colspan="7">
-						투입 중인 사원이 없습니다. 추가 버튼을 눌러 인원을 추가 해 주세요.
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<button type="button" id="addhtmlbtn" class="btn btn-default">상세검색 보기</button>
-		<div id="detailSearch" hidden="true">
-				<select class="form-control" style="width: 15%; float: left;">
-					<option selected="selected">전체인원</option>
-					<option>가용인원</option>
-					<option>투입 중인 인원</option>
-				</select>&nbsp;&nbsp;&nbsp;
-				<select class="form-control" style="width: 15%; float: left;">
-					<option selected="selected" class="form-control">경력</option>
-					<option>3년 미만</option>
-					<option>5년 미만</option>
-					<option>10년 미만</option>
-					<option>10년 이상</option>
-				</select>&nbsp;&nbsp;&nbsp;
-				<input type="text" class="form-control" placeholder="skill" style="width: 40%; float: left;">
-				<a href="#none" id="detailsrchBtn" class="btn btn-default" style="width: 10%; float: left;">Search</a>
-		</div>
-		<!-- 페이징  -->
-	</div>
-</form>
-<div id="selectDetail" class="layer">
-	<br>
-	<div class="layer" style="float: left;">
-		<label>Added Member</label>
-		<br>
-		<p>
-			<a>육지매&nbsp;&nbsp;<img alt="no img" src="img/xicon.png" style="width: 15px; height: 15px;"></a>&nbsp;&nbsp;&nbsp;&nbsp; 
-			<a>칠지매&nbsp;&nbsp;<img alt="no img" src="img/xicon.png" style="width: 15px; height: 15px;"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a>팔지매&nbsp;&nbsp;<img alt="no img" src="img/xicon.png" style="width: 15px; height: 15px;"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a>구지매&nbsp;&nbsp;<img alt="no img" src="img/xicon.png" style="width: 15px; height: 15px;"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a>십지매&nbsp;&nbsp;<img alt="no img" src="img/xicon.png" style="width: 15px; height: 15px;"></a>&nbsp;&nbsp;&nbsp;&nbsp;	
-		</p>
-		<div>
-			<a href="#none" class="btn btn-default" style="width: 30%;" id="addMembers">추가 하기</a>
-		</div>
-	</div>
+<header>
+  <h1>더보기(MORE) 버튼을 눌러 일정갯수의 리스트 더 보기</h1>
+</header>
+<div id="contents">
+  <div id="js-load" class="main">
+    <ul class="lists">
+      <li class="lists__item js-load">test1</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test2</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test3</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test4</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test5</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test6</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test7</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test8</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test9</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test10</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test11</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test12</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test13</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test14</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test15</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test16</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test17</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test18</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test19</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test20</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test21</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test22</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test23</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test24</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+      <li class="lists__item js-load">test25</li>
+      <li class="lists__item js-load">txttxttxttxttxttxt</li>
+    </ul>
+    <div id="js-btn-wrap" class="btn-wrap"> <a href="javascript:;" class="button">더보기</a> </div>
+  </div>
+  <footer>
+    <p>(C) <a href="https://nanati.me/">nanati.me</a> by nanati</p>
+  </footer>
 </div>
 </body>
 <script type="text/javascript">
-	$("#addMembers").click(function() {
-		
-		opener.parent.location.reload();
-		window.close();
-	});
-	
-	$("#addhtmlbtn").click(function() {
-		
-		$(this).text("상세검색 숨기기");
-		
-		$("#detailSearch").show();
-	});
+$(window).on('load', function () {
+    load('#js-load', '4');
+    $("#js-btn-wrap .button").on("click", function () {
+        load('#js-load', '4', '#js-btn-wrap');
+    })
+});
+ 
+function load(id, cnt, btn) {
+    var girls_list = id + " .js-load:not(.active)";
+    var girls_length = $(girls_list).length;
+    var girls_total_cnt;
+    if (cnt < girls_length) {
+        girls_total_cnt = cnt;
+    } else {
+        girls_total_cnt = girls_length;
+        $(button).hide();
+    }
+    $(girls_list + ":lt(" + girls_total_cnt + ")").addClass("active");
+}
 </script>
 </html>

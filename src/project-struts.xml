@@ -24,5 +24,9 @@
  		<action name="projectDetail" class="kr.co.ican.project.action.ProjectDetailAction">
  			<result name="success">/WEB-INF/views/project/projectDetail.jsp</result>
  		</action>
+ 		
+ 		<action name="assignMember">
+ 			<result>/WEB-INF/views/project/assignMember.jsp</result>
+ 		</action>
  	</package>
  </struts>

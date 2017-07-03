@@ -11,5 +11,18 @@
  		<action name="goProject" class="kr.co.ican.project.action.GoProjectAction">
  			<result name="success">/WEB-INF/views/project/projectManage.jsp</result>
  		</action>
+ 		
+ 		<action name="addProject" >
+ 			<result name="success">/WEB-INF/views/project/addProject.jsp</result>
+ 		</action>
+ 		
+ 		<action name="AddProjectAf" class="kr.co.ican.project.action.AddProjectAfAction">
+ 			<result name="success" type="redirectAction">goProject</result>
+ 			<result name="fail">/WEB-INF/views/project/addProject.jsp</result>
+ 		</action>
+ 		
+ 		<action name="projectDetail" class="kr.co.ican.project.action.ProjectDetailAction">
+ 			<result name="success">/WEB-INF/views/project/projectDetail.jsp</result>
+ 		</action>
  	</package>
  </struts>

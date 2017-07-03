@@ -2,6 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="../login/doLogout.jsp"></jsp:include> <!--로그아웃체크  -->
 <jsp:include page="../layout/header.jsp"/> <!--header  -->
 <div id="notice" class="layer">
 	<hr>
@@ -26,62 +26,62 @@
 <div class="layer" style="margin-left: 30%;">
 		<h2><b>Information</b></h2>
 		<br>
-		<form id="frm" method="post" enctype="multipart/form-data" >
+		<s:form id="frm" method="post" enctype="multipart/form-data" action="AddProjectAf" namespace="/project">
 			<div class="addform" style="float: left;">
 				<div>
 					<h5><strong style="color: red;">* 항목은 필수 입력 입니다.</strong></h5>
 					<label>* Project Name</label>
-					<input type="text" class="form-control" style="width: 40%;" name="ipl_pname" id="pname">
+					<input type="text" class="form-control" style="width: 40%;" name="pvo.ipl_pname" id="pname" value="${pvo.ipl_pname}">
 				</div>
 				<br>
 				<div>
 					<label>* Client</label>
-					<input type="text" class="form-control" style="width: 40%;" name="ipl_client" id="clientname">
+					<input type="text" class="form-control" style="width: 40%;" name="pvo.ipl_client" id="clientname" value="${pvo.ipl_client}">
 				</div>
 				<br>
 				<div>
 					<label>* Language AND Environment</label>
 					<div style="color: red;">사용가능 언어 및 환경은 영어로만 입력 하실 수 있으며 comma(,) 로 구분합니다.</div>
 					<br>
-					<input type="text" id="skillinput" class="form-control" style="width: 40%; text-transform: uppercase;" name="ipl_skill">
+					<input type="text" id="skillinput" class="form-control" style="width: 40%; text-transform: uppercase;" name="pvo.ipl_skill" value="${pvo.ipl_skill}">
 				</div>
 				<br>
 				<div>
 					<label>Contents</label>
-					<textarea rows="3" cols="100%;" class="form-control" style="resize: none; width: 40%" name="ipl_content" id="prjtcontent"></textarea>
+					<textarea rows="3" cols="100%;" class="form-control" style="resize: none; width: 40%" name="pvo.ipl_content" id="prjtcontent">${pvo.ipl_content}</textarea>
 				</div>
 				<br>
 				<div>
 					<label>* Location</label>
 					<br>
-					<input type="text" style="width: 15%;" readonly="readonly" placeholder="PostCode" id="postcode" name="ipl_postcode">
+					<input type="text" style="width: 15%;" readonly="readonly" placeholder="PostCode" id="postcode" name="pvo.ipl_postcode" value="${pvo.ipl_postcode}">
 					<a href="#none" id="findaddr" class="btn btn-default" style="width: 20%;">주소 찾기</a>
-					<input type="text" class="form-control" style="width: 40%;" id="tempaddress" readonly="readonly" name="ipl_address">
-					<input type="text" class="form-control" style="width: 40%;" id="detailaddress" placeholder="상세 주소" name="ipl_detailaddr">
+					<input type="text" class="form-control" style="width: 40%;" id="tempaddress" readonly="readonly" name="pvo.ipl_address" value="${pvo.ipl_address}">
+					<input type="text" class="form-control" style="width: 40%;" id="detailaddress" placeholder="상세 주소" name="pvo.ipl_detailaddr" value="${pvo.ipl_detailaddr}">
 				</div>
 				<br>
 				<div>
 					<label>* Charge</label>
-					<input type="text" class="form-control" style="width: 40%;" id="charger" name="ipl_charge">
+					<input type="text" class="form-control" style="width: 40%;" id="charger" name="pvo.ipl_charge" value="${pvo.ipl_charge}">
 				</div>
 				<br>
 				<h2><b>Date</b></h2>
 				<br>
 				<div>
 					<label>* Start Date</label>
-					<input type="text" class="form-control" id="startdate" style="width: 40%;" readonly="readonly" name="ipl_sdate">
+					<input type="text" class="form-control" id="startdate" style="width: 40%;" readonly="readonly" name="pvo.ipl_sdate" value="${pvo.ipl_sdate}">
 				</div>
 				<br>
 				<div>
 					<label>Expect End Date</label>
-					<input type="text" class="form-control" id="expectdate" style="width: 40%;" readonly="readonly" name="ipl_exptdate">
+					<input type="text" class="form-control" id="expectdate" style="width: 40%;" readonly="readonly" name="pvo.ipl_eptdate" value="${pvo.ipl_eptdate}">
 				</div>
 				<br>
 				<h2><b>DOC</b></h2>
 				<br>
 				<div>
 					<label>Document</label>
-					<input type="file" class="form-control" style="width: 40%;" style="width: 40%;" name="ipl_doc" id="projectdoc">
+					<input type="file" class="form-control" style="width: 40%;" style="width: 40%;" name="ipl_doc" id="projectdoc" value="${ipl_doc}">
 				</div>
 				<br>
 				
@@ -90,7 +90,8 @@
 					<a class="btn btn-default" href="goProject.do" style="width: 20%;">Return</a>
 				</div>
 			</div>
-		</form>
+			<input type="hidden" name="errMessage" id="errmsg" value="${errMessage}">
+			</s:form>
 	</div>
 </body>
 <script type="text/javascript">
@@ -114,11 +115,11 @@ $(function() {
 });
 
 //logout
-$("#logout").click(function() {
-		if(confirm("로그 아웃 하시겠습니까?")){
-			location.href="logout.do";
-		}
-});
+	$("#logout").click(function() {
+			if(confirm("로그 아웃 하시겠습니까?")){
+				location.href='<s:url action="logout" namespace="/login"/>';
+			}
+	});
 
 //주소 API(daum)
 $("#findaddr").click(function() {
@@ -188,48 +189,18 @@ $("#skillinput").keyup(function() {
 	$(this).val($(this).val().replace(/[\{\}\[\]\/?.;:|\)*~`!^\-_<>@\$%&\\\=\(\'\"]|[가-힣]|[ㄱ-ㅎ]|[ㅏ-ㅣ]|[0-9]/gi,""));
 });
 
-$("#addProjectBtn").click(function() {
-	//validation
-	var pname = $.trim($("#pname").val()); // 프로젝트명
-	var clientname = $.trim($("#clientname").val()); // 고객사
-	var postcode = $.trim($("#postcode").val()); //우편번호 
-	var tempaddress = $.trim($("#tempaddress").val()); //본 주소
-	var detailaddress = $.trim($("#detailaddress").val()); // 상세주소
-	var charger = $.trim($("#charger").val()); // charge
-	var startdate = $.trim($("#startdate").val()); //start date
-	var chkskill = $.trim($("#skillinput").val()); //skill and enviroment
-	//////////////////
-	// null 허용 value
-	var prjtcontent = $.trim($("#prjtcontent").val()); //상세내용
-	var reqnum = $.trim($("#reqnum").val()); // 허용인원
-	var expectdate = $.trim($("#expectdate").val()); // expect end date
-	var projectdoc = $.trim($("#projectdoc").val()); //파일주소.
-	
-	
-	if(pname == "" || pname == null){
-		alert("프로젝트명을 입력해 주세요.");
-	}else if(clientname == "" || clientname == null ){
-		alert("고객사를 입력해 주세요.");
-	}else if(postcode == "" || postcode == null || tempaddress == "" || tempaddress == null){
-		alert("서비스 할 지역의 주소를 정확히 입력해 주세요.");
-	}else if(detailaddress == "" || detailaddress == null){
-		alert("상세 주소를 입력해 주세요.");
-	}else if(charger == "" || charger == null){
-		alert("책임자를 입력해 주세요.");
-	}else if(startdate == "" || startdate == null){
-		alert("프로젝트 시작일은 반드시 입력해야 합니다.");
-	}else if(chkskill == "" || chkskill == null){
-		alert("사용 언어를 한 가지 이상 입력해 주세요.");
-	}else if(expectdate != "" && expectdate != null){
-		if(startdate > expectdate){
-			alert("프로젝트 예상 종료일이 시작일 보다 빠를 수 없습니다.");
-		}
-	}else{
-		//call controller
-		if(confirm("추가 하시겠습니까?")){
-			$("#frm").attr({"target" : "_self" , "action" : "addProjectAf"}).submit();	
-		}
+$(function() {
+	var msg = $("#errmsg").val();
+	if(msg != null && msg != ""){
+		alert(msg);
 	}
 });
+
+$("#addProjectBtn").click(function() {
+	if(confirm("등록 하시겠습니까?")){
+		$("#frm").submit();
+	}
+});
+
 </script>
 </html>

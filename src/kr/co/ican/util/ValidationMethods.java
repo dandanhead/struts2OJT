@@ -220,7 +220,7 @@ public class ValidationMethods {
 			return false;
 		}
 	}
-	
+	// phone Number length check 3
 	public boolean phoneLengthThree(String chkstr){
 		chkstr = chkstr.trim().replaceAll(" ", "");
 		if(chkstr.length() != 3){
@@ -230,6 +230,7 @@ public class ValidationMethods {
 		}
 	}
 	
+	//phone Number length check 3 or 4
 	public boolean phoneLengthThreeOrFour(String chkstr){
 		chkstr = chkstr.trim().replaceAll(" ", "");
 		if(chkstr.length() > 4 || chkstr.length() < 3){
@@ -239,6 +240,7 @@ public class ValidationMethods {
 		}
 	}
 	
+	// equal String Check
 	public boolean equalStringCheck(String chkstr, String comparestr){
 		chkstr = chkstr.trim().replaceAll(" ", "");
 		comparestr = comparestr.trim().replaceAll(" ", "");

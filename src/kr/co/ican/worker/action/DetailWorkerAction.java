@@ -148,6 +148,9 @@ public class DetailWorkerAction extends ActionSupport {
 			// 1. 기본정보 가져오기
 			mvo.setIm_idx(idx);
 			mvo = service.getMemberDetail(idx); // 경력 기본정보
+			if(mvo == null){
+				return "fail";
+			}
 			experience = help.changFormCareer(expy, expm); // 경력
 			age = help.getWorkerAge(mvo.getIm_scnum()); // 나이
 			gender = help.getWorkerGender(mvo.getIm_scnum()); // 성별
@@ -157,24 +160,22 @@ public class DetailWorkerAction extends ActionSupport {
 			evo.setIme_im_idx(idx);
 			evototal = service.getWorkerExpCount(evo); // count
 			elist = service.getMemberExperiences(evo); // list
-
+			if(elist == null){
+				return "fail";
+			}
 			// 3. 자격증 가져오기
 			licvo.setIml_im_idx(idx);
 			lictotal = service.getWorkerLicCount(licvo); // count
 			liclist = service.getMemberLicenses(licvo); // list
-
-			if (mvo == null || liclist == null || elist == null) {
+			if(liclist == null){
 				return "fail";
 			}
-			
-			return "success";
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error";
 		}
+		
+		return "success";
 	}
-	
-	
-	
 }

@@ -1,6 +1,7 @@
 package kr.co.ican.validation;
 
 import kr.co.ican.login.service.LoginService;
+import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.util.ValidationMethods;
 import kr.co.ican.worker.service.WorkerService;
 import kr.co.ican.worker.vo.AddWorkerVO;
@@ -743,4 +744,69 @@ public class ValidationCheck extends ValidationMethods{
 		
 	}
 	
+	public ValidationVO addProjectValidation(ProjectVO pvo){
+		
+		boolean valflag = true;
+		ValidationVO vvo = new ValidationVO();
+		
+		valflag = isblank(pvo.getIpl_pname()); // 프로젝트 명 null check
+		if(valflag == false){
+			vvo.setMsg("프로젝트 제목을 입력 해 주세요."); 
+			vvo.setResultfalg(valflag);
+			return vvo;
+		}
+		
+		valflag = isblank(pvo.getIpl_client()); // 고객사명 null check
+		if(valflag ==false){
+			vvo.setMsg("고객사를 입력 해 주세요.");
+			vvo.setResultfalg(valflag);
+			return vvo;
+		}
+		
+		valflag = isblank(pvo.getIpl_skill()); // skill null check
+		if(valflag ==false){
+			vvo.setMsg("프로젝트에 사용되는 스킬을 입력 해 주세요.");
+			vvo.setResultfalg(valflag);
+			return vvo;
+		}
+		
+		valflag = isblank(pvo.getIpl_postcode()); // post code null check
+		if(valflag == false){
+			vvo.setMsg("서비스 지역을 입력 해 주세요.");
+			vvo.setResultfalg(valflag);
+			return vvo;
+		}
+		
+		valflag = isblank(pvo.getIpl_address()); // address null check
+		if(valflag ==false){
+			vvo.setMsg("서비스 지역을 입력 해 주세요.");
+			vvo.setResultfalg(valflag);
+			return vvo;
+		}
+		
+		valflag = isblank(pvo.getIpl_detailaddr()); //detail address null check
+		if(valflag == false){
+			vvo.setMsg("상세주소를 입력 해 주세요.");
+			vvo.setResultfalg(valflag);
+			return vvo;
+		}
+		
+		valflag = isblank(pvo.getIpl_charge()); // charge null check
+		if(valflag ==false){
+			vvo.setMsg("담당자를 입력 해 주세요.");
+			vvo.setResultfalg(valflag);
+			return vvo;
+		}
+		
+		valflag = isblank(pvo.getIpl_sdate()); // start date null check
+		if(valflag == false){
+			vvo.setMsg("프로젝트 시작일은 반드시 입력하셔야합니다.");
+			vvo.setResultfalg(valflag);
+			return vvo;
+		}
+		
+		vvo.setResultfalg(valflag);
+		return vvo;
+		
+	}
 }

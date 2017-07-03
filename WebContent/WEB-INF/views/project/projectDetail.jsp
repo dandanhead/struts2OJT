@@ -2,6 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <fmt:requestEncoding value ="utf-8"/>
 <!DOCTYPE html>
 <html>
@@ -17,7 +18,6 @@
 </style>
 </head>
 <body>
-<jsp:include page="../login/doLogout.jsp"></jsp:include> <!--로그아웃체크  -->
 <jsp:include page="../layout/header.jsp"/> <!--header  -->
 <div id="notice" class="layer">
 	<hr>
@@ -71,7 +71,7 @@
 				<a href="#none" class="btn btn-default">Fix</a>
 			</td>
 			<td style="vertical-align: bottom;">
-				<a href="goProject.do" class="btn btn-default">Return</a>	
+				<a href="goProject" class="btn btn-default">Return</a>	
 			</td>
 		</tr>
 	</table>
@@ -125,9 +125,10 @@
       	$("#popfrm").attr({"target" : "popupform" , "action" : "assignMember.do"}).submit();
 	});
 	
+	//logout
 	$("#logout").click(function() {
 			if(confirm("로그 아웃 하시겠습니까?")){
-				location.href="logout.do";
+				location.href='<s:url action="logout" namespace="/login"/>';
 			}
 	});
 	

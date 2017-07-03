@@ -352,7 +352,7 @@ public class WorkerService {
 					}
 				}
 			} 
-			// 3. 경력
+			// 4. 경력
 			if (elist != null && elist.size() > 0) {
 				
 				for (int idx = 0; idx < elist.size(); idx++) {

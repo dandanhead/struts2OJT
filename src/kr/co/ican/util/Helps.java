@@ -2,6 +2,7 @@ package kr.co.ican.util;
 
 import java.util.Calendar;
 
+import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.worker.vo.MemberVO;
 
 // method Utility
@@ -48,6 +49,21 @@ public class Helps {
 		mvo.setRecordCountPerPage(recordCountperPage);
 		
 		return mvo;
+	}
+	
+	public ProjectVO setProjectListPaging(ProjectVO pvo){
+		
+		int sn=pvo.getPageNumber();
+		int start=(sn)*pvo.getRecordCountPerPage() + 1; // rownum 의 시작
+		int end=(sn+1)*pvo.getRecordCountPerPage(); // rownum의 끝
+		int recordCountperPage = pvo.getRecordCountPerPage();
+		
+		pvo.setStart(start);
+		pvo.setEnd(end);
+		pvo.setRecordCountPerPage(recordCountperPage);
+		
+		return pvo;
+		
 	}
 	
 	//chang Form Career

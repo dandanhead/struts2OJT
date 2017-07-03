@@ -116,7 +116,7 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT COUNT(*) FROM ICAN_MEMBER WHERE IM_PHONE = ?  ";
+		String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_PHONE = ?  ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(cnt++, mvo.getIm_phone());
 		
@@ -144,7 +144,7 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT COUNT(*) FROM (SELECT IM_PHONE FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE IM_PHONE = ? ";
+		String sql = "  SELECT NVL(COUNT(*), 0) FROM (SELECT IM_PHONE FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE IM_PHONE = ? ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setInt(cnt++, mvo.getIm_idx());
 		psmt.setString(cnt++, mvo.getIm_email());
@@ -171,7 +171,7 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT COUNT(*) FROM ICAN_MEMBER WHERE IM_EMAIL = ?  ";
+		String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_EMAIL = ?  ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(cnt++, mvo.getIm_email());
 		
@@ -198,7 +198,7 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT COUNT(*) FROM (SELECT IM_EMAIL FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE  IM_EMAIL = ?  ";
+		String sql = "  SELECT NVL(COUNT(*), 0) FROM (SELECT IM_EMAIL FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE  IM_EMAIL = ?  ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setInt(cnt++, mvo.getIm_idx());
 		psmt.setString(cnt++, mvo.getIm_email());
@@ -225,7 +225,7 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int result = 0;
 		int cnt = 1;
-		String sql = "  SELECT COUNT(*) FROM ICAN_MEMBER WHERE IM_SCNUM = ?  ";
+		String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_SCNUM = ?  ";
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(cnt++, mvo.getIm_scnum());
 		
@@ -659,7 +659,7 @@ public class WorkerDAO {
 		String sql = "";
 
 		try {
-			sql = "  SELECT COUNT(*) FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
+			sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, mvo.getIm_idx());
 
@@ -739,7 +739,7 @@ public class WorkerDAO {
         String sql = "";
         
         try {
-        	sql = "  SELECT COUNT(*) FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NOT NULL ";
+        	sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NOT NULL ";
         	psmt = conn.prepareStatement(sql);
         	psmt.setInt(cnt++, mvo.getIm_idx());
         	

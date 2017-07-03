@@ -14,9 +14,7 @@
 </head>
 <body>
 <jsp:include page="../layout/header.jsp"/> <!--header  -->>
-<form id="frm">
-<input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty pageNumber)?0:pageNumber }"/>
-<input type="hidden" name="recordCountPerPage" id="_recordCountPerPage"	value="${(empty recordCountPerPage)?0:recordCountPerPage }"/>
+<s:form id="frm" style="width:80%; margin:auto;" namespace="/">
 <div class="layer">
 	<hr>
 	<div id="pagetitle" style="width: 20%;">
@@ -57,7 +55,7 @@
 								${idx.ipl_idx}
 							</td>
 							<td>
-								<a href="projectDetail.do?idx=${idx.ipl_idx}">${idx.ipl_pname}</a>
+								<a href="projectDetail?ipl_idx=${idx.ipl_idx}">${idx.ipl_pname}</a>
 							</td>
 							<td>
 								${idx.ipl_client}
@@ -88,13 +86,15 @@
 			</tbody>
 		</table>
  		<jsp:include page="../paging/paging.jsp" flush="false">
-			<jsp:param value="${pageNumber }" name="pageNumber"/>
+			<jsp:param value="${pvo.pageNumber }" name="pageNumber"/>
 			<jsp:param value="${pageCountPerScreen }" name="pageCountPerScreen"/>
-			<jsp:param value="${recordCountPerPage }" name="recordCountPerPage"/>
+			<jsp:param value="${pvo.recordCountPerPage }" name="recordCountPerPage"/>
 			<jsp:param value="${totalRecordCount }" name="totalRecordCount"/>
 		</jsp:include>
 	</div>
-</form>
+	<input type="hidden" name="pvo.pageNumber" id="_pageNumber" value="${(empty pvo.pageNumber)?0:pvo.pageNumber }"/>
+<input type="hidden" name="pvo.recordCountPerPage" id="_recordCountPerPage"	value="${(empty pvo.recordCountPerPage)?0:pvo.recordCountPerPage }"/>
+</s:form>
 <div id="selectDetail" class="layer">
 	<table style="width: 100%;">
 		<colgroup>
@@ -117,7 +117,7 @@
 				<a class="btn btn-default">Search</a>
 			</td>
 			<td style="float: right;">
-				<a class="btn btn-default" href="goAddProject.do" >add Project</a>
+				<a class="btn btn-default" href="addProject" >add Project</a>
 			</td>
 		</tr>
 	</table>
@@ -125,15 +125,15 @@
 </body>
 <script type="text/javascript">
 	$("#logout").click(function() {
-			if(confirm("로그 아웃 하시겠습니까?")){
-				location.href="logout.do";
-			}
+		if(confirm("로그 아웃 하시겠습니까?")){
+			location.href='<s:url action="logout" namespace="/login"/>';
+		}
 	});
 	
 	function goPage(pageNumber) {
 		
 		$("#_pageNumber").val(pageNumber);
-		$("#frm").attr("target", "_self").attr("action", "goProject.do").submit();
+		$("#frm").attr("target", "_self").attr("action", "goProject").submit();
 	};
 </script>
 </html>

@@ -1,7 +1,5 @@
 package kr.co.ican.project.vo;
 
-
-//프로젝트 정보 관련 vO
 public class ProjectVO {
 
 	private int ipl_idx; //프로젝트 번호
@@ -16,7 +14,7 @@ public class ProjectVO {
 	private String ipl_address; //프로젝트 서비스 지역
 	private String ipl_detailaddr; //상세주소
 	private String ipl_postcode; // 우편번호
-	private int ipl_req_num; //프로젝트 참여 인원수, 필요 인원수
+	private String ipl_skill; //프로젝트 스킬
 	
 	// 페이징
 	private int recordCountPerPage = 10;
@@ -25,6 +23,42 @@ public class ProjectVO {
 	private int end = 15;
 	
 	public ProjectVO() {
+	}
+	
+	
+	
+	public ProjectVO(int ipl_idx, String ipl_pname, String ipl_sdate, String ipl_eptdate, String ipl_edate,
+			String ipl_content, String ipl_doc, String ipl_charge, String ipl_client, String ipl_address,
+			String ipl_detailaddr, String ipl_postcode, String ipl_skill, int recordCountPerPage, int pageNumber,
+			int start, int end) {
+		super();
+		this.ipl_idx = ipl_idx;
+		this.ipl_pname = ipl_pname;
+		this.ipl_sdate = ipl_sdate;
+		this.ipl_eptdate = ipl_eptdate;
+		this.ipl_edate = ipl_edate;
+		this.ipl_content = ipl_content;
+		this.ipl_doc = ipl_doc;
+		this.ipl_charge = ipl_charge;
+		this.ipl_client = ipl_client;
+		this.ipl_address = ipl_address;
+		this.ipl_detailaddr = ipl_detailaddr;
+		this.ipl_postcode = ipl_postcode;
+		this.ipl_skill = ipl_skill;
+		this.recordCountPerPage = recordCountPerPage;
+		this.pageNumber = pageNumber;
+		this.start = start;
+		this.end = end;
+	}
+
+
+
+	public String getIpl_skill() {
+		return ipl_skill;
+	}
+
+	public void setIpl_skill(String ipl_skill) {
+		this.ipl_skill = ipl_skill;
 	}
 
 	public int getIpl_idx() {
@@ -123,14 +157,6 @@ public class ProjectVO {
 		this.ipl_postcode = ipl_postcode;
 	}
 
-	public int getIpl_req_num() {
-		return ipl_req_num;
-	}
-
-	public void setIpl_req_num(int ipl_req_num) {
-		this.ipl_req_num = ipl_req_num;
-	}
-
 	public int getRecordCountPerPage() {
 		return recordCountPerPage;
 	}
@@ -169,8 +195,8 @@ public class ProjectVO {
 				+ ", ipl_eptdate=" + ipl_eptdate + ", ipl_edate=" + ipl_edate + ", ipl_content=" + ipl_content
 				+ ", ipl_doc=" + ipl_doc + ", ipl_charge=" + ipl_charge + ", ipl_client=" + ipl_client
 				+ ", ipl_address=" + ipl_address + ", ipl_detailaddr=" + ipl_detailaddr + ", ipl_postcode="
-				+ ipl_postcode + ", ipl_req_num=" + ipl_req_num + ", recordCountPerPage=" + recordCountPerPage
+				+ ipl_postcode + ", ipl_skill=" + ipl_skill + ", recordCountPerPage=" + recordCountPerPage
 				+ ", pageNumber=" + pageNumber + ", start=" + start + ", end=" + end + "]";
 	}
-
+	
 }

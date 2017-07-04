@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import kr.co.ican.project.vo.AssignMemberVO;
+import kr.co.ican.project.vo.ProjectJoinMemberVO;
 import kr.co.ican.project.vo.ProjectVO;
 
 public class ProjectDAO {
@@ -31,6 +33,13 @@ public class ProjectDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
 
         return result;
@@ -107,6 +116,13 @@ public class ProjectDAO {
 				e.getStackTrace();
 				throw e;
 				
+			}finally {
+				if(psmt != null){
+					psmt.close();
+				}
+				if(rs != null){
+					rs.close();
+				}
 			}
 	        
 	        return plist;
@@ -149,6 +165,10 @@ public class ProjectDAO {
 				e.printStackTrace();
 				throw e;
 				
+			}finally {
+				if(psmt != null){
+					psmt.close();
+				}
 			}
 	        
 	        return result > 0 ? true : false;
@@ -199,9 +219,118 @@ public class ProjectDAO {
 
 			e.printStackTrace();
 			throw e;
+		} finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
 		
 		return vo;
+	}
+	
+	
+	public List<AssignMemberVO> getAssignMemList(Connection conn, AssignMemberVO asvo) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+        List<AssignMemberVO> aslist = new ArrayList<AssignMemberVO>();
+        int cnt = 1;
+       	String sql = "";
+       	try {
+       	// 첫 시작 & 전체 검색 
+           	sql = " SELECT "
+           			+ "			 IM_IDX, IM_NAME, IM_SKILL , IM_STATUS, YEAR#, MONTH# "
+           		+ " FROM( "
+           		+ "       SELECT "
+           		+ "              ROW_NUMBER() OVER (ORDER BY IM_IDX) AS RNUM,"
+           		+ "				 IM_IDX, "
+           		+ "              IM_NAME, "
+           		+ "              IM_STATUS,"
+           		+ "				 IM_SKILL, "
+           		+ "              TRUNC(DATETERM / 12) AS YEAR#, "
+           		+ "              TRUNC(MONTHS_BETWEEN (SYSDATE, ADD_MONTHS (MINDATE, 12 * TRUNC (DATETERM / 12)))) AS MONTH#"
+           		+ "  	  FROM "
+           		+ "             ICAN_MEMBER IM LEFT JOIN ("
+           		+ "                                       SELECT "
+           		+ "                                               IME_IM_IDX,"
+           		+ "                                               MIN(IME_REGI_DATE) AS MINDATE, "
+           		+ "                                               MONTHS_BETWEEN (SYSDATE, MIN(IME_REGI_DATE)) AS DATETERM "
+           		+ "                                       FROM "
+           		+ "												  ICAN_MEM_EXP "
+           		+ "										  GROUP BY "
+           		+ "												  IME_IM_IDX "
+           		+ "                                       ) IME"
+           		+ "              ON IM.IM_IDX = IME.IME_IM_IDX "
+           		+ "       WHERE "
+           		+ "               IM_RESIGN = 0 "
+           		+ "       )"
+           		+ " WHERE RNUM BETWEEN ? AND ? ";
+           	
+        	psmt = conn.prepareStatement(sql);
+           	psmt.setInt(cnt++, asvo.getStart());
+           	psmt.setInt(cnt++, asvo.getEnd());
+     
+           	rs = psmt.executeQuery();
+      	   
+    	    while (rs.next()) {
+    	   		cnt = 1;
+    	   		AssignMemberVO vo = new AssignMemberVO();
+    	       	vo.setIm_idx(rs.getInt(cnt++));
+    	       	vo.setIm_name(rs.getString(cnt++));
+    	       	vo.setIm_skill(rs.getString(cnt++));
+    	       	vo.setIm_status(rs.getInt(cnt++));
+    	       	vo.setExpYear(rs.getInt(cnt++));
+    	       	vo.setExpMonth(rs.getInt(cnt++));
+    	       	
+    	   		aslist.add(vo);
+    	     }
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
+		}
+        return aslist;
+	}
+	
+	public boolean addAssignMember(Connection conn, ProjectJoinMemberVO pjvo)throws Exception{
+		PreparedStatement psmt = null;
+		int result = 0;
+		int cnt = 1;
+       	String sql = "";
+       	
+       	try {
+       		sql = " INSERT INTO "
+       	       		+ "				ICAN_PROJECT_JOIN_LIST( "
+       	       		+ "										IPJL_IM_IDX , IPJL_IPL_IDX , IPJL_ROLL "
+       	       		+ "									  ) "
+       	       		+ " VALUES( "
+       	       		+ "				?, ?, ? "
+       	       		+ "       ) ";
+
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, pjvo.getIpjl_im_idx());
+			psmt.setInt(cnt++, pjvo.getIpjl_ipl_idx());
+			psmt.setInt(cnt++, pjvo.getIpjl_roll());
+
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+		}
+       	
+       	return result > 0 ? true : false;
+       	
 	}
 	
 }

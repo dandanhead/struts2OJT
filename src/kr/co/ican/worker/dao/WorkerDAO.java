@@ -20,62 +20,65 @@ public class WorkerDAO {
         List<MemberVO> list = new ArrayList<MemberVO>();
         int cnt = 1;
        	String sql = "";
-       
-       	// 첫 시작 & 전체 검색 
-       	sql = " SELECT IM_IDX, IM_NAME, IM_DNAME, IM_PHONE , IM_AUTH, IM_STATUS , YEAR#, MONTH# "
-       		+ " FROM( "
-       		+ "       SELECT "
-       		+ "              ROW_NUMBER() OVER (ORDER BY IM_IDX) AS RNUM, "
-       		+ "              IM_IDX, "
-       		+ "              IM_NAME, "
-       		+ "              IM_DNAME, "
-       		+ "              IM_PHONE, "
-       		+ "              IM_AUTH, "
-       		+ "              IM_STATUS, "
-       		+ "              TRUNC(DATETERM / 12) AS YEAR#, "
-       		+ "              TRUNC(MONTHS_BETWEEN (SYSDATE, ADD_MONTHS (MINDATE, 12 * TRUNC (DATETERM / 12)))) AS MONTH#"
-       		+ "  	  FROM "
-       		+ "             ICAN_MEMBER IM LEFT JOIN ("
-       		+ "                                       SELECT "
-       		+ "                                               IME_IM_IDX,"
-       		+ "                                               MIN(IME_REGI_DATE) AS MINDATE, "
-       		+ "                                               MONTHS_BETWEEN (SYSDATE, MIN(IME_REGI_DATE)) AS DATETERM "
-       		+ "                                       FROM ICAN_MEM_EXP group by IME_IM_IDX "
-       		+ "                                       ) IME"
-       		+ "              ON IM.IM_IDX = IME.IME_IM_IDX "
-       		+ "       WHERE "
-       		+ "               IM_RESIGN = 0 "
-       		+ "       )"
-       		+ " WHERE RNUM BETWEEN ? AND ? ";
-       	
-    	psmt = conn.prepareStatement(sql);
-       	psmt.setInt(1, mvo.getStart());
-       	psmt.setInt(2, mvo.getEnd());
- 
-       	rs = psmt.executeQuery();
-  	   
-	    while (rs.next()) {
-	   		cnt = 1;
-	       	MemberVO vo = new MemberVO();
-	       	vo.setIm_idx(rs.getInt(cnt++));
-	       	vo.setIm_name(rs.getString(cnt++));
-	       	vo.setIm_dname(rs.getString(cnt++));
-	       	vo.setIm_phone(rs.getString(cnt++));
-	       	vo.setIm_auth(rs.getInt(cnt++));
-	       	vo.setIm_status(rs.getInt(cnt++));
-	       	vo.setExpYear(rs.getInt(cnt++));
-	       	vo.setExpMonth(rs.getInt(cnt++));
-	       	
-			list.add(vo);
-	     }
-	    
-	    if(rs != null){
-	    	rs.close();
-	    }
-	    
-	    if(psmt != null){
-	    	psmt.close();
-	    }
+       	try {
+       		// 첫 시작 & 전체 검색 
+           	sql = " SELECT IM_IDX, IM_NAME, IM_DNAME, IM_PHONE , IM_AUTH, IM_STATUS , YEAR#, MONTH# "
+           		+ " FROM( "
+           		+ "       SELECT "
+           		+ "              ROW_NUMBER() OVER (ORDER BY IM_IDX) AS RNUM, "
+           		+ "              IM_IDX, "
+           		+ "              IM_NAME, "
+           		+ "              IM_DNAME, "
+           		+ "              IM_PHONE, "
+           		+ "              IM_AUTH, "
+           		+ "              IM_STATUS, "
+           		+ "              TRUNC(DATETERM / 12) AS YEAR#, "
+           		+ "              TRUNC(MONTHS_BETWEEN (SYSDATE, ADD_MONTHS (MINDATE, 12 * TRUNC (DATETERM / 12)))) AS MONTH#"
+           		+ "  	  FROM "
+           		+ "             ICAN_MEMBER IM LEFT JOIN ("
+           		+ "                                       SELECT "
+           		+ "                                               IME_IM_IDX,"
+           		+ "                                               MIN(IME_REGI_DATE) AS MINDATE, "
+           		+ "                                               MONTHS_BETWEEN (SYSDATE, MIN(IME_REGI_DATE)) AS DATETERM "
+           		+ "                                       FROM ICAN_MEM_EXP group by IME_IM_IDX "
+           		+ "                                       ) IME"
+           		+ "              ON IM.IM_IDX = IME.IME_IM_IDX "
+           		+ "       WHERE "
+           		+ "               IM_RESIGN = 0 "
+           		+ "       )"
+           		+ " WHERE RNUM BETWEEN ? AND ? ";
+           	
+        	psmt = conn.prepareStatement(sql);
+           	psmt.setInt(cnt++, mvo.getStart());
+           	psmt.setInt(cnt++, mvo.getEnd());
+     
+           	rs = psmt.executeQuery();
+      	   
+    	    while (rs.next()) {
+    	   		cnt = 1;
+    	       	MemberVO vo = new MemberVO();
+    	       	vo.setIm_idx(rs.getInt(cnt++));
+    	       	vo.setIm_name(rs.getString(cnt++));
+    	       	vo.setIm_dname(rs.getString(cnt++));
+    	       	vo.setIm_phone(rs.getString(cnt++));
+    	       	vo.setIm_auth(rs.getInt(cnt++));
+    	       	vo.setIm_status(rs.getInt(cnt++));
+    	       	vo.setExpYear(rs.getInt(cnt++));
+    	       	vo.setExpMonth(rs.getInt(cnt++));
+    	       	
+    			list.add(vo);
+    	     }
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
+		}
 	    
         return list;
 	}
@@ -85,27 +88,29 @@ public class WorkerDAO {
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 	    int result= 0;
-	    
 	    String sql = "";
-	    sql = " SELECT NVL(COUNT(*), 0) AS CNT FROM ICAN_MEMBER WHERE IM_RESIGN = 0 ";
-		
-	    psmt = conn.prepareStatement(sql);
-		
-		rs = psmt.executeQuery();
-		
-		while (rs.next()) {
-	   		 
-			result = rs.getInt(1);
+	    
+	    try {
+	    	
+	    	sql = " SELECT NVL(COUNT(*), 0) AS CNT FROM ICAN_MEMBER WHERE IM_RESIGN = 0 ";
+	 		
+	 	    psmt = conn.prepareStatement(sql);
+	 		
+	 		rs = psmt.executeQuery();
+	 		
+	 		while (rs.next()) {
+	 	   		 
+	 			result = rs.getInt(1);
+	 		}
+	 		
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
-		
-		if(rs != null){
-			rs.close();
-		}
-		
-		if(psmt != null){
-			psmt.close();
-		}
-		
 	    return result;
 	}
 	
@@ -116,22 +121,26 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_PHONE = ?  ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setString(cnt++, mvo.getIm_phone());
-		
-		rs = psmt.executeQuery();
-		while (rs.next()) {
-			cnt = 1;
-			result = rs.getInt(cnt++);
-		}
-		
-		if(rs != null){
-			rs.close();
-		}
-		
-		if(psmt != null){
-			psmt.close();
+		try {
+
+			String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_PHONE = ?  ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mvo.getIm_phone());
+			
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getInt(cnt++);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
 		
 		return result > 0 ? false : true;
@@ -144,23 +153,25 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT NVL(COUNT(*), 0) FROM (SELECT IM_PHONE FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE IM_PHONE = ? ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(cnt++, mvo.getIm_idx());
-		psmt.setString(cnt++, mvo.getIm_email());
-		
-		rs = psmt.executeQuery();
-		while (rs.next()) {
-			cnt = 1;
-			result = rs.getInt(cnt++);
-		}
-		
-		if(rs != null){
-			rs.close();
-		}
-		
-		if(psmt != null){
-			psmt.close();
+		try {
+			
+			String sql = "  SELECT NVL(COUNT(*), 0) FROM (SELECT IM_PHONE FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE IM_PHONE = ? ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			psmt.setString(cnt++, mvo.getIm_email());
+			
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getInt(cnt++);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
 		
 		return result > 0 ? false : true;
@@ -171,25 +182,27 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_EMAIL = ?  ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setString(cnt++, mvo.getIm_email());
-		
-		
-		rs = psmt.executeQuery();
-		while (rs.next()) {
-			cnt = 1;
-			result = rs.getInt(cnt++);
+		try {
+
+			String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_EMAIL = ?  ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mvo.getIm_email());
+			
+			
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getInt(cnt++);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
-		
-		if(rs != null){
-			rs.close();
-		}
-		
-		if(psmt != null){
-			psmt.close();
-		}
-		
 		return result > 0 ? false : true;
 	}
 	// 이메일 중복찾기
@@ -198,25 +211,31 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = "  SELECT NVL(COUNT(*), 0) FROM (SELECT IM_EMAIL FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE  IM_EMAIL = ?  ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(cnt++, mvo.getIm_idx());
-		psmt.setString(cnt++, mvo.getIm_email());
 		
-		
-		rs = psmt.executeQuery();
-		while (rs.next()) {
-			cnt = 1;
-			result = rs.getInt(cnt++);
+		try {
+			String sql = "  SELECT NVL(COUNT(*), 0) FROM (SELECT IM_EMAIL FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE  IM_EMAIL = ?  ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			psmt.setString(cnt++, mvo.getIm_email());
+			
+			
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getInt(cnt++);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
-		if(rs != null){
-			rs.close();
-		}
-		
-		if(psmt != null){
-			psmt.close();
-		}
-		
+	
 		return result > 0 ? false : true;
 	}
 	// 주민등록번호 중복찾기
@@ -225,22 +244,29 @@ public class WorkerDAO {
 		ResultSet rs = null;
 		int result = 0;
 		int cnt = 1;
-		String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_SCNUM = ?  ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setString(cnt++, mvo.getIm_scnum());
 		
-		rs = psmt.executeQuery();
-		
-		while (rs.next()) {
-			cnt = 1;
-			result = rs.getInt(cnt++);
-		}
-		
-		if(rs != null){
-			rs.close();
-		}
-		if(psmt != null){
-			psmt.close();
+		try {
+			String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_SCNUM = ?  ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mvo.getIm_scnum());
+			
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getInt(cnt++);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
 		
 		return result > 0 ? false : true;
@@ -252,7 +278,10 @@ public class WorkerDAO {
 		String sql = "";
         int cnt = 1;
         int result = 0;
-			sql = " INSERT INTO "
+        
+        try {
+        	
+        	sql = " INSERT INTO "
 					+ "		ICAN_MEMBER("
 					+ "					IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_RESIGN, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
 					+ "					IM_DETAILADDR, IM_POSTCODE, IM_AUTH, IM_SKILL"
@@ -274,10 +303,15 @@ public class WorkerDAO {
 			psmt.setString(cnt++, mvo.getIm_skill()); //스킬
 			
 			result = psmt.executeUpdate();
-
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
 			if(psmt != null){
 				psmt.close();
 			}
+		}
 			
 		return result > 0 ? true : false;
 	}
@@ -286,37 +320,41 @@ public class WorkerDAO {
 		
 		PreparedStatement psmt = null;
 		String sql = "";
-		
         int cnt = 1;
         int result = 0;
-        
-		if("타업체인력".equals(mvo.getIm_dname())){
-			sql = " INSERT INTO "
-					+ "			ICAN_MEM_EXP ( "
-					+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
-					+ "						 ) "
-					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, ? , ? , '미배정') ";
-			
-			psmt = conn.prepareStatement(sql);
-			psmt.setString(cnt++, mvo.getOutsideperson());
-			psmt.setInt(cnt++, mvo.getIm_auth());
-		}else{
-			sql = " INSERT INTO "
-					+ "			ICAN_MEM_EXP ( "
-					+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
-					+ "						 ) "
-					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, '아이캔매니지먼트(주)', ? , '미배정') ";
+        try {
+        	if("타업체인력".equals(mvo.getIm_dname())){
+    			sql = " INSERT INTO "
+    					+ "			ICAN_MEM_EXP ( "
+    					+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
+    					+ "						 ) "
+    					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, ? , ? , '미배정') ";
+    			
+    			psmt = conn.prepareStatement(sql);
+    			psmt.setString(cnt++, mvo.getOutsideperson());
+    			psmt.setInt(cnt++, mvo.getIm_auth());
+    		}else{
+    			sql = " INSERT INTO "
+    					+ "			ICAN_MEM_EXP ( "
+    					+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
+    					+ "						 ) "
+    					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, '아이캔매니지먼트(주)', ? , '미배정') ";
 
-			psmt = conn.prepareStatement(sql);
-			psmt.setInt(cnt++, mvo.getIm_auth());
+    			psmt = conn.prepareStatement(sql);
+    			psmt.setInt(cnt++, mvo.getIm_auth());
+    		}
+    		
+    		result = psmt.executeUpdate();
+    		
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
-		
-		result = psmt.executeUpdate();
-			
-		if(psmt != null){
-			psmt.close();
-		}
-		
+
 		return result > 0 ? true : false;
 	}
 	// 경력 insert
@@ -326,24 +364,31 @@ public class WorkerDAO {
 		String sql = "";
         int cnt = 1;
         int result = 0;
-		sql = " INSERT INTO "
-				+ "			ICAN_MEM_EXP ( "
-				+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
-				+ "						 ) "
-			+ " VALUES ( MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
+        
+        try {
+        	sql = " INSERT INTO "
+    				+ "			ICAN_MEM_EXP ( "
+    				+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
+    				+ "						 ) "
+    			+ " VALUES ( MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
 
-		psmt = conn.prepareStatement(sql);
-		psmt.setString(cnt++, evo.getIme_regi_date());
-		psmt.setString(cnt++, evo.getIme_exit_date());
-		psmt.setString(cnt++, evo.getIme_coname());
-		psmt.setInt(cnt++, evo.getIme_auth());
-		psmt.setString(cnt++, evo.getIme_roll());
-		
-		result = psmt.executeUpdate();
+    		psmt = conn.prepareStatement(sql);
+    		psmt.setString(cnt++, evo.getIme_regi_date());
+    		psmt.setString(cnt++, evo.getIme_exit_date());
+    		psmt.setString(cnt++, evo.getIme_coname());
+    		psmt.setInt(cnt++, evo.getIme_auth());
+    		psmt.setString(cnt++, evo.getIme_roll());
+    		
+    		result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+		}
 			
-        if(psmt != null){
-        	psmt.close();
-        }
 		return result > 0 ? true : false;
 	}
 	
@@ -354,22 +399,26 @@ public class WorkerDAO {
 		String sql = "";
 		int cnt = 1;
 		int result = 0;
+		try {
+			sql = " INSERT INTO "
+					+ "			ICAN_MEM_LICENSE ( "
+					+ "								IML_IM_IDX, IML_LNAME , IML_ACQDATE, IML_ORGANIZATION "
+					+ "							 ) "
+					+ " VALUES( MEMBER_SEQ.CURRVAL , ? , ? , ?) ";
 
-		sql = " INSERT INTO "
-				+ "			ICAN_MEM_LICENSE ( "
-				+ "								IML_IM_IDX, IML_LNAME , IML_ACQDATE, IML_ORGANIZATION "
-				+ "							 ) "
-				+ " VALUES( MEMBER_SEQ.CURRVAL , ? , ? , ?) ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mlvo.getIml_lname());
+			psmt.setString(cnt++, mlvo.getIml_acqdate());
+			psmt.setString(cnt++, mlvo.getIml_organization());
 
-		psmt = conn.prepareStatement(sql);
-		psmt.setString(cnt++, mlvo.getIml_lname());
-		psmt.setString(cnt++, mlvo.getIml_acqdate());
-		psmt.setString(cnt++, mlvo.getIml_organization());
-
-		result = psmt.executeUpdate();
-
-		if (psmt != null) {
-			psmt.close();
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
 
 		return result > 0 ? true : false;
@@ -381,43 +430,49 @@ public class WorkerDAO {
 		
 		PreparedStatement psmt = null;
         ResultSet rs = null;
+        MemberVO mvo = null;
         String sql = "";
         int cnt = 1;
-        
-		sql = " SELECT "
-			+ " 	IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
-			+ " 	IM_DETAILADDR,IM_POSTCODE, IM_AUTH, IM_SKILL "
-			+ " FROM "
-			+ " 	ICAN_MEMBER WHERE IM_IDX = ? ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(1, im_idx);
-		
-		rs = psmt.executeQuery();
-		MemberVO mvo = new MemberVO();
-		while (rs.next()) {
-			cnt = 1;
-			mvo.setIm_idx(rs.getInt(cnt++));
-			mvo.setIm_pw(rs.getString(cnt++));
-			mvo.setIm_dname(rs.getString(cnt++));
-			mvo.setIm_name(rs.getString(cnt++));
-			mvo.setIm_phone(rs.getString(cnt++));
-			mvo.setIm_email(rs.getString(cnt++));
-			mvo.setIm_status(rs.getInt(cnt++));
-			mvo.setIm_scnum(rs.getString(cnt++));
-			mvo.setIm_address(rs.getString(cnt++));
-			mvo.setIm_detailaddr(rs.getString(cnt++));
-			mvo.setIm_postcode(rs.getString(cnt++));
-			mvo.setIm_auth(rs.getInt(cnt++));
-			mvo.setIm_skill(rs.getString(cnt++));
+        try {
+        	sql = " SELECT "
+        			+ " 	IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
+        			+ " 	IM_DETAILADDR,IM_POSTCODE, IM_AUTH, IM_SKILL "
+        			+ " FROM "
+        			+ " 	ICAN_MEMBER WHERE IM_IDX = ? ";
+        		psmt = conn.prepareStatement(sql);
+        		psmt.setInt(1, im_idx);
+        		
+        		rs = psmt.executeQuery();
+        		
+        		while (rs.next()) {
+        			mvo = new MemberVO();
+        			cnt = 1;
+        			mvo.setIm_idx(rs.getInt(cnt++));
+        			mvo.setIm_pw(rs.getString(cnt++));
+        			mvo.setIm_dname(rs.getString(cnt++));
+        			mvo.setIm_name(rs.getString(cnt++));
+        			mvo.setIm_phone(rs.getString(cnt++));
+        			mvo.setIm_email(rs.getString(cnt++));
+        			mvo.setIm_status(rs.getInt(cnt++));
+        			mvo.setIm_scnum(rs.getString(cnt++));
+        			mvo.setIm_address(rs.getString(cnt++));
+        			mvo.setIm_detailaddr(rs.getString(cnt++));
+        			mvo.setIm_postcode(rs.getString(cnt++));
+        			mvo.setIm_auth(rs.getInt(cnt++));
+        			mvo.setIm_skill(rs.getString(cnt++));
+        			
+        		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 			
-		}
-		
-		if(rs != null){
-			rs.close();
-		}
-		
-		if(psmt != null){
-			psmt.close();
+			if(rs != null){
+				rs.close();
+			}
 		}
         
 		return mvo;
@@ -428,41 +483,42 @@ public class WorkerDAO {
 		
 		PreparedStatement psmt = null;
         ResultSet rs = null;
-        
         int cnt = 1;
         String sql = "";
-        
 		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
+		try {
+			sql = "  SELECT "
+					+ "		IML_IM_IDX, IML_LNAME, IML_ACQDATE, IML_ORGANIZATION "
+					+ " FROM "
+					+ "		ICAN_MEM_LICENSE "
+					+ " WHERE "
+					+ "		IML_IM_IDX = ? ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, lvo.getIml_im_idx());
 
-		sql = "  SELECT "
-				+ "		IML_IM_IDX, IML_LNAME, IML_ACQDATE, IML_ORGANIZATION "
-				+ " FROM "
-				+ "		ICAN_MEM_LICENSE "
-				+ " WHERE "
-				+ "		IML_IM_IDX = ? ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(cnt++, lvo.getIml_im_idx());
+			rs = psmt.executeQuery();
 
-		rs = psmt.executeQuery();
+			while (rs.next()) {
+				cnt = 1;
+				MemLicenseVO mlvo = new MemLicenseVO();
+				mlvo.setIml_im_idx(rs.getInt(cnt++));
+				mlvo.setIml_lname(rs.getString(cnt++));
+				mlvo.setIml_acqdate(rs.getString(cnt++));
+				mlvo.setIml_organization(rs.getString(cnt++));
 
-		while (rs.next()) {
-			cnt = 1;
-			MemLicenseVO mlvo = new MemLicenseVO();
-			mlvo.setIml_im_idx(rs.getInt(cnt++));
-			mlvo.setIml_lname(rs.getString(cnt++));
-			mlvo.setIml_acqdate(rs.getString(cnt++));
-			mlvo.setIml_organization(rs.getString(cnt++));
-
-			liclist.add(mlvo);
+				liclist.add(mlvo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
-		
-		if (rs != null) {
-			rs.close();
-		}
-		if (psmt != null) {
-			psmt.close();
-		}
-		
 		return liclist;
 	}
 	
@@ -473,49 +529,51 @@ public class WorkerDAO {
         String sql = "";
         int cnt = 1;
         List<ExperienceVO> elist = new ArrayList<ExperienceVO>();
-        
-		sql = " SELECT "
-				+ "		IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL "
-			+ " FROM ("
-			+ "			SELECT "
-			+ "					ROW_NUMBER() OVER (ORDER BY IME_REGI_DATE DESC) AS RNUM, IME_REGI_DATE, "
-			+ "					IME_EXIT_DATE, IME_CONAME, IME_AUTH , IME_ROLL "
-			+ "           FROM "
-			+ "					ICAN_MEM_EXP "
-			+ "       	  WHERE "
-			+ "					IME_IM_IDX = ? "
-			+ "				AND IME_EXIT_DATE IS NOT NULL "
-			+ "		 ) "
-			+ " WHERE RNUM BETWEEN ? AND ? ";
-		
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(cnt++, evo.getIme_im_idx());
-		psmt.setInt(cnt++, evo.getStart());
-		psmt.setInt(cnt++, evo.getEnd());
-		
-		rs = psmt.executeQuery();
-		
-		while (rs.next()) {
-			
-			cnt = 1;
-			ExperienceVO expvo = new ExperienceVO();
-			expvo.setIme_regi_date(rs.getString(cnt++));
-			expvo.setIme_exit_date(rs.getString(cnt++));
-			expvo.setIme_coname(rs.getString(cnt++));
-			expvo.setIme_auth(rs.getInt(cnt++));
-			expvo.setIme_roll(rs.getString(cnt++));
-			
-			elist.add(expvo);
+        try {
+        	sql = " SELECT "
+    				+ "		IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL "
+    			+ " FROM ("
+    			+ "			SELECT "
+    			+ "					ROW_NUMBER() OVER (ORDER BY IME_REGI_DATE DESC) AS RNUM, IME_REGI_DATE, "
+    			+ "					IME_EXIT_DATE, IME_CONAME, IME_AUTH , IME_ROLL "
+    			+ "           FROM "
+    			+ "					ICAN_MEM_EXP "
+    			+ "       	  WHERE "
+    			+ "					IME_IM_IDX = ? "
+    			+ "				AND IME_EXIT_DATE IS NOT NULL "
+    			+ "		 ) "
+    			+ " WHERE RNUM BETWEEN ? AND ? ";
+    		
+    		psmt = conn.prepareStatement(sql);
+    		psmt.setInt(cnt++, evo.getIme_im_idx());
+    		psmt.setInt(cnt++, evo.getStart());
+    		psmt.setInt(cnt++, evo.getEnd());
+    		
+    		rs = psmt.executeQuery();
+    		
+    		while (rs.next()) {
+    			
+    			cnt = 1;
+    			ExperienceVO expvo = new ExperienceVO();
+    			expvo.setIme_regi_date(rs.getString(cnt++));
+    			expvo.setIme_exit_date(rs.getString(cnt++));
+    			expvo.setIme_coname(rs.getString(cnt++));
+    			expvo.setIme_auth(rs.getInt(cnt++));
+    			expvo.setIme_roll(rs.getString(cnt++));
+    			
+    			elist.add(expvo);
+    		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
-		
-		if(rs != null){
-			rs.close();
-		}
-		
-		if(psmt != null){
-			psmt.close();
-		}
-		
 		return elist;
 	}
 	
@@ -523,19 +581,31 @@ public class WorkerDAO {
 		PreparedStatement psmt = null;
         ResultSet rs = null;
         int result= 0;
-        
         String sql = "";
-        sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(1, evo.getIme_im_idx());
-		
-		rs = psmt.executeQuery();
-		
-		while (rs.next()) {
-	   		 
-			result = rs.getInt(1);
+        try {
+        	 sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? ";
+     		psmt = conn.prepareStatement(sql);
+     		psmt.setInt(1, evo.getIme_im_idx());
+     		
+     		rs = psmt.executeQuery();
+     		
+     		while (rs.next()) {
+     	   		 
+     			result = rs.getInt(1);
+     		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			
+			if(rs != null){
+				rs.close();
+			}
+				
 		}
-	        
         return result;
 	}
 	
@@ -543,17 +613,29 @@ public class WorkerDAO {
 		PreparedStatement psmt = null;
         ResultSet rs = null;
         int result= 0;
-        
         String sql = "";
-        sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(1, licvo.getIml_im_idx());
-		
-		rs = psmt.executeQuery();
-		
-		while (rs.next()) {
-	   		 
-			result = rs.getInt(1);
+        
+        try {
+        	 sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
+     		psmt = conn.prepareStatement(sql);
+     		psmt.setInt(1, licvo.getIml_im_idx());
+     		
+     		rs = psmt.executeQuery();
+     		
+     		while (rs.next()) {
+     	   		 
+     			result = rs.getInt(1);
+     		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
 	        
         return result;
@@ -566,23 +648,31 @@ public class WorkerDAO {
 		String resultstr = "";
 		int cnt = 1;
 		String sql = "";
-		sql = " SELECT TRUNC(IME_REGI_DATE) FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(cnt++, mvo.getIm_idx());
+		
+		try {
+			
+			sql = " SELECT TRUNC(IME_REGI_DATE) FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
 
-		rs = psmt.executeQuery();
+			rs = psmt.executeQuery();
 
-		while (rs.next()) {
-			cnt = 1;
+			while (rs.next()) {
+				cnt = 1;
 
-			resultstr = rs.getString(cnt++);
-		}
-		// close
-		if (psmt != null) {
-			psmt.close();
-		}
-		if (rs != null) {
-			rs.close();
+				resultstr = rs.getString(cnt++);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
 		// return
 		return resultstr;
@@ -591,28 +681,33 @@ public class WorkerDAO {
 	public ExperienceVO getOutSidePersonCompany(int idx, Connection conn) throws Exception{
 		
 		ExperienceVO vo = new ExperienceVO();
-		
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		int cnt = 1;
 		String sql = "";
-		sql = " SELECT IME_CONAME FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(cnt++, idx);
 		
-		rs = psmt.executeQuery();
-		while (rs.next()) {
-			cnt = 1;
-			vo.setIme_coname(rs.getString(cnt++));
+		try {
+			sql = " SELECT IME_CONAME FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, idx);
 			
-		}
-		
-		if(rs != null){
-			rs.close();
-		}
-		
-		if(psmt != null){
-			psmt.close();
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				cnt = 1;
+				vo.setIme_coname(rs.getString(cnt++));
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
 				
 		return vo;
@@ -646,6 +741,10 @@ public class WorkerDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
 		return result > 0 ? true : false;
 	}
@@ -673,6 +772,13 @@ public class WorkerDAO {
 			e.printStackTrace();
 			throw e;
 
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
 		
 		return result > 0 ? true : false;
@@ -680,7 +786,6 @@ public class WorkerDAO {
 	
 	public boolean preupdateWorkerLicense(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
-		
 		String sql = "";
         int cnt = 1;
         int result = 0;
@@ -696,6 +801,10 @@ public class WorkerDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
 		return result > 0 ? true : false;
 	}
@@ -725,6 +834,10 @@ public class WorkerDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
 		return result > 0 ? true : false;
 	}
@@ -752,6 +865,13 @@ public class WorkerDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
         
 		return result > 0 ? true : false ;
@@ -773,6 +893,10 @@ public class WorkerDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
         
 		return result > 0 ? true : false;
@@ -802,6 +926,10 @@ public class WorkerDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		} finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
         
 		return result > 0 ? true : false;
@@ -829,6 +957,10 @@ public class WorkerDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
 		
 		return result > 0 ? true : false;
@@ -856,6 +988,10 @@ public class WorkerDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
 		}
 		
 		return result > 0 ? true : false;

@@ -25,8 +25,11 @@
  			<result name="success">/WEB-INF/views/project/projectDetail.jsp</result>
  		</action>
  		
- 		<action name="assignMember">
- 			<result>/WEB-INF/views/project/assignMember.jsp</result>
+ 		<action name="assignMember" class="kr.co.ican.project.action.AssignMemberListAction">
+ 			<result name="success">/WEB-INF/views/project/assignMember.jsp</result>
+ 		</action>
+ 		<action name="addMemberToProject" class="kr.co.ican.project.action.AddMemberToProjectAction">
+ 			<result name="success">/WEB-INF/views/project/assignMember.jsp</result>
  		</action>
  	</package>
  </struts>

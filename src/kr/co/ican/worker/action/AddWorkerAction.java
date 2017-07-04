@@ -258,6 +258,7 @@ public class AddWorkerAction extends ActionSupport {
 			liclist  = service.makeListLicense(iml_lname, iml_acqdate, iml_organization, chkLicense);
 			elist =  service.makeListExp(ime_regi_date, ime_exit_date, ime_coname, ime_auth, ime_roll, chkCareer);
 			mvo.setOutsideperson(outsideperson); //타업체의 경우 회사명 추가
+			
 			//1. validation
 			vvo = valchk.addWorkerValidation(avo);
 			//2. DB insert

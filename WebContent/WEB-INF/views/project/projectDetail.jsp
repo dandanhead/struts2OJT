@@ -102,6 +102,10 @@
 		</tbody>
 	</table>
 	<span style="float: right;">
+		<a class="btn btn-default" href="#none" style="width: 100%;" id="removeMember">Remove</a>
+	</span>
+	
+	<span style="float: right; margin-right : 1%;">
 		<a class="btn btn-default" href="#none" style="width: 100%;" id="assignMember">Assign</a>
 	</span>
 </div>
@@ -121,8 +125,7 @@
 	});
 	
 	$("#assignMember").click(function() {
-      	window.open("", "popupform", "width = 1024, height = 860, left = 200, top = 100, status = no, scrollbars = yes");
-      	
+		window.open("", "popupform", "width = 1024, height = 860, left = 200, top = 100, status = no, scrollbars = yes");
       	$("#popfrm").attr({"target" : "popupform" , "action" : "assignMember"}).submit();
 	});
 	

@@ -11,31 +11,32 @@ import kr.co.ican.worker.vo.MemberVO;
 public class MemberDAO {
 	
 	//Login check
-	public MemberVO loginCheck(Connection conn, MemberVO mvo)throws SQLException{
+	public MemberVO loginCheck(Connection conn, MemberVO mvo)throws Exception{
 		
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
+		MemberVO vo = null;
 		String sql = "";
 		int cnt = 1;
 		int result = 0;
-		sql = " SELECT "
-			+ " 		IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IME_REGI_DATE "
-     		+ " FROM "
-     		+ " 		ICAN_MEMBER IM LEFT JOIN ICAN_MEM_EXP IME "
-     		+ " ON "
-     		+ "			IM.IM_IDX = IME.IME_IM_IDX "
-     		+ " WHERE "
-     		+ "			IME.IME_EXIT_DATE IS NULL AND IM.IM_IDX = ? AND IM.IM_PW = ? ";
-		
-		
+		try {
+			sql = " SELECT "
+					+ " 		IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IME_REGI_DATE "
+		     		+ " FROM "
+		     		+ " 		ICAN_MEMBER IM LEFT JOIN ICAN_MEM_EXP IME "
+		     		+ " ON "
+		     		+ "			IM.IM_IDX = IME.IME_IM_IDX "
+		     		+ " WHERE "
+		     		+ "			IME.IME_EXIT_DATE IS NULL AND IM.IM_IDX = ? AND IM.IM_PW = ? ";
+				
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, mvo.getIm_idx());
 			psmt.setString(cnt++, mvo.getIm_pw());
-			
+
 			rs = psmt.executeQuery();
-			MemberVO vo = new MemberVO();
+			vo = new MemberVO();
 			while (rs.next()) {
-				
+
 				cnt = 1;
 				vo.setIm_idx(rs.getInt(cnt++));
 				vo.setIm_pw(rs.getString(cnt++));
@@ -46,14 +47,19 @@ public class MemberDAO {
 				vo.setIme_regi_date(rs.getString(cnt++));
 				result++;
 			}
-		//close
-		if(rs != null){
-			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
+				
 		}
 		
-		if(psmt != null){
-			psmt.close();
-		}
 		//return	
 		if(result == 0){
 			
@@ -65,38 +71,42 @@ public class MemberDAO {
 	}
 	
 	// Find ID 
-	public MemberVO findId(Connection conn, MemberVO mvo) throws SQLException{
+	public MemberVO findId(Connection conn, MemberVO mvo) throws Exception{
 		PreparedStatement psmt = null;
-		ResultSet rs = null; 
+		ResultSet rs = null;
+		MemberVO vo = null;
 		String sql = "";
 		int cnt = 1;
 		int result = 0;
-		
-	     sql = " SELECT "
-	     		+ "		IM_IDX "
-      	     + " FROM "
-      	     + "		ICAN_MEMBER WHERE IM_NAME = ? AND IM_SCNUM = ? ";
-	      
-        psmt = conn.prepareStatement(sql);
-        psmt.setString(cnt++, mvo.getIm_name());
-        psmt.setString(cnt++, mvo.getIm_scnum());
-        rs =psmt.executeQuery();
-	      
-        MemberVO vo = new MemberVO();
-        while (rs.next()) {
-        	cnt = 1;
-        	vo.setIm_idx(rs.getInt(cnt++));
-     	    result++;
-        }
-        
-		//close
-        if(psmt != null){
-        	psmt.close();
-        }
-        if(rs != null){
-        	rs.close(); 
-        }
-		       
+		try {
+			sql = " SELECT "
+		     		+ "		IM_IDX "
+	      	     + " FROM "
+	      	     + "		ICAN_MEMBER WHERE IM_NAME = ? AND IM_SCNUM = ? ";
+		      
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setString(cnt++, mvo.getIm_name());
+	        psmt.setString(cnt++, mvo.getIm_scnum());
+	        rs =psmt.executeQuery();
+		      
+	        vo = new MemberVO();
+	        while (rs.next()) {
+	        	cnt = 1;
+	        	vo.setIm_idx(rs.getInt(cnt++));
+	     	    result++;
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
+		}
+	    
         //return
         if(result == 0){
         	return null;
@@ -106,38 +116,45 @@ public class MemberDAO {
 	}
 	
 	// Find PW
-	public MemberVO findPw(Connection conn, MemberVO mvo) throws SQLException{
-		 PreparedStatement psmt = null;
-		 ResultSet rs = null;
+	public MemberVO findPw(Connection conn, MemberVO mvo) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 		int cnt = 1;
 		int result = 0;
-		String sql = " SELECT "
-				+ "				IM_PW  "
-				+ "	     FROM  "
-				+ "				ICAN_MEMBER "
-				+ "		WHERE "
-				+ "				IM_NAME = ?"
-				+ "		    AND IM_SCNUM = ? "
-				+ "         AND IM_EMAIL = ? ";
-
-		psmt = conn.prepareStatement(sql);
-		psmt.setString(cnt++, mvo.getIm_name());
-		psmt.setString(cnt++, mvo.getIm_scnum());
-		psmt.setString(cnt++, mvo.getIm_email());
-		rs = psmt.executeQuery();
 		
-		while (rs.next()) {
-			cnt = 1;
-			mvo.setIm_pw(rs.getString(cnt++));
-			result++;
+		try {
+			String sql = " SELECT "
+					+ "				IM_PW  "
+					+ "	     FROM  "
+					+ "				ICAN_MEMBER "
+					+ "		WHERE "
+					+ "				IM_NAME = ?"
+					+ "		    AND IM_SCNUM = ? "
+					+ "         AND IM_EMAIL = ? ";
+
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(cnt++, mvo.getIm_name());
+			psmt.setString(cnt++, mvo.getIm_scnum());
+			psmt.setString(cnt++, mvo.getIm_email());
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				cnt = 1;
+				mvo.setIm_pw(rs.getString(cnt++));
+				result++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
-		//close
-		if(psmt != null){
-			psmt.close();
-		}
-		if(rs != null){
-			rs.close(); 
-		}
+		
 		//return
 		if (result == 0) {
 			return null;

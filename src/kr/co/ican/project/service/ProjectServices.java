@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.ican.project.dao.ProjectDAO;
+import kr.co.ican.project.vo.AddAssignMemberVO;
+import kr.co.ican.project.vo.AssignMemberVO;
 import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.util.GetDBConn;
 import kr.co.ican.util.Helps;
@@ -117,5 +119,54 @@ public class ProjectServices {
 		}
 		
 		return vo;
+	}
+	
+	public List<AssignMemberVO> getAssignMemList(AssignMemberVO asvo)throws Exception{
+		Connection conn = null;
+		ProjectDAO pdao = new ProjectDAO();
+		List<AssignMemberVO> aslist = new ArrayList<AssignMemberVO>();
+		
+		try {
+			conn = GetDBConn.getConnection();
+			aslist = pdao.getAssignMemList(conn, asvo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return aslist;
+	}
+	
+	public boolean addAssignMember(AddAssignMemberVO aavo) throws Exception{
+		Connection conn = null;
+		ProjectDAO pdao = new ProjectDAO();
+		boolean result = false;
+		
+		try {
+			
+			pdao.
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
+		return result;
+		
 	}
 }

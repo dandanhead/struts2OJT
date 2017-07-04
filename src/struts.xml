@@ -14,7 +14,7 @@
    			<!-- <interceptor-ref name="exception"/>
 			<interceptor-ref name="staticParams"/>
 			<interceptor-ref name="params"/> -->
-			<param name="dir">Z://tempupload</param>
+			<param name="dir">D://tempupload</param>
 			<result name="success" type="stream">
 				<param name="inputName">inputStream</param>
 				<param name="contentDisposition">attachment; filename=${fileName}</param>

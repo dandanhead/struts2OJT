@@ -15,6 +15,9 @@ public class AssignMemberVO {
 	private int start = 1;
 	private int end = 5;
 	
+	public AssignMemberVO() {
+		
+	}
 	public int getIm_idx() {
 		return im_idx;
 	}

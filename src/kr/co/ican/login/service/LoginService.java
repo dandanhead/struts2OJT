@@ -12,7 +12,7 @@ import kr.co.ican.worker.vo.MemberVO;
 public class LoginService {
 	
 	// login check
-	public MemberVO checkMember(MemberVO mvo){
+	public MemberVO checkMember(MemberVO mvo)throws Exception{
 		
 	    Connection conn = null;
 		MemberVO vo = new MemberVO();

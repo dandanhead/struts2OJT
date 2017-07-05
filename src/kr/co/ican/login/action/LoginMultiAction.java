@@ -36,38 +36,36 @@ public class LoginMultiAction extends ActionSupport{
 																	
 	}
 	
-	public String loginAf(){
+	public String loginAf()throws Exception{
 		//service
 		LoginService service = new LoginService();
 		
-		//Member Check
-		mvo = service.checkMember(mvo);
-		
-		if(mvo != null){
-			// get Member`s Start Date
-			try {
+		try {
+			//Member Check
+			mvo = service.checkMember(mvo);
+			if(mvo != null){
+				// get Member`s Start Date
 				regidate = service.getRegiDate(mvo);
-			} catch (Exception e) {
-				e.printStackTrace();
+			}else{
 				return "error";
 			}
-			// make session
+			
 			if(regidate != null){
 				ActionContext context = ActionContext.getContext(); //session
 				Map<String, Object> session = context.getSession();
 				session.put("regidate", regidate);
 				session.put("login", mvo);
 				context.setSession(session);
-				
-				return "success";
 			}else{
-				
 				return "error";
 			}
-		
-		}else{
-			return "fail";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
 		}
+		
+		return "success";
+		
 	}
 	
 	public String logout(){

@@ -9,6 +9,7 @@ import java.util.List;
 import kr.co.ican.project.vo.AssignMemberVO;
 import kr.co.ican.project.vo.ProjectJoinMemberVO;
 import kr.co.ican.project.vo.ProjectVO;
+import kr.co.ican.worker.vo.MemberVO;
 
 public class ProjectDAO {
 
@@ -264,7 +265,7 @@ public class ProjectDAO {
            		+ "                                       ) IME"
            		+ "              ON IM.IM_IDX = IME.IME_IM_IDX "
            		+ "       WHERE "
-           		+ "               IM_RESIGN = 0 "
+           		+ "               IM_RESIGN = 0 AND IM_STATUS = 0 "
            		+ "       )"
            		+ " WHERE RNUM BETWEEN ? AND ? ";
            	
@@ -287,7 +288,8 @@ public class ProjectDAO {
     	   		aslist.add(vo);
     	     }
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			throw e;
 		}finally {
 			if(psmt != null){
 				psmt.close();
@@ -304,7 +306,7 @@ public class ProjectDAO {
 		int result = 0;
 		int cnt = 1;
        	String sql = "";
-       	
+
        	try {
        		sql = " INSERT INTO "
        	       		+ "				ICAN_PROJECT_JOIN_LIST( "
@@ -331,6 +333,91 @@ public class ProjectDAO {
        	
        	return result > 0 ? true : false;
        	
+	}
+	
+	public boolean memberStatusChange(Connection conn, MemberVO mvo) throws Exception{
+		PreparedStatement psmt = null;
+		int result = 0;
+		String sql = "";
+		int cnt = 1;
+		try {
+			sql = " UPDATE "
+				+ "		ICAN_MEMBER "
+				+ " SET "
+				+ "		IM_STATUS = 1 "
+				+ " WHERE "
+				+ "		IM_IDX = ? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, mvo.getIm_idx());
+			
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+		}
+		
+		return result > 0 ? true : false;
+	}
+	
+	public List<MemberVO> getProjectJoinMembers(Connection conn, ProjectVO pvo) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		int cnt = 1;
+		String sql  = "";
+		
+		try {
+			sql = " SELECT "
+					   + " 		IM_IDX, IM_NAME, IM_SKILL, IM_STATUS,  YEAR#, MONTH# "
+					   + " FROM "
+					   + "      ( "
+					   + "         SELECT "
+					   + "					 ROW_NUMBER() OVER( ORDER BY IM_IDX ) AS RNUM,  IM_IDX, IM_NAME, IM_STATUS, IM_SKILL, TRUNC(DATETERM / 12) AS YEAR#, "
+					   + "                   TRUNC(MONTHS_BETWEEN( SYSDATE, ADD_MONTHS( MINDATE,12 * TRUNC(DATETERM / 12)))) AS MONTH#"
+					   + "         FROM "
+					   + "            		 ICAN_MEMBER IM "
+					   + "			         LEFT JOIN ( "
+					   + "				                SELECT "
+					   + "										   IME_IM_IDX,  MIN(IME_REGI_DATE) AS MINDATE, "
+					   + "										   MONTHS_BETWEEN( SYSDATE,  MIN(IME_REGI_DATE)) AS DATETERM "
+					   + "				                FROM "
+					   + "						                   ICAN_MEM_EXP "
+					   + "				                GROUP BY "
+					   + "										   IME_IM_IDX "
+					   + "								) IME "
+					   + "		             ON "
+					   + "								IM.IM_IDX = IME.IME_IM_IDX "
+					   + "		             LEFT JOIN( "
+					   + "				                SELECT "
+					   + "											IPJL_IPL_IDX , IPJL_IM_IDX "
+					   + "				                FROM "
+					   + "											ICAN_PROJECT_JOIN_LIST "
+					   + "			           		  )  IPJL "
+					   + "		            ON IM.IM_IDX = IPJL.IPJL_IM_IDX "
+					   + "         WHERE "
+					   + "		            IM.IM_RESIGN = 0 AND IM.IM_STATUS = 1 AND IPJL.IPJL_IPL_IDX = ? "
+					   + "    ) "
+					   + " WHERE "
+					   + "    RNUM BETWEEN ? AND ? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, pvo.getIpl_idx());
+			psmt.setInt(cnt++, pvo.getStart());
+			psmt.setInt(cnt++, pvo.getEnd());
+			
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 }

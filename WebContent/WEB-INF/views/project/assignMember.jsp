@@ -45,7 +45,7 @@
 		<tbody>
 			<c:if test="${empty aslist}">
 				<tr>
-					<td colspan="6">사원이 없습니다. 사원을 추가 해 주세요.</td>
+					<td colspan="6">가용 인력이 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${not empty aslist }">

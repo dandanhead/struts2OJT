@@ -76,10 +76,15 @@
 			</tr>
 			<tr>
 				<td>
-					진행중인 프로젝트
+					<b>진행중인 프로젝트</b>
 				</td>
 				<td colspan="2">
-					-
+					<c:if test="${empty projectName}">
+						<b style="color: red;">진행중인 프로젝트가 없습니다.</b>
+					</c:if>
+					<c:if test="${not empty projectName }">
+						<b style="color: black;">${projectName}</b>
+					</c:if>
 				</td>
 			</tr>
 		</tbody>	

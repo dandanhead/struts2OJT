@@ -31,6 +31,7 @@ public class DetailWorkerAction extends ActionSupport {
 	private int evototal; // 경력 수
 	private int lictotal;  // 자격증 수
 	private int pageCountPerScreen = 5; // 한 페이지당 보여줄 인원 수
+	private String projectName;
 	
 	public int getIdx() {
 		return idx;
@@ -126,6 +127,13 @@ public class DetailWorkerAction extends ActionSupport {
 	public void setRegidate(String regidate) {
 		this.regidate = regidate;
 	}
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+	
 	@Override
 	public String execute() throws Exception {
 		
@@ -168,6 +176,11 @@ public class DetailWorkerAction extends ActionSupport {
 			lictotal = service.getWorkerLicCount(licvo); // count
 			liclist = service.getMemberLicenses(licvo); // list
 			if(liclist == null){
+				return "fail";
+			}
+			//4. 진행중인 프로젝트 가져오기
+			projectName = service.getProjectName(idx);
+			if(projectName == null){
 				return "fail";
 			}
 			

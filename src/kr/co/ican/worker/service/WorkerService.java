@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import kr.co.ican.project.dao.ProjectDAO;
 import kr.co.ican.util.GetDBConn;
 import kr.co.ican.util.Helps;
 import kr.co.ican.worker.dao.WorkerDAO;
@@ -582,5 +584,29 @@ public class WorkerService {
 		}
 		
 		return lastResult;
+	}
+	
+	public String getProjectName(int idx) throws Exception{
+		Connection conn = null;
+		ProjectDAO pdao = new ProjectDAO();
+		String result = "";
+		try {
+			conn = GetDBConn.getConnection();
+			result = pdao.getProjectName(conn, idx);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
 	}
 }	

@@ -581,4 +581,54 @@ public class ProjectDAO {
 		return pjlist;
 	}
 	
+	public String getProjectName(Connection conn, int idx) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+		String result = "";
+		int cnt = 1;
+		try {
+			sql = " SELECT "
+					+ "			IPL_PNAME "
+					+ " FROM "
+					+ "			ICAN_PROJECT_LIST IPL "
+					+ " LEFT JOIN  "
+					+ "			ICAN_PROJECT_JOIN_LIST IPJL "
+					+ "	ON "
+					+ "		IPL.IPL_IDX = IPJL.IPJL_IPL_IDX "
+					+ "	WHERE "
+					+ "		IPJL.IPJL_IM_IDX = ? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, idx);
+			
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getString(cnt++);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(rs != null){
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
+	}
+	
 }

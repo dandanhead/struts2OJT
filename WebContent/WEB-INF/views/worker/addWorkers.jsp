@@ -196,7 +196,7 @@
 			<hr>
 			<div style="width: 40%; margin: auto;">
 				<button type="button" class="btn btn-default" style="width: 40%;" id="submitbtn">Submit</button>
-				<a class="btn btn-default" href="goWorker.do" style="width: 40%;" id="chkchk">Return</a>
+				<a class="btn btn-default" href="goWorker" style="width: 40%;" id="chkchk">Return</a>
 			</div>
 		</div>
 	</div>

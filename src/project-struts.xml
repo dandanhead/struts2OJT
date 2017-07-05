@@ -31,5 +31,12 @@
  		<action name="addMemberToProject" class="kr.co.ican.project.action.AddMemberToProjectAction">
  			<result name="success">/WEB-INF/views/project/assignMember.jsp</result>
  		</action>
+ 		
+ 		<action name="removeMember" class="kr.co.ican.project.action.AssignMemberListAction" method="getRemoveMember">
+ 			<result name="success">/WEB-INF/views/project/removeMember.jsp</result>
+ 		</action>
+ 		<action name="removeMemberToProject" class="kr.co.ican.project.action.AddMemberToProjectAction" method="removeMember">
+ 			<result name="success">/WEB-INF/views/project/removeMember.jsp</result>
+ 		</action>
  	</package>
  </struts>

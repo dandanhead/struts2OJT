@@ -43,22 +43,23 @@ public class LoginMultiAction extends ActionSupport{
 		try {
 			//Member Check
 			mvo = service.checkMember(mvo);
-			if(mvo != null){
-				// get Member`s Start Date
-				regidate = service.getRegiDate(mvo);
-			}else{
+			if(mvo == null){
+				return "fail";
+			}
+			// get Member`s Start Date
+			regidate = service.getRegiDate(mvo);
+			if(regidate == null){
 				return "error";
 			}
 			
-			if(regidate != null){
-				ActionContext context = ActionContext.getContext(); //session
-				Map<String, Object> session = context.getSession();
-				session.put("regidate", regidate);
-				session.put("login", mvo);
-				context.setSession(session);
-			}else{
-				return "error";
-			}
+			//make session
+			
+			ActionContext context = ActionContext.getContext(); //session
+			Map<String, Object> session = context.getSession();
+			session.put("regidate", regidate);
+			session.put("login", mvo);
+			context.setSession(session);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error";

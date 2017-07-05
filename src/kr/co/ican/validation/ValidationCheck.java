@@ -134,7 +134,7 @@ public class ValidationCheck extends ValidationMethods{
 			return vvo;
 			
 		}else{
-			vvo.setMsg("찾으시는 사원 번호는  <" + mvo.getIm_idx() + "> 입니다.");
+			vvo.setMsg("찾으시는 Password는  <" + mvo.getIm_pw() + "> 입니다.");
 			valflag = true;
 			vvo.setResultfalg(valflag);
 			return vvo;

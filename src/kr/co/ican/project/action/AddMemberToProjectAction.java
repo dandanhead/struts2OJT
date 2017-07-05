@@ -14,7 +14,6 @@ public class AddMemberToProjectAction extends ActionSupport {
 	private int rolls[];
 	private int insertCheck;
 	private int ipl_idx;
-	
 	public int[] getChkvalues() {
 		return chkvalues;
 	}
@@ -58,6 +57,34 @@ public class AddMemberToProjectAction extends ActionSupport {
 			
 			//call service
 			resultCheck = pservice.addAssignMember(aavo);
+			if(resultCheck == false){
+				return "error";
+			}
+			
+			//winddow close param
+			insertCheck += 1;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		
+		return "success";
+	}
+	
+	public String removeMember() throws Exception{
+		ProjectServices pservice = new ProjectServices();
+		AddAssignMemberVO aavo = new AddAssignMemberVO();
+		boolean resultCheck = false;
+		
+		try {
+			// vo setting
+			aavo.setChkvalues(chkvalues);
+			aavo.setIpl_idx(ipl_idx);
+			aavo.setRolls(rolls);
+			
+			//call service
+			resultCheck = pservice.removeAssignMember(aavo);
 			if(resultCheck == false){
 				return "error";
 			}

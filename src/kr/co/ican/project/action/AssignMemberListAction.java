@@ -4,6 +4,7 @@ import java.util.List;
 import com.opensymphony.xwork2.ActionSupport;
 import kr.co.ican.project.service.ProjectServices;
 import kr.co.ican.project.vo.AssignMemberVO;
+import kr.co.ican.project.vo.ProjectVO;
 public class AssignMemberListAction extends ActionSupport {
 
 	private static final long serialVersionUID = -3856817760324080305L;
@@ -11,6 +12,7 @@ public class AssignMemberListAction extends ActionSupport {
 	private AssignMemberVO asvo;
 	private int pageNumber;
 	private int ipl_idx;
+	private ProjectVO pvo;
 	
 	public List<AssignMemberVO> getAslist() {
 		return aslist;
@@ -36,6 +38,12 @@ public class AssignMemberListAction extends ActionSupport {
 	public void setIpl_idx(int ipl_idx) {
 		this.ipl_idx = ipl_idx;
 	}
+	public ProjectVO getPvo() {
+		return pvo;
+	}
+	public void setPvo(ProjectVO pvo) {
+		this.pvo = pvo;
+	}
 	@Override
 	public String execute() throws Exception {
 		
@@ -56,5 +64,27 @@ public class AssignMemberListAction extends ActionSupport {
 		
 		return "success";
 		
+	}
+	
+	public String getRemoveMember() throws Exception{
+		ProjectServices pservice = new ProjectServices();
+		
+		if(pvo == null){
+			pvo = new ProjectVO();
+		}
+		
+		//vo setting
+		pvo.setIpl_idx(ipl_idx);
+		
+		try {
+			
+			aslist = pservice.getRemoveMemList(pvo);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		
+		return "success";
 	}
 }

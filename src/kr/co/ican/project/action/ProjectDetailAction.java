@@ -3,18 +3,18 @@ package kr.co.ican.project.action;
 import java.util.List;
 
 import com.opensymphony.xwork2.ActionSupport;
-
 import kr.co.ican.project.service.ProjectServices;
+import kr.co.ican.project.vo.ProjectJoinMemListVO;
 import kr.co.ican.project.vo.ProjectVO;
-import kr.co.ican.worker.vo.MemberVO;
 
 public class ProjectDetailAction extends ActionSupport {
 
 	private static final long serialVersionUID = 1688781427833000969L;
 	
 	private int ipl_idx; //받아온 프로젝트 번호
-	private ProjectVO pvo;
-	private List<MemberVO> mlist;
+	private ProjectVO pvo; //페이지 구현시 페이징넘버 setting
+	private List<ProjectJoinMemListVO> pjlist;
+	
 	
 	public int getIpl_idx() {
 		return ipl_idx;
@@ -28,12 +28,11 @@ public class ProjectDetailAction extends ActionSupport {
 	public void setPvo(ProjectVO pvo) {
 		this.pvo = pvo;
 	}
-	
-	public List<MemberVO> getMlist() {
-		return mlist;
+	public List<ProjectJoinMemListVO> getPjlist() {
+		return pjlist;
 	}
-	public void setMlist(List<MemberVO> mlist) {
-		this.mlist = mlist;
+	public void setPjlist(List<ProjectJoinMemListVO> pjlist) {
+		this.pjlist = pjlist;
 	}
 	@Override
 	public String execute() throws Exception {
@@ -51,7 +50,10 @@ public class ProjectDetailAction extends ActionSupport {
 			if(pvo == null){
 				return "error";
 			}
-			mlist = pservice.
+			pjlist = pservice.getProjectJoinMembers(pvo);
+			if(pjlist == null){
+				return "error";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error";

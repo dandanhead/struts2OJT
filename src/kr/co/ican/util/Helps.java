@@ -115,7 +115,7 @@ public class Helps {
 		return age;
 	}
 	
-	public String getWorkerGender(String im_scnum){
+	public String getWorkerGender(String im_scnum){ //123232-12323
 		
 		String resultstr = "";
 		
@@ -127,7 +127,7 @@ public class Helps {
 		if((gendernum % 2) == 0){
 			resultstr = "F";
 		}else{
-			resultstr = "F";
+			resultstr = "M";
 		}
 		
 		return resultstr;

@@ -6,6 +6,7 @@ import java.util.List;
 import kr.co.ican.project.dao.ProjectDAO;
 import kr.co.ican.project.vo.AddAssignMemberVO;
 import kr.co.ican.project.vo.AssignMemberVO;
+import kr.co.ican.project.vo.ProjectJoinMemListVO;
 import kr.co.ican.project.vo.ProjectJoinMemberVO;
 import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.util.GetDBConn;
@@ -123,14 +124,14 @@ public class ProjectServices {
 		return vo;
 	}
 	
-	public List<MemberVO> getProjectJoinMembers(ProjectVO pvo)throws Exception{
+	public List<ProjectJoinMemListVO> getProjectJoinMembers(ProjectVO pvo)throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
-		List<MemberVO> mlist = new ArrayList<MemberVO>();
+		List<ProjectJoinMemListVO> pjlist = new ArrayList<ProjectJoinMemListVO>();
 		
 		try {
-			
-			
+			conn = GetDBConn.getConnection();
+			pjlist = pdao.getProjectJoinMembers(conn, pvo);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,6 +146,8 @@ public class ProjectServices {
 				}
 			}
 		}
+		
+		return pjlist;
 	}
 	
 	public List<AssignMemberVO> getAssignMemList(AssignMemberVO asvo)throws Exception{
@@ -155,6 +158,31 @@ public class ProjectServices {
 		try {
 			conn = GetDBConn.getConnection();
 			aslist = pdao.getAssignMemList(conn, asvo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return aslist;
+	}
+	
+	public List<AssignMemberVO> getRemoveMemList(ProjectVO pvo)throws Exception{
+		Connection conn = null;
+		ProjectDAO pdao = new ProjectDAO();
+		List<AssignMemberVO> aslist = new ArrayList<AssignMemberVO>();
+		
+		try {
+			conn = GetDBConn.getConnection();
+			aslist = pdao.getRemoveMemList(conn, pvo);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -203,6 +231,62 @@ public class ProjectServices {
 				mvo.setIm_idx(aavo.getChkvalues()[iddx]);
 				
 				result = pdao.memberStatusChange(conn, mvo);
+				
+				if(result == false){
+					conn.rollback();
+					return result;
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
+		
+	}
+	
+	public boolean removeAssignMember(AddAssignMemberVO aavo) throws Exception{
+		Connection conn = null;
+		ProjectDAO pdao = new ProjectDAO();
+		boolean result = false;
+		
+		try {
+			// Open DB
+			conn = GetDBConn.getConnection();
+			conn.setAutoCommit(false);
+			
+			//1 .delete join table
+			for (int idx = 0; idx < aavo.getChkvalues().length; idx++) {
+				ProjectJoinMemberVO pjvo = new ProjectJoinMemberVO();
+				
+				pjvo.setIpjl_ipl_idx(aavo.getIpl_idx());
+				pjvo.setIpjl_im_idx(aavo.getChkvalues()[idx]);
+				
+				result = pdao.deleteAssignMember(conn, pjvo); /////////////////////////////////////
+				
+				if(result == false){
+					conn.rollback();
+					return result;
+				}
+			}
+			
+			//2 . update member table >> status = 0
+			for (int iddx = 0; iddx < aavo.getChkvalues().length; iddx++) {
+				MemberVO mvo = new MemberVO();
+				mvo.setIm_idx(aavo.getChkvalues()[iddx]);
+				
+				result = pdao.memberStatusDefault(conn, mvo); ///////////////////////////////////
 				
 				if(result == false){
 					conn.rollback();

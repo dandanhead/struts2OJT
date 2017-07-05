@@ -98,7 +98,39 @@
 			</tr>
 		</thead>
 		<tbody>
-		<!-- 프로젝트 참여 인원 뿌리기 list -->
+		<!-- 프로젝트 참여 인원 뿌리기 pjlist -->
+		<c:if test="${empty pjlist}">
+			<tr>
+				<td colspan="6" style="text-align: center;">프로젝트에 참여 중인 인원이 없습니다.</td>
+			</tr>
+		</c:if>
+		<c:if test="${not empty pjlist}">
+			<c:forEach items="${pjlist }" var="idx">
+				<tr>
+					<td>${idx.im_idx }</td>
+					<td>${idx.im_dname }</td>
+					<td>${idx.im_name}</td>
+					<td>
+						<c:if test="${not empty idx.expYear and not empty idx.expMonth }">
+							<c:if test="${idx.expYear eq 0 and idx.expMonth eq 0 }">
+								신입
+							</c:if>
+							<c:if test="${idx.expYear eq 0 and idx.expMonth ne 0 }">
+								${idx.expMonth}개월
+							</c:if>
+							<c:if test="${idx.expYear ne 0 and idx.expMonth eq 0 }">
+								${idx.expYear}년
+							</c:if>
+							<c:if test="${idx.expYear ne 0 and idx.expMonth ne 0 }">
+								${idx.expYear}년 &nbsp;&nbsp;${idx.expMonth}개월
+							</c:if>
+						</c:if>
+					</td>
+					<td>${idx.im_phone}</td>
+					<td>${idx.im_email }</td>
+				</tr>
+			</c:forEach>
+		</c:if>
 		</tbody>
 	</table>
 	<span style="float: right;">
@@ -106,7 +138,7 @@
 	</span>
 	
 	<span style="float: right; margin-right : 1%;">
-		<a class="btn btn-default" href="#none" style="width: 100%;" id="assignMember">Assign</a>
+		<button class="btn btn-default" style="width: 100%;" id="assignMember">Assign</button>
 	</span>
 </div>
 <form name="filedownForm" action="filedown" method="post">
@@ -118,15 +150,15 @@
 </form>
 </body>
 <script type="text/javascript">
-	$(".delmem").click(function() {
-		if(confirm("해당 member를 제외 하시겠습니까?")){
-			alert("해당 member 삭제!");
-		}
-	});
-	
+	// add member
 	$("#assignMember").click(function() {
 		window.open("", "popupform", "width = 1024, height = 860, left = 200, top = 100, status = no, scrollbars = yes");
       	$("#popfrm").attr({"target" : "popupform" , "action" : "assignMember"}).submit();
+	});
+	//remove member
+	$("#removeMember").click(function() {
+		window.open("", "popupform", "width = 1024, height = 860, left = 200, top = 100, status = no, scrollbars = yes");
+      	$("#popfrm").attr({"target" : "popupform" , "action" : "removeMember"}).submit();
 	});
 	
 	//logout

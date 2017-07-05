@@ -13,7 +13,6 @@ public class LoginService {
 	
 	// login check
 	public MemberVO checkMember(MemberVO mvo)throws Exception{
-		
 	    Connection conn = null;
 		MemberVO vo = new MemberVO();
 		MemberDAO mdao = new MemberDAO();
@@ -24,10 +23,10 @@ public class LoginService {
 			//dao
 			vo = mdao.loginCheck(conn, mvo);
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			
 			e.printStackTrace();
-			vo = null;
+			throw e;
 			
 		}finally {
 			

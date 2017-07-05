@@ -13,9 +13,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<s:form style="width: 80%; margin: auto;" action="addMemberToProject" name="/project" id="frm">
+<s:form style="width: 80%; margin: auto;" action="removeMemberToProject" name="/project" id="frm">
 <div>
-	<h3>Assign Member</h3>
+	<h3>Remove Member</h3>
 	<hr>
 	<select>
 		<option>전체</option>
@@ -24,7 +24,7 @@
 		<option>스킬</option>
 	</select>
 	<input type="text" class="form-contrl"/>
-	<button id="assignbtn" class="btn btn-warning" style="float: right;" disabled="disabled">Add Members!</button>
+	<button id="assignbtn" class="btn btn-warning" style="float: right;" disabled="disabled">Remove Members!</button>
 	<table style="width: 100%; margin: auto;" class="table table-bordered">
 		<colgroup>
 			<col width="10%;">
@@ -95,7 +95,7 @@
 </body>
 <script type="text/javascript">
 $("#assignbtn").click(function() {
-	if(confirm("등록 하시겠습니까?")){
+	if(confirm("제외 하시겠습니까?")){
 		$("#frm").submit();
 	}
 });

@@ -373,12 +373,13 @@ public class ProjectDAO {
 		
 		try {
 			sql = " SELECT "
-					   + " 		IM_IDX, IM_NAME, IM_SKILL, IM_STATUS,  YEAR#, MONTH# "
+					   + " 		IM_IDX, IM_DNAME, IM_NAME, IM_PHONE , IM_STATUS,  YEAR#, MONTH#, IM_EMAIL "
 					   + " FROM "
 					   + "      ( "
 					   + "         SELECT "
-					   + "					 ROW_NUMBER() OVER( ORDER BY IM_IDX ) AS RNUM,  IM_IDX, IM_NAME, IM_STATUS, IM_SKILL, TRUNC(DATETERM / 12) AS YEAR#, "
-					   + "                   TRUNC(MONTHS_BETWEEN( SYSDATE, ADD_MONTHS( MINDATE,12 * TRUNC(DATETERM / 12)))) AS MONTH#"
+					   + "					 ROW_NUMBER() OVER( ORDER BY IM_IDX ) AS RNUM,  IM_IDX, IM_DNAME, IM_NAME, IM_PHONE , "
+					   + "					 IM_STATUS, IM_EMAIL, TRUNC(DATETERM / 12) AS YEAR#,  "
+					   + "					 TRUNC(MONTHS_BETWEEN( SYSDATE, ADD_MONTHS( MINDATE,12 * TRUNC(DATETERM / 12)))) AS MONTH#"
 					   + "         FROM "
 					   + "            		 ICAN_MEMBER IM "
 					   + "			         LEFT JOIN ( "

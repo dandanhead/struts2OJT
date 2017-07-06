@@ -619,32 +619,18 @@ public class WorkerService {
 		int pnum = 0; // 프로젝트 번호 가져오기
 		
 		boolean resultchk =false;
-		
 		try {
 			conn = GetDBConn.getConnection();
 			conn.setAutoCommit(false);
 			
 			//프로젝트 번호 가져오기
-			pnum = wdao.chkParticipation(conn, idx); // pnum == 0 이면 투입중 아님, pnum 을 가져오면 투입중
+			pnum = wdao.chkParticipation(conn, idx); // pnum == 0 이면 투입중 아님, pnum 을 가져오면 투입중 , 종료되지않은 현재 진행중인프로젝트 참여 여부
 			// err
 			if(pnum < 0){
 				conn.rollback();
 				return resultchk;
 			}
-			// 참여 안하는중 , 대기중
-			if(pnum == 0){ 
-				resultchk = wdao.doResignWorker(conn, idx); // 퇴사처리
-				if(resultchk == false){
-					conn.rollback();
-					return resultchk;
-				}
-				resultchk = wdao.setWorkersExitDate(conn, idx); //퇴사일 설정
-				if(resultchk == false){
-					conn.rollback();
-					return resultchk;
-				}
-			}
-			 // 프로젝트 참여중
+			// 프로젝트 참여중
 			if(pnum > 0){
 				// vo setting
 				ProjectJoinMemberVO pjvo = new ProjectJoinMemberVO();
@@ -652,11 +638,13 @@ public class WorkerService {
 				pjvo.setIpjl_ipl_idx(pnum); //프로젝트 번호 setting
 				//프로젝트 제외시키기
 				resultchk = pdao.deleteAssignMember(conn, pjvo);
+				
 				if(resultchk == false){
 					conn.rollback();
 					return resultchk;
 				}
 				//프로젝트 투입상태 원상복귀
+				
 				MemberVO mvo = new MemberVO();
 				mvo.setIm_idx(idx);
 				resultchk = pdao.memberStatusDefault(conn, mvo);
@@ -664,19 +652,21 @@ public class WorkerService {
 					conn.rollback();
 					return resultchk;
 				}
-				//퇴사처리
-				resultchk = wdao.doResignWorker(conn, idx); 
-				if(resultchk == false){
-					conn.rollback();
-					return resultchk;
-				}
-				//퇴사일 설정
-				resultchk = wdao.setWorkersExitDate(conn, idx); 
-				if(resultchk == false){
-					conn.rollback();
-					return resultchk;
-				}
 			}
+			
+			//퇴사처리
+			resultchk = wdao.doResignWorker(conn, idx); 
+			if(resultchk == false){
+				conn.rollback();
+				return resultchk;
+			}
+			//퇴사일 설정
+			resultchk = wdao.setWorkersExitDate(conn, idx); 
+			if(resultchk == false){
+				conn.rollback();
+				return resultchk;
+			}
+			
 			//commit
 			conn.commit();
 		} catch (Exception e) {

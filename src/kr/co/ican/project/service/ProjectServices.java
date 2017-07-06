@@ -239,6 +239,7 @@ public class ProjectServices {
 				
 			}
 			
+			conn.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -294,7 +295,8 @@ public class ProjectServices {
 				}
 				
 			}
-			
+			// commit
+			conn.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -310,5 +312,75 @@ public class ProjectServices {
 		
 		return result;
 		
+	}
+	
+	public boolean deleteProject(int ipl_idx) throws Exception{
+		
+		Connection conn = null;
+		ProjectDAO pdao = new ProjectDAO();
+		boolean result = false;
+		List<MemberVO> mlist = new ArrayList<MemberVO>();
+ 		try {
+			conn = GetDBConn.getConnection();
+			conn.setAutoCommit(false);
+			
+			//1. 프로젝트에 참여중인 인원이 있는지 체크
+			mlist = pdao.projectAssignedWorker(conn, ipl_idx);
+			if(mlist == null){
+				return result;
+			}
+			//2. 참여인원 있을때 제외시키기
+			if(mlist.size() >  0){
+				
+				// 참여중인 프로젝트 인원이 있다면 제외시키기
+//				for (int idx = 0; idx < mlist.size(); idx++) {
+//					
+//					ProjectJoinMemberVO pjvo = new ProjectJoinMemberVO();
+//					pjvo.setIpjl_ipl_idx(ipl_idx);
+//					pjvo.setIpjl_im_idx(mlist.get(idx).getIm_idx());
+//					
+//					result = pdao.deleteAssignMember(conn, pjvo);
+//					if(result == false){
+//						conn.rollback();
+//						return result;
+//					}
+//				}
+				
+				// 제외된 인원 status 원상복귀
+				for (int iddx = 0; iddx < mlist.size(); iddx++) {
+					
+					result = pdao.memberStatusDefault(conn, mlist.get(iddx));
+					if(result == false){
+						conn.rollback();
+						return result;
+					}
+				}
+			}
+			
+			//3. 프로젝트 컬럼 업데이트
+			result = pdao.deleteProject(conn, ipl_idx);
+			if(result == false){
+				conn.rollback();
+				return result;
+			}
+			
+			//commit;
+			conn.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+ 		return result;
 	}
 }

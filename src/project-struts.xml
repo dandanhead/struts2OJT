@@ -38,5 +38,8 @@
  		<action name="removeMemberToProject" class="kr.co.ican.project.action.AddMemberToProjectAction" method="removeMember">
  			<result name="success">/WEB-INF/views/project/removeMember.jsp</result>
  		</action>
+ 		<action name="deleteProject" class="kr.co.ican.project.action.DeleteProjectAction">
+ 			<result name="success" type="redirectAction">goProject</result>
+ 		</action>
  	</package>
  </struts>

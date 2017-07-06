@@ -1147,7 +1147,6 @@ public class WorkerDAO {
 		String sql = "";
 		int cnt = 1;
 		int result = 0;
-		
 		try {
 			
 			sql = " UPDATE ICAN_MEM_EXP SET IME_EXIT_DATE = SYSDATE WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
@@ -1156,7 +1155,7 @@ public class WorkerDAO {
 			psmt.setInt(cnt++, idx);
 			
 			result = psmt.executeUpdate();
-			
+			System.out.println("setExitdate DAO result : " + result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

@@ -15,6 +15,7 @@ public class ProjectVO {
 	private String ipl_detailaddr; //상세주소
 	private String ipl_postcode; // 우편번호
 	private String ipl_skill; //프로젝트 스킬
+	private int ipl_del;
 	
 	// 페이징
 	private int recordCountPerPage = 10;
@@ -25,34 +26,6 @@ public class ProjectVO {
 	public ProjectVO() {
 	}
 	
-	
-	
-	public ProjectVO(int ipl_idx, String ipl_pname, String ipl_sdate, String ipl_eptdate, String ipl_edate,
-			String ipl_content, String ipl_doc, String ipl_charge, String ipl_client, String ipl_address,
-			String ipl_detailaddr, String ipl_postcode, String ipl_skill, int recordCountPerPage, int pageNumber,
-			int start, int end) {
-		super();
-		this.ipl_idx = ipl_idx;
-		this.ipl_pname = ipl_pname;
-		this.ipl_sdate = ipl_sdate;
-		this.ipl_eptdate = ipl_eptdate;
-		this.ipl_edate = ipl_edate;
-		this.ipl_content = ipl_content;
-		this.ipl_doc = ipl_doc;
-		this.ipl_charge = ipl_charge;
-		this.ipl_client = ipl_client;
-		this.ipl_address = ipl_address;
-		this.ipl_detailaddr = ipl_detailaddr;
-		this.ipl_postcode = ipl_postcode;
-		this.ipl_skill = ipl_skill;
-		this.recordCountPerPage = recordCountPerPage;
-		this.pageNumber = pageNumber;
-		this.start = start;
-		this.end = end;
-	}
-
-
-
 	public String getIpl_skill() {
 		return ipl_skill;
 	}
@@ -188,6 +161,14 @@ public class ProjectVO {
 	public void setEnd(int end) {
 		this.end = end;
 	}
+	
+	public int getIpl_del() {
+		return ipl_del;
+	}
+
+	public void setIpl_del(int ipl_del) {
+		this.ipl_del = ipl_del;
+	}
 
 	@Override
 	public String toString() {
@@ -195,8 +176,7 @@ public class ProjectVO {
 				+ ", ipl_eptdate=" + ipl_eptdate + ", ipl_edate=" + ipl_edate + ", ipl_content=" + ipl_content
 				+ ", ipl_doc=" + ipl_doc + ", ipl_charge=" + ipl_charge + ", ipl_client=" + ipl_client
 				+ ", ipl_address=" + ipl_address + ", ipl_detailaddr=" + ipl_detailaddr + ", ipl_postcode="
-				+ ipl_postcode + ", ipl_skill=" + ipl_skill + ", recordCountPerPage=" + recordCountPerPage
-				+ ", pageNumber=" + pageNumber + ", start=" + start + ", end=" + end + "]";
+				+ ipl_postcode + ", ipl_skill=" + ipl_skill + ", ipl_del=" + ipl_del + ", recordCountPerPage="
+				+ recordCountPerPage + ", pageNumber=" + pageNumber + ", start=" + start + ", end=" + end + "]";
 	}
-	
 }

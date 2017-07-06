@@ -69,7 +69,8 @@
 				<a href="fileDownload?fileName=${pvo.ipl_doc}">${pvo.ipl_doc}</a>
 			</td>
 			<td style="vertical-align: bottom;">
-				<a href="#none" class="btn btn-default">Fix</a>
+				<a href="#none" class="btn btn-default" style="width: 40%;">Fix</a>
+				<a href="#none" class="btn btn-default" style="width: 40%;" id="prjdel">Delete</a>
 			</td>
 			<td style="vertical-align: bottom;">
 				<a href="goProject" class="btn btn-default">Return</a>	
@@ -148,6 +149,9 @@
 <form id="popfrm" method="post">
 	<input type="hidden" value="${pvo.ipl_idx}" name="ipl_idx" id="popidx">
 </form>
+<form id="delfrm" method="post" action="deleteProject">
+	<input type="hidden" value="${pvo.ipl_idx}" name="ipl_idx">
+</form>
 </body>
 <script type="text/javascript">
 	// add member
@@ -160,7 +164,12 @@
 		window.open("", "popupform", "width = 1024, height = 860, left = 200, top = 100, status = no, scrollbars = yes");
       	$("#popfrm").attr({"target" : "popupform" , "action" : "removeMember"}).submit();
 	});
-	
+	//project delete
+	$("#prjdel").click(function() {
+		if(confirm("프로젝트를 삭제 하시겠습니까?")){
+			$("#delfrm").submit();
+		}
+	});
 	//logout
 	$("#logout").click(function() {
 			if(confirm("로그 아웃 하시겠습니까?")){

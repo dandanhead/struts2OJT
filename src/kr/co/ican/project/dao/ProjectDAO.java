@@ -24,7 +24,7 @@ public class ProjectDAO {
         int cnt = 1;
         
         try {
-			 sql = " SELECT NVL(COUNT(*), 0) AS CNT FROM ICAN_PROJECT_LIST ";
+			 sql = " SELECT NVL(COUNT(*), 0) AS CNT FROM ICAN_PROJECT_LIST WHERE IPL_DEL = 0 ";
 			 psmt = conn.prepareStatement(sql);
 			 rs = psmt.executeQuery();
 			 
@@ -84,7 +84,9 @@ public class ProjectDAO {
 					+ "					IPL_POSTCODE, "
 					+ "					IPL_SKILL  "
 					+ "			FROM  "
-					+ "					ICAN_PROJECT_LIST )"
+					+ "					ICAN_PROJECT_LIST "
+					+ "			WHERE"
+					+ "					IPL_DEL = 0 )"
 					+ " WHERE  RNUM BETWEEN ? AND ?  ";
 				
 				psmt =conn.prepareStatement(sql);
@@ -144,9 +146,9 @@ public class ProjectDAO {
 					+ "  								( "
 					+ "										IPL_IDX, IPL_PNAME, IPL_SDATE, IPL_EPTDATE, IPL_EDATE, IPL_CONTENT, "
 					+ "    									IPL_DOC, IPL_CHARGE, IPL_CLIENT, IPL_ADDRESS, IPL_DETAILADDR , "
-					+ "										IPL_POSTCODE, IPL_SKILL"
+					+ "										IPL_POSTCODE, IPL_SKILL, IPL_DEL"
 					+ "									) "
-					+ " VALUES( PROJECT_LIST_SEQ.NEXTVAL, ? , ? , ? , NULL , ? , ? , ? , ? , ? , ? , ? , ? ) ";
+					+ " VALUES( PROJECT_LIST_SEQ.NEXTVAL, ? , ? , ? , NULL , ? , ? , ? , ? , ? , ? , ? , ? , 0 ) ";
 				
 				psmt = conn.prepareStatement(sql);
 				psmt.setString(cnt++, pvo.getIpl_pname());
@@ -580,7 +582,67 @@ public class ProjectDAO {
 		
 		return pjlist;
 	}
+
+	public List<MemberVO> projectAssignedWorker(Connection conn, int ipl_idx) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		List<MemberVO> mlist = new ArrayList<MemberVO>();
+		int cnt = 1;
+		String sql = "";
+		
+		try {
+			sql = " SELECT IPJL_IM_IDX FROM ICAN_PROJECT_JOIN_LIST WHERE IPJL_IPL_IDX = ? ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, ipl_idx);
+			
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				MemberVO vo  = new MemberVO();
+				cnt = 1;
+				vo.setIm_idx(rs.getInt(cnt++));
+				
+				mlist.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(rs != null){
+				rs.close();
+			}
+			
+			if(psmt != null){
+				psmt.close();
+			}
+		}
+		
+		return mlist;
+		
+	}
 	
-	
-	
+	public boolean deleteProject(Connection conn, int ipl_idx) throws Exception{
+		PreparedStatement psmt = null;
+		int cnt = 1;
+		int result = 0;
+		
+		try {
+			String sql = " UPDATE ICAN_PROJECT_LIST SET IPL_DEL = 1 WHERE IPL_IDX = ? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, ipl_idx);
+			
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				psmt.close();
+			}
+		}
+		
+		return result > 0 ? true : false;
+	}
 }

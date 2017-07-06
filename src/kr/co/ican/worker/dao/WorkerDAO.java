@@ -996,5 +996,189 @@ public class WorkerDAO {
 		
 		return result > 0 ? true : false;
 	}
+	
+	public String getProjectName(Connection conn, int idx) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+		String result = "";
+		int cnt = 1;
+		try {
+			sql = " SELECT "
+					+ "			IPL_PNAME "
+					+ " FROM "
+					+ "			ICAN_PROJECT_LIST IPL "
+					+ " LEFT JOIN  "
+					+ "			ICAN_PROJECT_JOIN_LIST IPJL "
+					+ "	ON "
+					+ "		IPL.IPL_IDX = IPJL.IPJL_IPL_IDX "
+					+ "	WHERE "
+					+ "		IPJL.IPJL_IM_IDX = ? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, idx);
+			
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getString(cnt++);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(rs != null){
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	public int chkParticipation(Connection conn, int idx)throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+		int cnt = 1;
+		int result = 0;
+		try {
+			
+			sql = " SELECT "
+				+ " 		IPL.IPL_IDX "
+				+ " FROM "
+				+ " 		ICAN_PROJECT_LIST IPL "
+				+ " INNER JOIN "
+				+ "			ICAN_PROJECT_JOIN_LIST IPJL "
+				+ " ON "
+				+ "			IPL.IPL_IDX = IPJL.IPJL_IPL_IDX "
+				+ " WHERE "
+				+ "			IPJL.IPJL_IM_IDX = ? "
+				+ " AND "
+				+ "			IPL.IPL_EDATE IS NULL ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, idx);
+			
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				cnt = 1;
+				result = rs.getInt(cnt++);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = 1;
+			throw e;
+		}finally {
+			if(psmt != null){
+				try {
+					psmt.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			if(rs != null){
+				try {
+					rs.close();
+				} catch (Exception e2) {
+					
+				}
+			}
+		}
+		
+		return result;
+		
+	}
+	
+	public boolean doResignWorker(Connection conn, int idx) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+		int cnt = 1;
+		int result = 0;
+		try {
+			
+			sql = " UPDATE ICAN_MEMBER SET IM_RESIGN = 1 WHERE IM_IDX = ? ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, idx);
+			
+			result = psmt.executeUpdate(); 
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(psmt != null){
+				try {
+					psmt.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			if(rs != null){
+				try {
+					rs.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return result > 0 ? true : false;
+	}
+	
+	public boolean setWorkersExitDate(Connection conn, int idx) throws Exception{
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+		int cnt = 1;
+		int result = 0;
+		
+		try {
+			
+			sql = " UPDATE ICAN_MEM_EXP SET IME_EXIT_DATE = SYSDATE WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(cnt++, idx);
+			
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(rs != null){
+				try {
+					rs.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			
+			if(psmt != null){
+				try {
+					psmt.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return result > 0 ? true : false;
+	}
 }
 

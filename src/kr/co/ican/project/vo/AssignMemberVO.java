@@ -13,7 +13,7 @@ public class AssignMemberVO {
 	// 더보기 
 	private int pageNumber = 0;
 	private int start = 1;
-	private int end = 5;
+	private int end = 10;
 	
 	public AssignMemberVO() {
 		

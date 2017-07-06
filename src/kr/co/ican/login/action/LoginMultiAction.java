@@ -1,9 +1,13 @@
 package kr.co.ican.login.action;
 
+import java.util.List;
 import java.util.Map;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import kr.co.ican.login.service.LoginService;
+import kr.co.ican.project.service.ProjectServices;
+import kr.co.ican.project.vo.ProjectVO;
+import kr.co.ican.worker.service.WorkerService;
 import kr.co.ican.worker.vo.MemberVO;
 
 // 로그인 
@@ -13,6 +17,8 @@ public class LoginMultiAction extends ActionSupport{
 	
 	private MemberVO mvo;
 	private String regidate;
+	private List<MemberVO> workerlist;
+	private List<ProjectVO> plist;
 	
 	public MemberVO getMvo() {
 		return mvo;
@@ -35,10 +41,27 @@ public class LoginMultiAction extends ActionSupport{
 		return SUCCESS;
 																	
 	}
-	
+	public List<MemberVO> getWorkerlist() {
+		return workerlist;
+	}
+
+	public void setWorkerlist(List<MemberVO> workerlist) {
+		this.workerlist = workerlist;
+	}
+
+	public List<ProjectVO> getPlist() {
+		return plist;
+	}
+
+	public void setPlist(List<ProjectVO> plist) {
+		this.plist = plist;
+	}
+
 	public String loginAf()throws Exception{
 		//service
 		LoginService service = new LoginService();
+		WorkerService wservice = new WorkerService();
+		ProjectServices pservice = new ProjectServices();
 		
 		try {
 			//Member Check
@@ -51,7 +74,17 @@ public class LoginMultiAction extends ActionSupport{
 			if(regidate == null){
 				return "error";
 			}
-			
+			// get member list
+			workerlist = wservice.getWorkerList(mvo);
+			if(workerlist == null){
+				return "error";
+			}
+			// get project list
+			ProjectVO pvo = new ProjectVO();
+			plist = pservice.getProjectList(pvo);
+			if(plist == null){
+				return "error";
+			}
 			//make session
 			
 			ActionContext context = ActionContext.getContext(); //session

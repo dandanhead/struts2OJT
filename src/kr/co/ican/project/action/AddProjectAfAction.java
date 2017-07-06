@@ -68,7 +68,6 @@ public class AddProjectAfAction extends ActionSupport {
 		boolean insertCheck = false;
 		
 		try {
-
 			//1.validation
 			vvo = check.addProjectValidation(pvo);
 			

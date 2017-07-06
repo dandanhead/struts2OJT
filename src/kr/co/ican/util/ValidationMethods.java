@@ -72,7 +72,6 @@ public class ValidationMethods {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date startdate = null;
 		Date enddate = null;
-		
 		try {
 			// 시작일 종료일 날짜 비교
 			for (int idx = 0; idx < sdate.length; idx++) {

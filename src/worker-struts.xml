@@ -36,5 +36,9 @@
  			<result name="success" type="redirectAction">goWorker</result>
  			<result name="fail">/WEB-INF/views/worker/workerUpdate.jsp</result>
  		</action>
+ 		
+ 		<action name="workerResign" class="kr.co.ican.worker.action.ResignWorkerAction">
+ 			<result name="success" type="redirectAction">goWorker</result>
+ 		</action>
  	</package>
  </struts>

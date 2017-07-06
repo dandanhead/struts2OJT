@@ -40,8 +40,8 @@
 			<result name="success">/WEB-INF/views/login/findPW.jsp</result>
 		</action>
 		<!-- main -->
-		<action name="goMain">
-			<result>/WEB-INF/views/main/main.jsp</result>
+		<action name="goMain" class="kr.co.ican.login.action.GetMainList">
+			<result name="success">/WEB-INF/views/main/main.jsp</result>
 		</action>
 	</package>
 </struts>

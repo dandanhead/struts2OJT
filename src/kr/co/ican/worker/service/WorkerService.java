@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.co.ican.project.dao.ProjectDAO;
+import kr.co.ican.project.vo.ProjectJoinMemberVO;
+import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.util.GetDBConn;
 import kr.co.ican.util.Helps;
 import kr.co.ican.worker.dao.WorkerDAO;
@@ -588,11 +590,11 @@ public class WorkerService {
 	
 	public String getProjectName(int idx) throws Exception{
 		Connection conn = null;
-		ProjectDAO pdao = new ProjectDAO();
+		WorkerDAO wdao = new WorkerDAO();
 		String result = "";
 		try {
 			conn = GetDBConn.getConnection();
-			result = pdao.getProjectName(conn, idx);
+			result = wdao.getProjectName(conn, idx);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -608,5 +610,89 @@ public class WorkerService {
 		}
 		
 		return result;
+	}
+	
+	public boolean doReignWorker(int idx)throws Exception{ // 퇴사
+		Connection conn = null;
+		WorkerDAO wdao = new WorkerDAO();
+		ProjectDAO pdao = new ProjectDAO();
+		int pnum = 0; // 프로젝트 번호 가져오기
+		
+		boolean resultchk =false;
+		
+		try {
+			conn = GetDBConn.getConnection();
+			conn.setAutoCommit(false);
+			
+			//프로젝트 번호 가져오기
+			pnum = wdao.chkParticipation(conn, idx); // pnum == 0 이면 투입중 아님, pnum 을 가져오면 투입중
+			// err
+			if(pnum < 0){
+				conn.rollback();
+				return resultchk;
+			}
+			// 참여 안하는중 , 대기중
+			if(pnum == 0){ 
+				resultchk = wdao.doResignWorker(conn, idx); // 퇴사처리
+				if(resultchk == false){
+					conn.rollback();
+					return resultchk;
+				}
+				resultchk = wdao.setWorkersExitDate(conn, idx); //퇴사일 설정
+				if(resultchk == false){
+					conn.rollback();
+					return resultchk;
+				}
+			}
+			 // 프로젝트 참여중
+			if(pnum > 0){
+				// vo setting
+				ProjectJoinMemberVO pjvo = new ProjectJoinMemberVO();
+				pjvo.setIpjl_im_idx(idx); //사번 setting
+				pjvo.setIpjl_ipl_idx(pnum); //프로젝트 번호 setting
+				//프로젝트 제외시키기
+				resultchk = pdao.deleteAssignMember(conn, pjvo);
+				if(resultchk == false){
+					conn.rollback();
+					return resultchk;
+				}
+				//프로젝트 투입상태 원상복귀
+				MemberVO mvo = new MemberVO();
+				mvo.setIm_idx(idx);
+				resultchk = pdao.memberStatusDefault(conn, mvo);
+				if(resultchk == false){
+					conn.rollback();
+					return resultchk;
+				}
+				//퇴사처리
+				resultchk = wdao.doResignWorker(conn, idx); 
+				if(resultchk == false){
+					conn.rollback();
+					return resultchk;
+				}
+				//퇴사일 설정
+				resultchk = wdao.setWorkersExitDate(conn, idx); 
+				if(resultchk == false){
+					conn.rollback();
+					return resultchk;
+				}
+			}
+			//commit
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		}finally {
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return resultchk;
 	}
 }	

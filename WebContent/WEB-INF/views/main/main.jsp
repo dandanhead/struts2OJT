@@ -53,7 +53,9 @@
 		<thead>
 				<tr>
 					<td colspan="3"><h4><b>Worker Management</b></h4></td>
-					<td style="text-align: right; vertical-align: bottom;" colspan="8"><a>더보기+</a></td>
+					<td style="text-align: right; vertical-align: bottom;" colspan="8">
+						<s:a namespace="/worker" action="goWorker">더보기+</s:a>
+					</td>
 				</tr>
 				<tr style="background-color: #aaa">
 					<td>No.</td>
@@ -67,111 +69,140 @@
 				</tr>
 			</thead>
 		<tbody>
-			<tr>
-				<td>1001</td>
-				<td>홍길동</td>
-				<td>SI사업부</td>
-				<td>010-0000-1123</td>
-				<td>3년 2개월</td>
-				<td>중급 개발자</td>
-				<td>Developer</td>
-				<td>대기 중</td>
-			</tr>
-			<tr>
-				<td>1001</td>
-				<td>홍길동</td>
-				<td>SI사업부</td>
-				<td>010-0000-1123</td>
-				<td>3년 2개월</td>
-				<td>중급 개발자</td>
-				<td>Developer</td>
-				<td>대기 중</td>
-			</tr>
-			<tr>
-				<td>1001</td>
-				<td>홍길동</td>
-				<td>SI사업부</td>
-				<td>010-0000-1123</td>
-				<td>3년 2개월</td>
-				<td>중급 개발자</td>
-				<td>Developer</td>
-				<td>대기 중</td>
-			</tr><tr>
-				<td>1001</td>
-				<td>홍길동</td>
-				<td>SI사업부</td>
-				<td>010-0000-1123</td>
-				<td>3년 2개월</td>
-				<td>중급 개발자</td>
-				<td>Developer</td>
-				<td>대기 중</td>
-			</tr><tr>
-				<td>1001</td>
-				<td>홍길동</td>
-				<td>SI사업부</td>
-				<td>010-0000-1123</td>
-				<td>3년 2개월</td>
-				<td>중급 개발자</td>
-				<td>Developer</td>
-				<td>대기 중</td>
-			</tr>
+			<!-- 사원 리스트 뿌리기 -->
+			<c:if test="${empty workerlist}">
+				<tr>
+					<td colspan="9" style="text-align: center;"> 등록된 사원이 없습니다. </td>
+				</tr>
+			</c:if>
+			<c:if test="${not empty workerlist}">
+				<c:forEach items="${workerlist}" var="mvo">
+					<tr>
+						<td>${mvo.im_idx }</td>
+						<td>${mvo.im_name }</td>
+						<td>${mvo.im_dname }</td>
+						<td>${mvo.im_phone }</td>
+						<c:if test="${empty mvo.expYear or empty mvo.expMonth}">
+							<td>-</td>
+						</c:if>
+						<c:if test="${not empty mvo.expYear and not empty mvo.expMonth }">
+							<c:if test="${mvo.expYear eq 0 and mvo.expMonth eq 0 }">
+								<td>신입</td>
+							</c:if>
+							<c:if test="${mvo.expYear eq 0 and mvo.expMonth ne 0 }">
+								<td>${mvo.expMonth}개월</td>
+							</c:if>
+							<c:if test="${mvo.expYear ne 0 and mvo.expMonth eq 0 }">
+								<td>${mvo.expYear}년</td>
+							</c:if>
+							<c:if test="${mvo.expYear ne 0 and mvo.expMonth ne 0 }">
+								<td>${mvo.expYear}년 &nbsp;&nbsp;${mvo.expMonth}개월</td>
+							</c:if>
+						</c:if>
+						<td>
+							<c:if test="${mvo.expYear >= 0 and mvo.expYear <= 3}">
+								초급 개발자
+							</c:if>
+							<c:if test="${mvo.expYear > 3 and mvo.expYear <= 9}">
+								중급 개발자
+							</c:if>
+							<c:if test="${mvo.expYear > 9}">
+								상급 개발자
+							</c:if>
+						</td>
+						<td>
+							<c:if test="${mvo.im_auth eq 0 }">
+								Developer
+							</c:if>
+							<c:if test="${mvo.im_auth eq 1 }">
+								Manager
+							</c:if>
+						</td>
+						<td>
+							<c:if test="${mvo.im_status eq 0}">
+								대기 중
+							</c:if>
+							<c:if test="${mvo.im_status eq 1}">
+								프로젝트 진행중
+							</c:if>
+						</td>
+					</tr>
+				</c:forEach>
+			</c:if>
 		</tbody>
 	</table>
 </div>
+<br>
 <div id="onproject" class="layer">
 <table style="width: 100%; margin: auto;" class="table table-striped">
+		<colgroup>
+				<col width="10%;">
+				<col width="30%;">
+				<col width="15%">
+				<col width="15%">
+				<col width="15%">
+				<col width="15%">
+		</colgroup>
 		<thead>
 			<tr>
 				<td colspan="1"><h4><b>Project Management</b></h4></td>
-				<td style="text-align: right; vertical-align: bottom;" colspan="3"><a>더보기+</a></td>
+				<td style="text-align: right; vertical-align: bottom;" colspan="5">
+					<s:a namespace="/project" action="goProject">더보기+</s:a>
+				</td>
 			</tr>
 			<tr style="background-color: #aaa">
-				<td>No.</td>
-				<td>title</td>
-				<td>status</td>
-				<td>written date</td>
+					<td>No.</td>
+					<td>Project Name</td>
+					<td>Client</td>
+					<td>Start Date</td>
+					<td>Expect End Date</td>
+					<td>End Date</td>
 			</tr>
 		</thead>
 		<tbody>
-		<colgroup>
-			<col width="20%;">
-			<col width="50%;">
-			<col width="20%">
-		</colgroup>
-			<tr>
-				<td>1</td>
-				<td><a>amore Project</a>&nbsp;<img alt="no img" src="${pageContext.request.contextPath }/img/icon_new.gif"></td>
-				<td>negotiating</td>
-				<td>2017.05.12</td>
-			</tr>
-			
-			<tr>
-				<td>2</td>
-				<td><a>amre Project2</a>&nbsp;<img alt="no img" src="${pageContext.request.contextPath }/img/icon_new.gif"></td>
-				<td>in progress</td>
-				<td>2017.05.12</td>
-			</tr>
-			
-			<tr>
-				<td>3</td>
-				<td><a>WongJin Project</a>&nbsp;<img alt="no img" src="${pageContext.request.contextPath }/img/icon_new.gif"></td>
-				<td>in progress</td>
-				<td>2017.05.12</td>
-			</tr>
-			
-			<tr>
-				<td>4</td>
-				<td><a>SalesForce Project</a>&nbsp;<img alt="no img" src="${pageContext.request.contextPath }/img/icon_new.gif"></td>
-				<td>in progress</td>
-				<td>2017.05.12</td>
-			</tr>
-			
-			<tr>
-				<td>5</td>
-				<td><a>HomePlus Project</a></td>
-				<td>done</td>
-				<td>2017.02.01</td>
-			</tr>
+	
+			<c:if test="${empty plist}" >
+					<tr>
+						<td colspan="5" style="text-align: center;">
+							생성된 프로젝트가 존재 하지 않습니다. 프로젝트를 생성해 주세요.
+						</td>
+					</tr>
+				</c:if>
+				<c:if test="${not empty plist}" >
+					<c:forEach items="${plist }" var="idx">
+						<tr>
+							<td>
+								${idx.ipl_idx}
+							</td>
+							<td>
+								${idx.ipl_pname}
+							</td>
+							<td>
+								${idx.ipl_client}
+							</td>
+							<td>
+								${fn:substring(idx.ipl_sdate, 0 , 10) }
+							</td>
+							<td>
+								<c:if test="${empty idx.ipl_eptdate}">
+									-
+								</c:if>
+								<c:if test="${not empty idx.ipl_eptdate}">
+									${fn:substring(idx.ipl_eptdate, 0 , 10) }
+								</c:if>
+							</td>
+							<td>
+								<c:if test="${empty idx.ipl_edate}">
+									-
+								</c:if>
+								<c:if test="${not empty idx.ipl_edate}">
+									${fn:substring(idx.ipl_edate, 0 , 10) }
+								</c:if>
+								
+							</td>
+						</tr>
+					</c:forEach>
+				</c:if>
 		</tbody>
 	</table>
 </div>

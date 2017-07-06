@@ -16,10 +16,9 @@
 <jsp:include page="../layout/header.jsp"/> <!--header  -->
 <div class="layer">
 <form id="frm">
-<input type="hidden" value="${expy}" name="expy"/>
-<input type="hidden" value="${expm }" name="expm"/>
-<input type="hidden" value="${idx}" name="idx"/> 
-
+<input type="hidden" value="${expy}" name="expy"/> <!-- 경력 년  -->
+<input type="hidden" value="${expm }" name="expm"/> <!-- 경력 월 -->
+<input type="hidden" value="${idx}" name="idx"/>  <!--사번  -->
 <!--update  -->
 	<hr>
 	<div id="pagetitle" style="width: 20%;">
@@ -60,8 +59,8 @@
 					직급<input type="text" readonly="readonly" value="${mvo.im_auth eq 0? 'Developer' : 'Manager'}" class="form-control">
 				</td>
 				<td style="vertical-align: middle;">
-					<a class="btn btn-default" href="#none" id="workerUpdateBtn">사원 정보 수정(Admin)</a>
-					<a class="btn btn-default" href="#none" id="workerOutBtn">퇴사처리(Admin)</a>
+					<a class="btn btn-default" href="#none" id="workerUpdateBtn">사원 정보 수정</a>
+					<a class="btn btn-default" href="#none" id="workerOutBtn">퇴사처리</a>
 				</td>
 			</tr>
 			<tr>
@@ -283,13 +282,14 @@
 	});
 	
 	$("#workerOutBtn").click(function() {
-		if(confirm("퇴사 처리 하시겠습니까?")){
-			$("#frm").attr({"target" : "_self" , "action" : "workerResign.do"}).submit();
-		}
+	if(confirm("퇴사 처리 하시겠습니까? 퇴사 처리 할 경우 진행중인 프로젝트에서 자동으로 제외됩니다.")){
+		$("#frm").attr({"target" : "_self" , "action" : "workerResign"}).submit();
+	}
+			
 	});
 	function goPage(pageNumber) {
 		$("#_pageNumber").val(pageNumber);
-		$("#frm").attr("target", "_self").attr("action", "workerDetail.do").submit();
+		$("#frm").attr("target", "_self").attr("action", "workerDetail").submit();
 	};
 </script>
 </html>

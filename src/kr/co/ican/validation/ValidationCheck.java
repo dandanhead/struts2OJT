@@ -804,6 +804,20 @@ public class ValidationCheck extends ValidationMethods{
 			vvo.setResultfalg(valflag);
 			return vvo;
 		}
+		if(pvo.getIpl_eptdate() != null && !("").equals(pvo.getIpl_eptdate()) ){
+			
+			String tempsdate[] = new String[1];
+			String tempedate[] = new String[1];
+			tempsdate[0] = pvo.getIpl_sdate();
+			tempedate[0] = pvo.getIpl_eptdate();
+			valflag = dateCompartFromTo(tempsdate, tempedate);
+			if(valflag == false){
+				vvo.setMsg("프로젝트 예상 종료일은 시작일 보다 빠를 수 없습니다.");
+				vvo.setResultfalg(valflag);
+				return vvo;
+			}
+		}
+		
 		
 		vvo.setResultfalg(valflag);
 		return vvo;

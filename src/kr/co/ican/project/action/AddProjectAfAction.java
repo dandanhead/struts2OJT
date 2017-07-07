@@ -10,7 +10,7 @@ import kr.co.ican.project.service.ProjectServices;
 import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.validation.ValidationCheck;
 import kr.co.ican.validation.ValidationVO;
-
+// 프로젝트 추가 validation 과 DB insert
 public class AddProjectAfAction extends ActionSupport {
 
 	private static final long serialVersionUID = 1306705384897279716L;

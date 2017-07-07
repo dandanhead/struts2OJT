@@ -5,14 +5,16 @@ import com.opensymphony.xwork2.ActionSupport;
 import kr.co.ican.project.service.ProjectServices;
 import kr.co.ican.project.vo.AssignMemberVO;
 import kr.co.ican.project.vo.ProjectVO;
+
+// 프로젝트에 사원을 추가 하기 위한 사원 리스트 가져오기
 public class AssignMemberListAction extends ActionSupport {
 
 	private static final long serialVersionUID = -3856817760324080305L;
-	private List<AssignMemberVO> aslist;
-	private AssignMemberVO asvo;
-	private int pageNumber;
-	private int ipl_idx;
-	private ProjectVO pvo;
+	private List<AssignMemberVO> aslist; //사원 리스트
+	private AssignMemberVO asvo; //리스트 paging 을 위한 vo
+	private int pageNumber; //페이지 번호
+	private int ipl_idx; //프로젝트 번호
+	private ProjectVO pvo; 
 	
 	public List<AssignMemberVO> getAslist() {
 		return aslist;

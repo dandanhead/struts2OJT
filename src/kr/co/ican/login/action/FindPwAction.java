@@ -12,12 +12,12 @@ public class FindPwAction extends ActionSupport{
 	
 	private static final long serialVersionUID = 7934989377337423285L;
 	
-	private MemberVO mvo;
-	private String startnum;
-	private String endnum;
+	private MemberVO mvo; //Worker VO
+	private String startnum; // 주민번호 앞자리
+	private String endnum; // 주민번호 뒷자리
 	
 	// alert message
-	private String alertmsg;
+	private String alertmsg; 
 	
 	public MemberVO getMvo() {
 		return mvo;

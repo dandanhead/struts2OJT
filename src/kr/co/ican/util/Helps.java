@@ -50,7 +50,7 @@ public class Helps {
 		
 		return mvo;
 	}
-	
+	// paging 을 위한 vo setting
 	public ProjectVO setProjectListPaging(ProjectVO pvo){
 		
 		int sn=pvo.getPageNumber();
@@ -66,7 +66,7 @@ public class Helps {
 		
 	}
 	
-	//chang Form Career
+	//change Form Career
 	public String changFormCareer(String expy, String expm){
 		
 		String experience = "";
@@ -115,6 +115,7 @@ public class Helps {
 		return age;
 	}
 	
+	// get gender
 	public String getWorkerGender(String im_scnum){ //123232-12323
 		
 		String resultstr = "";

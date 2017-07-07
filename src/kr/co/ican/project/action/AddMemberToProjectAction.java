@@ -5,15 +5,16 @@ import com.opensymphony.xwork2.ActionSupport;
 import kr.co.ican.project.service.ProjectServices;
 import kr.co.ican.project.vo.AddAssignMemberVO;
 
+// 프로젝트에 사원 참여 시키기
 public class AddMemberToProjectAction extends ActionSupport {
-
 	
 	private static final long serialVersionUID = 5344323873248400861L;
 	
-	private int chkvalues[];
-	private int rolls[];
-	private int insertCheck;
-	private int ipl_idx;
+	private int chkvalues[]; // checked Values >> 사원번호들
+	private int rolls[]; // 역할
+	private int insertCheck; // 부모창 Reload 에 필요한 param
+	private int ipl_idx; // project 고유번호
+	
 	public int[] getChkvalues() {
 		return chkvalues;
 	}

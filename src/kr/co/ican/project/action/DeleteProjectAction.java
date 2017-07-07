@@ -4,10 +4,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import kr.co.ican.project.service.ProjectServices;
 
+//프로젝트 삭제
 public class DeleteProjectAction extends ActionSupport {
 
 	private static final long serialVersionUID = 6442487104518037758L;
-	private int ipl_idx;
+	private int ipl_idx; //프로젝트 번호
 	
 	public int getIpl_idx() {
 		return ipl_idx;

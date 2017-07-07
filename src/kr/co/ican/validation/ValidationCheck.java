@@ -10,6 +10,7 @@ import kr.co.ican.worker.vo.MemberVO;
 // validation check 
 public class ValidationCheck extends ValidationMethods{
 	
+	// find id validation
 	public ValidationVO findIdValidation(MemberVO mvo , String startnum , String endnum) throws Exception{
 		
 		boolean valflag = true;
@@ -69,6 +70,7 @@ public class ValidationCheck extends ValidationMethods{
 		}
 	}
 	
+	// find pw validation
 	public ValidationVO findPwValidation(MemberVO mvo , String startnum , String endnum) throws Exception{
 		
 		boolean valflag = true;
@@ -141,6 +143,7 @@ public class ValidationCheck extends ValidationMethods{
 		}
 	}
 	
+	// 사원 추가 validation
 	public ValidationVO addWorkerValidation(AddWorkerVO avo) throws Exception{
 		
 		boolean valflag = true;
@@ -446,6 +449,7 @@ public class ValidationCheck extends ValidationMethods{
 		
 	}
 	
+	// 사원 정보 수정 validation
 	public ValidationVO updateWorkerAction(AddWorkerVO avo) throws Exception{
 		
 
@@ -744,6 +748,7 @@ public class ValidationCheck extends ValidationMethods{
 		
 	}
 	
+	// 사원 추가 validation
 	public ValidationVO addProjectValidation(ProjectVO pvo){
 		
 		boolean valflag = true;

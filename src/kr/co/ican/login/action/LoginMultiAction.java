@@ -10,15 +10,15 @@ import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.worker.service.WorkerService;
 import kr.co.ican.worker.vo.MemberVO;
 
-// 로그인 
+// 로그인 관련 Multiple Action
 public class LoginMultiAction extends ActionSupport{
 	
 	private static final long serialVersionUID = -1706257301891741290L;
 	
-	private MemberVO mvo;
-	private String regidate;
-	private List<MemberVO> workerlist;
-	private List<ProjectVO> plist;
+	private MemberVO mvo; //사원 VO
+	private String regidate; //입사일
+	private List<MemberVO> workerlist; // 사원 리스트
+	private List<ProjectVO> plist; //프로젝트 리스트
 	
 	public MemberVO getMvo() {
 		return mvo;

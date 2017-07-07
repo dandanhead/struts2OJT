@@ -14,7 +14,7 @@ import kr.co.ican.worker.vo.MemberVO;
 
 public class ProjectDAO {
 
-	
+	// 프로젝트 총 개수 
 	public int getTotalProjectCount(Connection conn)throws Exception{
 		
 		PreparedStatement psmt = null;
@@ -47,7 +47,7 @@ public class ProjectDAO {
         return result;
 		
 	}
-	
+	// 프로젝트 리스트 가져오기
 	public List<ProjectVO> getProjectList(ProjectVO pvo , Connection conn) throws Exception{
 			
 			PreparedStatement psmt = null;
@@ -132,7 +132,7 @@ public class ProjectDAO {
 	        return plist;
 			
 		}
-	
+	// 프로젝트 추가
 	public boolean addProject(ProjectVO pvo , Connection conn)throws Exception{
 			
 			PreparedStatement psmt = null;
@@ -178,6 +178,7 @@ public class ProjectDAO {
 	        return result > 0 ? true : false;
 		}
 	
+	// 프로젝트 상세정보 가져오기
 	public ProjectVO getProjectDetail(ProjectVO pvo, Connection conn) throws Exception{
 
 		PreparedStatement psmt = null;
@@ -235,7 +236,7 @@ public class ProjectDAO {
 		return vo;
 	}
 	
-	
+	// 프로젝트에 추가하기 위한 사원(프로젝트 참여중이 아닌) 리스트 가져오기
 	public List<AssignMemberVO> getAssignMemList(Connection conn, AssignMemberVO asvo) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -303,7 +304,7 @@ public class ProjectDAO {
 		}
         return aslist;
 	}
-	
+	// 프로젝트에 투입된 인원 철수 시키기 위한 사원목록 가져오기(프로젝트에 투입된 사원 목록 가져오기)
 	public List<AssignMemberVO> getRemoveMemList(Connection conn, ProjectVO pvo) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -378,7 +379,7 @@ public class ProjectDAO {
 		}
         return aslist;
 	}
-	
+	// 프로젝트에 사원 투입 시키기
 	public boolean addAssignMember(Connection conn, ProjectJoinMemberVO pjvo)throws Exception{
 		PreparedStatement psmt = null;
 		int result = 0;
@@ -412,7 +413,7 @@ public class ProjectDAO {
        	return result > 0 ? true : false;
        	
 	}
-	
+	// 프로젝트에 투입된 사원 제외하기, 철수 시키기
 	public boolean deleteAssignMember(Connection conn, ProjectJoinMemberVO pjvo)throws Exception{
 		PreparedStatement psmt = null;
 		int result = 0;
@@ -444,7 +445,7 @@ public class ProjectDAO {
        	return result > 0 ? true : false;
        	
 	}
-	
+	// 사원 상태 변경 (프로젝트 진행 중...)
 	public boolean memberStatusChange(Connection conn, MemberVO mvo) throws Exception{
 		PreparedStatement psmt = null;
 		int result = 0;
@@ -474,7 +475,7 @@ public class ProjectDAO {
 		
 		return result > 0 ? true : false;
 	}
-	
+	// 사원 상태 변경(대기중...)
 	public boolean memberStatusDefault(Connection conn, MemberVO mvo) throws Exception{
 		PreparedStatement psmt = null;
 		int result = 0;
@@ -503,7 +504,8 @@ public class ProjectDAO {
 		}
 		
 		return result > 0 ? true : false;
-	}	
+	}
+	// 프로젝트 상세페이지에서 프로젝트에 투입된 사원리스트 보여주기
 	public List<ProjectJoinMemListVO> getProjectJoinMembers(Connection conn, ProjectVO pvo) throws Exception{
 		
 		PreparedStatement psmt = null;
@@ -582,7 +584,7 @@ public class ProjectDAO {
 		
 		return pjlist;
 	}
-
+	// 진행중 프로젝트 삭제시 해당 프로젝트에 투입된 인원 제외 하기 위한 프로젝트 참여인원 가져오기
 	public List<MemberVO> projectAssignedWorker(Connection conn, int ipl_idx) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -620,7 +622,7 @@ public class ProjectDAO {
 		return mlist;
 		
 	}
-	
+	// 프로젝트 삭제하기
 	public boolean deleteProject(Connection conn, int ipl_idx) throws Exception{
 		PreparedStatement psmt = null;
 		int cnt = 1;

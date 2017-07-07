@@ -5,13 +5,14 @@ import java.io.InputStream;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+//파일 다운로드
 public class FileDownloadAction extends ActionSupport {
 
 	private static final long serialVersionUID = 6109276538772638275L;
 
-	private String dir;
-	private String fileName;
-	private InputStream inputStream;
+	private String dir; //절대경로
+	private String fileName; //파일명
+	private InputStream inputStream; //input stream
 	
 	
 	public String getDir() {

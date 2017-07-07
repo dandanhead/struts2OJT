@@ -13,7 +13,7 @@ import kr.co.ican.worker.vo.MemberVO;
 // 사원  관련  DAO
 public class WorkerDAO {
 	
-	
+	// 사원 리스트 가져오기
 	public List<MemberVO> getWorkerList(Connection conn, MemberVO mvo) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -82,7 +82,8 @@ public class WorkerDAO {
 	    
         return list;
 	}
-
+	
+	// 총 사원 수 가져오기 (퇴사하지 않은)
 	public int getWorkerCount(Connection conn) throws Exception {
 		
 		PreparedStatement psmt = null;
@@ -92,7 +93,12 @@ public class WorkerDAO {
 	    
 	    try {
 	    	
-	    	sql = " SELECT NVL(COUNT(*), 0) AS CNT FROM ICAN_MEMBER WHERE IM_RESIGN = 0 ";
+	    	sql = " SELECT "
+	    		+ "			NVL(COUNT(*), 0) AS CNT "
+	    		+ " FROM "
+	    		+ "			ICAN_MEMBER "
+	    		+ " WHERE "
+	    		+ "			IM_RESIGN = 0 ";
 	 		
 	 	    psmt = conn.prepareStatement(sql);
 	 		
@@ -123,7 +129,12 @@ public class WorkerDAO {
 		int result = 0;
 		try {
 
-			String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_PHONE = ?  ";
+			String sql = " SELECT "
+					   + "			NVL(COUNT(*), 0) "
+					   + " FROM "
+					   + "			ICAN_MEMBER "
+					   + " WHERE "
+					   + "			IM_PHONE = ?  ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(cnt++, mvo.getIm_phone());
 			
@@ -155,7 +166,20 @@ public class WorkerDAO {
 		int result = 0;
 		try {
 			
-			String sql = "  SELECT NVL(COUNT(*), 0) FROM (SELECT IM_PHONE FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE IM_PHONE = ? ";
+			String sql = " SELECT "
+					   + "			NVL(COUNT(*), 0) "
+					   + " FROM "
+					   + "			("
+					   + "				SELECT "
+					   + "						IM_PHONE "
+					   + "				FROM "
+					   + "						ICAN_MEMBER "
+					   + "				WHERE "
+					   + "						IM_IDX != ? "
+					   + "			) "
+					   + " WHERE "
+					   + "			IM_PHONE = ? ";
+			
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, mvo.getIm_idx());
 			psmt.setString(cnt++, mvo.getIm_email());
@@ -184,7 +208,12 @@ public class WorkerDAO {
 		int result = 0;
 		try {
 
-			String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_EMAIL = ?  ";
+			String sql = " SELECT "
+					   + "			NVL(COUNT(*), 0) "
+					   + " FROM "
+					   + "			ICAN_MEMBER "
+					   + " WHERE "
+					   + "			IM_EMAIL = ?  ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(cnt++, mvo.getIm_email());
 			
@@ -213,7 +242,19 @@ public class WorkerDAO {
 		int result = 0;
 		
 		try {
-			String sql = "  SELECT NVL(COUNT(*), 0) FROM (SELECT IM_EMAIL FROM ICAN_MEMBER WHERE IM_IDX != ? ) WHERE  IM_EMAIL = ?  ";
+			String sql = " SELECT "
+					   + "			NVL(COUNT(*), 0) "
+					   + " FROM "
+					   + "			("
+					   + "				SELECT"
+					   + "						 IM_EMAIL"
+					   + "				FROM "
+					   + "						 ICAN_MEMBER "
+					   + "				WHERE "
+					   + "						 IM_IDX != ?"
+					   + "			 ) "
+					   + " WHERE  "
+					   + "			IM_EMAIL = ?  ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, mvo.getIm_idx());
 			psmt.setString(cnt++, mvo.getIm_email());
@@ -246,7 +287,12 @@ public class WorkerDAO {
 		int cnt = 1;
 		
 		try {
-			String sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEMBER WHERE IM_SCNUM = ?  ";
+			String sql = " SELECT "
+					   + "		NVL(COUNT(*), 0) "
+					   + " FROM "
+					   + "		ICAN_MEMBER "
+					   + " WHERE "
+					   + "		IM_SCNUM = ?  ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(cnt++, mvo.getIm_scnum());
 			
@@ -282,11 +328,11 @@ public class WorkerDAO {
         try {
         	
         	sql = " INSERT INTO "
-					+ "		ICAN_MEMBER("
-					+ "					IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_RESIGN, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
-					+ "					IM_DETAILADDR, IM_POSTCODE, IM_AUTH, IM_SKILL"
-					+ "					) "
-				 +" VALUES(MEMBER_SEQ.NEXTVAL, ? , ? , ? , ? , ? , 0 , 0 , ? , ? , ? , ? , ? , ?)";
+				+ "		ICAN_MEMBER("
+				+ "					IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_RESIGN, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
+				+ "					IM_DETAILADDR, IM_POSTCODE, IM_AUTH, IM_SKILL"
+				+ "					) "
+				+ " VALUES(MEMBER_SEQ.NEXTVAL, ? , ? , ? , ? , ? , 0 , 0 , ? , ? , ? , ? , ? , ?)";
 			
 			psmt = conn.prepareStatement(sql);
 			
@@ -325,10 +371,10 @@ public class WorkerDAO {
         try {
         	if("타업체인력".equals(mvo.getIm_dname())){
     			sql = " INSERT INTO "
-    					+ "			ICAN_MEM_EXP ( "
-    					+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
-    					+ "						 ) "
-    					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, ? , ? , '미배정') ";
+					+ "			ICAN_MEM_EXP ( "
+					+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
+					+ "						 ) "
+					+ " VALUES(MEMBER_SEQ.CURRVAL , SYSDATE, NULL, ? , ? , '미배정') ";
     			
     			psmt = conn.prepareStatement(sql);
     			psmt.setString(cnt++, mvo.getOutsideperson());
@@ -370,7 +416,7 @@ public class WorkerDAO {
     				+ "			ICAN_MEM_EXP ( "
     				+ "							IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
     				+ "						 ) "
-    			+ " VALUES ( MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
+    			    + " VALUES ( MEMBER_SEQ.CURRVAL , ? , ? , ?, ? , ?) ";
 
     		psmt = conn.prepareStatement(sql);
     		psmt.setString(cnt++, evo.getIme_regi_date());
@@ -435,10 +481,10 @@ public class WorkerDAO {
         int cnt = 1;
         try {
         	sql = " SELECT "
-        			+ " 	IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
-        			+ " 	IM_DETAILADDR,IM_POSTCODE, IM_AUTH, IM_SKILL "
-        			+ " FROM "
-        			+ " 	ICAN_MEMBER WHERE IM_IDX = ? ";
+    			+ " 	IM_IDX, IM_PW, IM_DNAME, IM_NAME, IM_PHONE, IM_EMAIL, IM_STATUS, IM_SCNUM, IM_ADDRESS, "
+    			+ " 	IM_DETAILADDR,IM_POSTCODE, IM_AUTH, IM_SKILL "
+    			+ " FROM "
+    			+ " 	ICAN_MEMBER WHERE IM_IDX = ? ";
         		psmt = conn.prepareStatement(sql);
         		psmt.setInt(1, im_idx);
         		
@@ -488,11 +534,11 @@ public class WorkerDAO {
 		List<MemLicenseVO> liclist = new ArrayList<MemLicenseVO>();
 		try {
 			sql = "  SELECT "
-					+ "		IML_IM_IDX, IML_LNAME, IML_ACQDATE, IML_ORGANIZATION "
-					+ " FROM "
-					+ "		ICAN_MEM_LICENSE "
-					+ " WHERE "
-					+ "		IML_IM_IDX = ? ";
+				+ "		IML_IM_IDX, IML_LNAME, IML_ACQDATE, IML_ORGANIZATION "
+				+ " FROM "
+				+ "		ICAN_MEM_LICENSE "
+				+ " WHERE "
+				+ "		IML_IM_IDX = ? ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, lvo.getIml_im_idx());
 
@@ -576,14 +622,19 @@ public class WorkerDAO {
 		}
 		return elist;
 	}
-	
+	// 경력 존재 여부 check
 	public int getWorkerExpCount(ExperienceVO evo , Connection conn ) throws Exception{
 		PreparedStatement psmt = null;
         ResultSet rs = null;
         int result= 0;
         String sql = "";
         try {
-        	 sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? ";
+        	 sql = " SELECT "
+        	 	 + "			NVL(COUNT(*) , 0) AS CNT "
+        	 	 + " FROM "
+        	 	 + "			ICAN_MEM_EXP "
+        	 	 + " WHERE "
+        	 	 + "			IME_IM_IDX = ? ";
      		psmt = conn.prepareStatement(sql);
      		psmt.setInt(1, evo.getIme_im_idx());
      		
@@ -608,7 +659,7 @@ public class WorkerDAO {
 		}
         return result;
 	}
-	
+	// 자격증 존재 여부 파악
 	public int getWorkerLicCount(MemLicenseVO licvo, Connection conn ) throws Exception{
 		PreparedStatement psmt = null;
         ResultSet rs = null;
@@ -616,7 +667,12 @@ public class WorkerDAO {
         String sql = "";
         
         try {
-        	 sql = " SELECT NVL(COUNT(*) , 0) AS CNT FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
+        	 sql = " SELECT "
+        	 	 + "		NVL(COUNT(*) , 0) AS CNT "
+        	 	 + " FROM "
+        	 	 + "		ICAN_MEM_LICENSE "
+        	 	 + " WHERE "
+        	 	 + "		IML_IM_IDX = ? ";
      		psmt = conn.prepareStatement(sql);
      		psmt.setInt(1, licvo.getIml_im_idx());
      		
@@ -651,7 +707,14 @@ public class WorkerDAO {
 		
 		try {
 			
-			sql = " SELECT TRUNC(IME_REGI_DATE) FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
+			sql = " SELECT "
+				+ "			TRUNC(IME_REGI_DATE) "
+				+ " FROM "
+				+ "			ICAN_MEM_EXP "
+				+ " WHERE "
+				+ "			IME_IM_IDX = ? "
+				+ " AND "
+				+ "			IME_EXIT_DATE IS NULL ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, mvo.getIm_idx());
 
@@ -677,7 +740,7 @@ public class WorkerDAO {
 		// return
 		return resultstr;
 	}
-	
+	// 타업체 회사명 가져오기
 	public ExperienceVO getOutSidePersonCompany(int idx, Connection conn) throws Exception{
 		
 		ExperienceVO vo = new ExperienceVO();
@@ -687,7 +750,13 @@ public class WorkerDAO {
 		String sql = "";
 		
 		try {
-			sql = " SELECT IME_CONAME FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NULL ";
+			sql = " SELECT "
+				+ "			IME_CONAME "
+				+ " FROM "
+				+ " 		ICAN_MEM_EXP "
+				+ " WHERE "
+				+ "			IME_IM_IDX = ? "
+				+ "	AND IME_EXIT_DATE IS NULL ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, idx);
 			
@@ -713,7 +782,7 @@ public class WorkerDAO {
 		return vo;
 	}
 	
-	
+	// 사원 정보 수정
 	public boolean updateWorkerInfo(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
 		
@@ -721,8 +790,20 @@ public class WorkerDAO {
         int cnt = 1;
         int result = 0;
         try {
-			sql = " UPDATE ICAN_MEMBER SET IM_PW = ? , IM_DNAME = ? , IM_PHONE = ?, IM_EMAIL = ? ,IM_ADDRESS = ?, IM_DETAILADDR = ? ,"
-				+ " IM_POSTCODE = ? , IM_AUTH = ? , IM_SKILL = ?  WHERE IM_IDX = ? ";
+			sql = " UPDATE "
+				+ "			ICAN_MEMBER "
+				+ " SET "
+				+ "			IM_PW = ? , "
+				+ "			IM_DNAME = ? , "
+				+ "			IM_PHONE = ?, "
+				+ "			IM_EMAIL = ? ,"
+				+ "			IM_ADDRESS = ?, "
+				+ "			IM_DETAILADDR = ? ,"
+				+ " 		IM_POSTCODE = ? , "
+				+ "			IM_AUTH = ? , "
+				+ "			IM_SKILL = ?  "
+				+ " WHERE "
+				+ "			IM_IDX = ? ";
 			
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(cnt++, mvo.getIm_pw());
@@ -748,7 +829,7 @@ public class WorkerDAO {
 		}
 		return result > 0 ? true : false;
 	}
-	
+	// 자격증 존재 여부 파악
 	public boolean chkExistLicence(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -758,7 +839,13 @@ public class WorkerDAO {
 		String sql = "";
 
 		try {
-			sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEM_LICENSE WHERE IML_IM_IDX = ? ";
+			sql = " SELECT "
+				+ "			NVL(COUNT(*), 0) "
+				+ " FROM "
+				+ "			ICAN_MEM_LICENSE "
+				+ " WHERE "
+				+ "			IML_IM_IDX = ? ";
+			
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, mvo.getIm_idx());
 
@@ -783,7 +870,7 @@ public class WorkerDAO {
 		
 		return result > 0 ? true : false;
 	}
-	
+	// 수정시 insert를 위한 delete (자격증)
 	public boolean preupdateWorkerLicense(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
 		String sql = "";
@@ -808,7 +895,7 @@ public class WorkerDAO {
 		}
 		return result > 0 ? true : false;
 	}
-	
+	// 자격증 삭제 후 insert
 	public boolean updateWorkerLicense(MemLicenseVO mlvo, Connection conn , MemberVO mvo) throws Exception {
 		PreparedStatement psmt = null;
 		String sql = "";
@@ -842,7 +929,7 @@ public class WorkerDAO {
 		return result > 0 ? true : false;
 	}
 	
-	
+	// 경력 존재하는지 여부 파악
 	public boolean chkExistExp(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
         ResultSet rs = null;
@@ -852,7 +939,14 @@ public class WorkerDAO {
         String sql = "";
         
         try {
-        	sql = "  SELECT NVL(COUNT(*), 0) FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NOT NULL ";
+        	sql = " SELECT "
+        		+ "			NVL(COUNT(*), 0) "
+        		+ " FROM "
+        		+ "			ICAN_MEM_EXP "
+        		+ " WHERE "
+        		+ "			IME_IM_IDX = ? "
+        		+ " AND "
+        		+ "			IME_EXIT_DATE IS NOT NULL ";
         	psmt = conn.prepareStatement(sql);
         	psmt.setInt(cnt++, mvo.getIm_idx());
         	
@@ -876,14 +970,20 @@ public class WorkerDAO {
         
 		return result > 0 ? true : false ;
 	}
-	
+	// 경력 insert 전에 기존의 data 삭제
 	public boolean preupdateWorkerExp(MemberVO mvo, Connection conn)throws Exception{
 		PreparedStatement psmt = null;
 		String sql = "";
         int cnt = 1;
         int result = 0;
         try {
-			sql = " DELETE FROM ICAN_MEM_EXP WHERE IME_IM_IDX = ? AND IME_EXIT_DATE IS NOT NULL ";
+			sql = " DELETE "
+				+ " FROM "
+				+ "			ICAN_MEM_EXP "
+				+ "	WHERE "
+				+ "			IME_IM_IDX = ? "
+				+ "	AND "
+				+ "			IME_EXIT_DATE IS NOT NULL ";
 			
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, mvo.getIm_idx());
@@ -901,7 +1001,7 @@ public class WorkerDAO {
         
 		return result > 0 ? true : false;
 	}
-	
+	// 경력 삭제 후 insert
 	public boolean updateWorkerExp(ExperienceVO evo, Connection conn, MemberVO mvo )throws Exception {
 		
 		PreparedStatement psmt = null;
@@ -910,7 +1010,11 @@ public class WorkerDAO {
         int result = 0;
         try {
         	
-			sql = " INSERT INTO ICAN_MEM_EXP(IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL) "
+			sql = " INSERT INTO "
+				+ "				ICAN_MEM_EXP"
+				+ "							("
+				+ "								IME_IM_IDX, IME_REGI_DATE, IME_EXIT_DATE, IME_CONAME, IME_AUTH, IME_ROLL"
+				+ "							) "
 				+ " VALUES(? , ? , ? , ?, ? , ? ) ";
 			
 			psmt = conn.prepareStatement(sql);
@@ -934,7 +1038,7 @@ public class WorkerDAO {
         
 		return result > 0 ? true : false;
 	}
-	
+	// 타업체 소속일 경우 회사명 update
 	public boolean updateWorkerConame(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
 		String sql = "";
@@ -965,7 +1069,7 @@ public class WorkerDAO {
 		
 		return result > 0 ? true : false;
 	}
-	
+	// 타업체 > 본회사 의 경우 타업체명 아이캔으로 설정
 	public boolean updateWorkerConameReturn(MemberVO mvo, Connection conn) throws Exception{
 		PreparedStatement psmt = null;
 		String sql = "";
@@ -996,7 +1100,7 @@ public class WorkerDAO {
 		
 		return result > 0 ? true : false;
 	}
-	
+	// 상세페이지에서 진행중인 프로젝트 명 뿌리기 위한 프로젝트 이름 가져오기
 	public String getProjectName(Connection conn, int idx) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -1005,15 +1109,15 @@ public class WorkerDAO {
 		int cnt = 1;
 		try {
 			sql = " SELECT "
-					+ "			IPL_PNAME "
-					+ " FROM "
-					+ "			ICAN_PROJECT_LIST IPL "
-					+ " LEFT JOIN  "
-					+ "			ICAN_PROJECT_JOIN_LIST IPJL "
-					+ "	ON "
-					+ "		IPL.IPL_IDX = IPJL.IPJL_IPL_IDX "
-					+ "	WHERE "
-					+ "		IPJL.IPJL_IM_IDX = ? ";
+				+ "			IPL_PNAME "
+				+ " FROM "
+				+ "			ICAN_PROJECT_LIST IPL "
+				+ " LEFT JOIN  "
+				+ "			ICAN_PROJECT_JOIN_LIST IPJL "
+				+ "	ON "
+				+ "		IPL.IPL_IDX = IPJL.IPJL_IPL_IDX "
+				+ "	WHERE "
+				+ "		IPJL.IPJL_IM_IDX = ? ";
 			
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(cnt++, idx);
@@ -1046,7 +1150,7 @@ public class WorkerDAO {
 		
 		return result;
 	}
-	
+	// 프로젝트 번호 가져오기 (진행중인 프로젝트가 있는지 여부 판단)
 	public int chkParticipation(Connection conn, int idx)throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -1103,7 +1207,7 @@ public class WorkerDAO {
 		return result;
 		
 	}
-	
+	// 퇴사 시키기
 	public boolean doResignWorker(Connection conn, int idx) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -1140,7 +1244,7 @@ public class WorkerDAO {
 		
 		return result > 0 ? true : false;
 	}
-	
+	// 퇴사일 설정
 	public boolean setWorkersExitDate(Connection conn, int idx) throws Exception{
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -1155,7 +1259,6 @@ public class WorkerDAO {
 			psmt.setInt(cnt++, idx);
 			
 			result = psmt.executeUpdate();
-			System.out.println("setExitdate DAO result : " + result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

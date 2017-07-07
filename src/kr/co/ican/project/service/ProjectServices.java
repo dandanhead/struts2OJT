@@ -15,7 +15,7 @@ import kr.co.ican.worker.vo.MemberVO;
 
 public class ProjectServices {
 
-	
+	// 프로젝트 리스트 가져오기
 	public List<ProjectVO> getProjectList(ProjectVO pvo)throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
@@ -42,7 +42,7 @@ public class ProjectServices {
 		
 		return plist;
 	}
-	
+	// 프로젝트 총 개수 가져오기
 	public int getProjectCount()throws Exception{
 		
 		Connection conn = null;
@@ -66,7 +66,7 @@ public class ProjectServices {
 		
 		return result;
 	}
-	
+	//프로젝트 추가하기
 	public boolean addProject(ProjectVO pvo) throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
@@ -99,7 +99,7 @@ public class ProjectServices {
 		
 		return chkResult;
 	}
-	
+	// 프로젝트 상세정보 가져오기
 	public ProjectVO getProjectDetail(ProjectVO pvo)throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
@@ -123,7 +123,7 @@ public class ProjectServices {
 		
 		return vo;
 	}
-	
+	// 프로젝트에 참여했던 인원 가져오기
 	public List<ProjectJoinMemListVO> getProjectJoinMembers(ProjectVO pvo)throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
@@ -149,7 +149,7 @@ public class ProjectServices {
 		
 		return pjlist;
 	}
-	
+	// 프로젝트에 참여 할 수 있는 사원 리스트 가져오기
 	public List<AssignMemberVO> getAssignMemList(AssignMemberVO asvo)throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
@@ -173,7 +173,7 @@ public class ProjectServices {
 		
 		return aslist;
 	}
-	
+	// 프로젝트에 서 제외할 인원 가져오기
 	public List<AssignMemberVO> getRemoveMemList(ProjectVO pvo)throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
@@ -198,7 +198,7 @@ public class ProjectServices {
 		
 		return aslist;
 	}
-	
+	// 프로젝트에 사원 추가하기
 	public boolean addAssignMember(AddAssignMemberVO aavo) throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
@@ -256,7 +256,7 @@ public class ProjectServices {
 		return result;
 		
 	}
-	
+	// 프로젝트에서 사원 제외하기
 	public boolean removeAssignMember(AddAssignMemberVO aavo) throws Exception{
 		Connection conn = null;
 		ProjectDAO pdao = new ProjectDAO();
@@ -313,7 +313,7 @@ public class ProjectServices {
 		return result;
 		
 	}
-	
+	// 프로젝트 삭제하기
 	public boolean deleteProject(int ipl_idx) throws Exception{
 		
 		Connection conn = null;

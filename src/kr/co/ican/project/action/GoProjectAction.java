@@ -6,13 +6,14 @@ import com.opensymphony.xwork2.ActionSupport;
 import kr.co.ican.project.service.ProjectServices;
 import kr.co.ican.project.vo.ProjectVO;
 
+//프로젝트 리스트 뿌리기
 public class GoProjectAction extends ActionSupport {
 	
 	private static final long serialVersionUID = -4226295352370749220L;
-	private List<ProjectVO> plist;
-	private ProjectVO pvo;
-	private int totalRecordCount;
-	private int pageCountPerScreen = 10;
+	private List<ProjectVO> plist; //프로젝트 리스트
+	private ProjectVO pvo; //페이징 VO
+	private int totalRecordCount; //총 갯수
+	private int pageCountPerScreen = 10; // 한 페이지에 뿌릴 리스트의 수
 	
 	
 	public List<ProjectVO> getPlist() {

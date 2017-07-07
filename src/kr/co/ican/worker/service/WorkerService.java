@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import kr.co.ican.project.dao.ProjectDAO;
 import kr.co.ican.project.vo.ProjectJoinMemberVO;
-import kr.co.ican.project.vo.ProjectVO;
 import kr.co.ican.util.GetDBConn;
 import kr.co.ican.util.Helps;
 import kr.co.ican.worker.dao.WorkerDAO;
@@ -395,7 +393,7 @@ public class WorkerService {
 		
 		
 	}
-	public String getRegiDate(MemberVO mvo) throws Exception{
+	public String getRegiDate(MemberVO mvo) throws Exception{ // 입사일
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
 		String resultstr = "";
@@ -447,7 +445,7 @@ public class WorkerService {
 		}
 		return liclist;
 	}
-	
+	// 사원정보 수정(전) data 가져오기
 	public UpdateWorkerVO goWorkerUpdate(UpdateWorkerVO uvo) throws Exception{
 		
 		Connection conn = null;
@@ -490,7 +488,7 @@ public class WorkerService {
 		}
 		return uvo;
 	}
-	
+	// 사원정보 수정(후)
 	public boolean updateWorkerInfo(MemberVO mvo, List<MemLicenseVO> liclist, List<ExperienceVO> elist, int chkTa)throws Exception{
 		//Insert Check Flag
 		boolean lastResult = false; // return check
@@ -587,7 +585,7 @@ public class WorkerService {
 		
 		return lastResult;
 	}
-	
+	// 진행중 프로젝트 이름 가져오기
 	public String getProjectName(int idx) throws Exception{
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
@@ -611,7 +609,7 @@ public class WorkerService {
 		
 		return result;
 	}
-	
+	// 퇴사
 	public boolean doReignWorker(int idx)throws Exception{ // 퇴사
 		Connection conn = null;
 		WorkerDAO wdao = new WorkerDAO();
